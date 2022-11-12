@@ -1,5 +1,5 @@
 package datatype;
-//test text
-public class Collection {
+
+public class Collection extends Node{
 
 }

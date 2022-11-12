@@ -1,5 +1,5 @@
 package datatype;
 
-public class Event {
+public class Event extends Node{
 
 }

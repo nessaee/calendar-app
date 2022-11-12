@@ -1,5 +1,5 @@
 package datatype;
 
-public class Set {
+public class Set extends Node{
 
 }
