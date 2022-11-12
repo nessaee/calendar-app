@@ -2,62 +2,59 @@ package db.setup;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;  
 import java.sql.SQLException;  
 import java.sql.Statement;  
    
 public class Create {  
    
-	public static void createTable(Connection conn, String tableName) {  
+	public static void createTable(Connection conn, String tablename) {  
         // SQLite connection string  
     
-        String sql = "";
-        System.out.println("hello");
-        if(tableName.equals("Users")) {  
-        	// SQL statement for creating a new users table   
-            sql = "CREATE TABLE IF NOT EXISTS Users (\n"  
-           	    + " uID integer PRIMARY KEY,\n"
-                + " username text NOT NULL,\n"  
-                + " password text NOT NULL\n"
-                + ");"; 
-            System.out.println("hello");
-        }
-        else if(tableName.equals("Sets")) { 
-        	// SQL statement for creating a new set table   
-        	sql = "CREATE TABLE IF NOT EXISTS Sets (\n"  
-        		+ " uID integer NOT NULL,\n"
-                + " sID integer NOT NULL,\n"  
-                + " label text NOT NULL,\n"   
-                + ");";  
-        }
-        
-        else if(tableName.equals("Collections")) {  
-            // SQL statement for creating a new collections table   
-            sql = "CREATE TABLE IF NOT EXISTS Collections (\n"  
-           		+ " uID integer PRIMARY KEY,\n"
-                + " sID integer NOT NULL,\n"  
-                + " cID integer NOT NULL,\n"
-                + " label text NOT NULL,\n"   
-                + ");";  
-        }
-        
-        else if(tableName.equals("Events")) {
-            // SQL statement for creating a new events table   
-            sql = "CREATE TABLE IF NOT EXISTS Events (\n"  
-                + " uID integer PRIMARY KEY,\n"
-                + " sID integer NOT NULL,\n"  
-                + " cID integer NOT NULL,\n"
-                + " eID integer NOT NULL,\n"
-                + " label text NOT NULL,\n" 
-                + " description text NOT NULL,\n"
-                + " urgency int NOT NULL,\n"
-                + ");";  
-        }
-        
+        String sql = "CREATE TABLE IF NOT EXISTS " + tablename
+        switch(tablename) {
+			case "Users":
+				// SQL statement for creating a new users table   
+                sql = "CREATE TABLE IF NOT EXISTS Users (\n"  
+                    + " uID integer PRIMARY KEY,\n"
+                    + " username text NOT NULL,\n"  
+                    + " password text NOT NULL\n"
+                    + ");"; 
+				break;
+			case "Sets":
+                // SQL statement for creating a new set table   
+                sql = "CREATE TABLE IF NOT EXISTS Sets(\n"  
+                    + " uID integer NOT NULL,\n"
+                    + " sID integer NOT NULL,\n"  
+                    + " label text NOT NULL,\n"   
+                    + ");";  
+				break;
+			case "Collections":
+                // SQL statement for creating a new collections table   
+                sql = "CREATE TABLE IF NOT EXISTS Collections (\n"  
+                    + " uID integer PRIMARY KEY,\n"
+                    + " sID integer NOT NULL,\n"  
+                    + " cID integer NOT NULL,\n"
+                    + " label text NOT NULL,\n"   
+                    + ");";  
+				break;
+			case "Events":
+				// SQL statement for creating a new events table   
+                sql = "CREATE TABLE IF NOT EXISTS Events (\n"  
+                    + " uID integer PRIMARY KEY,\n"
+                    + " sID integer NOT NULL,\n"  
+                    + " cID integer NOT NULL,\n"
+                    + " eID integer NOT NULL,\n"
+                    + " label text NOT NULL,\n" 
+                    + " description text NOT NULL,\n"
+                    + " urgency int NOT NULL,\n"
+                    + ");";  
+				break;
+            default:
+                sql = "";
+		}
        
        	
-        try{  
-            //conn = DriverManager.getConnection(url);  
+        try {  
             Statement stmt = conn.createStatement(); 
             stmt.execute(sql);  
         } 
@@ -67,9 +64,6 @@ public class Create {
     }  
 	
     public static void createDatabase(Connection conn) {  
-   
-        //String url = "jdbc:sqlite:src/db/files/" + fileName;  
-   
         try {  
             //Connection conn = DriverManager.getConnection(url);  
             if (conn != null) {  
