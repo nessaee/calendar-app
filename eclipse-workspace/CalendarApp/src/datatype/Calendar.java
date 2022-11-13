@@ -9,8 +9,8 @@ public class Calendar {
 		events = new ArrayList<Node>();
 	}
 	
-	public String toString() { //q: format for string?
-	
-	}
+//	public String toString() { //q: format for string?
+//	
+//	}
 	
 }

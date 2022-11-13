@@ -1,19 +1,20 @@
 package datatype;
 
 public class Date {
-	private String month;
-	private String day;
-	private String year;
+	private Integer month;
+	private Integer day;
+	private Integer year;
 	
 	public Date() {
-		this.month = "unknown";
-		this.day = "unknown";
-		this.year = "unknown";
+		this.month = 0;
+		this.day = 0;
+		this.year = 0;
 	}
-	public Date(String month, String day, String year) {
+	public Date(Integer month, Integer day, Integer year) {
 		this.month = month;
 		this.day = day;
 		this.year = year;
 	}
+	
 	
 }
