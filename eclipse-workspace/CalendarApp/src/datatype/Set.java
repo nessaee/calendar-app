@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Set extends Node{
 	private ArrayList<Collection> collections;
-	
+
 	public Set() {
 		collections = new ArrayList<Collection>();
 	}
