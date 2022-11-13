@@ -10,7 +10,7 @@ public class Create {
 	public static void createTable(Connection conn, String tablename) {  
         // SQLite connection string  
     
-        String sql = "CREATE TABLE IF NOT EXISTS " + tablename
+        String sql = "CREATE TABLE IF NOT EXISTS " + tablename;
         switch(tablename) {
 			case "Users":
 				// SQL statement for creating a new users table   
