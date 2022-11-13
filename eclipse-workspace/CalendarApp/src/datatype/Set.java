@@ -3,17 +3,17 @@ package datatype;
 import java.util.ArrayList;
 
 public class Set extends Node{
-	private ArrayList<Collection> collections;
+	private ArrayList<Category> categoryList;
 
 	public Set() {
-		collections = new ArrayList<Collection>();
+		categoryList = new ArrayList<Category>();
 	}
 	
 	public void importExisting() {
 		
 	}
-	public void addCollection(Collection aCollection) {
-		this.collections.add(aCollection);
+	public void addCollection(Category aCategory) {
+		this.categoryList.add(aCategory);
 	}
 	public String toString() {
 		return this.getName();

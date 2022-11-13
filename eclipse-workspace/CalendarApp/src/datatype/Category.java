@@ -2,10 +2,10 @@ package datatype;
 
 import java.util.ArrayList;
 
-public class Collection extends Node{
+public class Category extends Node{
 	private ArrayList<Event> events;
 	
-	public Collection() {
+	public Category() {
 		this.events = new ArrayList<Event>();
 	}
 	
