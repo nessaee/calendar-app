@@ -1,14 +1,12 @@
 package db.setup;
 import db.setup.Create;
 import db.setup.Edit;
+
 import java.sql.Connection;  
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;  
+import java.util.List;
+
    
 public class DB {  
 	private Connection conn;
@@ -17,10 +15,14 @@ public class DB {
 	public DB(String fileName) {
 		this.fileName = fileName;
 		this.conn = connect();
-		//Create.createDatabase(conn);
-		//Create.createTable(conn, "Users");
+		Create.createDatabase(conn);
+		// Initialize tables: CREATE TABLE IF NOT EXISTS <name> 
+		Create.createTable(conn, "Users"); 
+		Create.createTable(conn, "Sets");
+		Create.createTable(conn, "Categories");
+		Create.createTable(conn, "Events");
 	}
-	
+	/*CONNECTION */
 	public Connection connect() {  
     	conn = null;
         try {  
@@ -37,18 +39,23 @@ public class DB {
     }  
 	
 	public void close() {
-    	try {  
-            if (conn != null) {  
-                conn.close();  
-            }  
-        } 
-    	catch (SQLException ex) {  
-            System.out.println(ex.getMessage());  
-        }  
+    	try {
+    		if(conn != null) conn.close();    
+    	}
+        catch (SQLException ex) {
+        	System.out.println(ex.getMessage());  
+        }
     }
 	
-	public void addRow(String tablename, List<Object> rowData) {
-		Edit.addRow(this.conn, tablename, rowData);
+	/* CONNECTION */
+	public void saveRow(String tablename, List<Object> rowData) {
+		Edit.saveRow(this.conn, tablename, rowData);
+	}
+	public List<Object> loadRow(String tablename, int ID) {
+		return Edit.loadRow(this.conn, tablename, ID);
+	}
+	public void removeRow(String tablename, int ID) {
+		Edit.deleteRow(this.conn, tablename,  ID);
 	}
 	
 	public Connection getConnection() {
