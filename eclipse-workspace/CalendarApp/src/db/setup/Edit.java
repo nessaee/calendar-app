@@ -12,7 +12,7 @@ import java.util.List;
 public class Edit {
 	public static void saveRow(Connection conn, String tablename, List<Object> rowData) {  
 		String sql;
-		sql = "INSERT INTO " + tablename;
+		sql = "INSERT OR IGNORE INTO " + tablename;
 		
 		switch(tablename) {
 			case "Users":
@@ -39,7 +39,6 @@ public class Edit {
 			int i = 0; // list index 
 			// check datatype of current object 
 			for(Object element: rowData) { 
-				System.out.println("Loop #" + String.valueOf(i));
 				if(element instanceof String) {	// if typeof(element) is String
 					pstmt.setString(i+1, (String) rowData.get(i));  
 				} else if(element instanceof Integer) { // if typeof(element) is Integer 
@@ -48,16 +47,13 @@ public class Edit {
 				System.out.println("Done");
 				i++;
 			}
-			System.out.println("Update Time");
 			pstmt.executeUpdate(); 
 		} catch (SQLException e) {  
             System.out.println(e.getMessage());  
         }  
     }  
 	public static void deleteRow(Connection conn, String tablename, int ID) {  
-		String typeID = "";
-		typeID = Character.toLowerCase(tablename.charAt(0)) + "ID";
-		String sql = "DELETE FROM " + tablename + "\n WHERE " + typeID + "=" + String.valueOf(ID);  
+		String sql = "DELETE FROM " + tablename + "\n WHERE " + getID(tablename) + "=" + String.valueOf(ID);  
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -75,16 +71,15 @@ public class Edit {
 	private static String getID(String tablename){
 		return Character.toLowerCase(tablename.charAt(0)) + "ID";
 	}
-	
+	// FIXME: add exception for invalid key
 	public static ArrayList<Object> loadRow(Connection conn, String tablename, int ID){
 		ArrayList<Object> rowData = new ArrayList<Object>();
 		String sql = "SELECT * FROM " + tablename + "\n WHERE " + getID(tablename) + "=" + String.valueOf(ID);  
-	
 		 try {   
 	         Statement stmt  = conn.createStatement();  
-	         ResultSet rs    = stmt.executeQuery(sql);  
+	         ResultSet rs    = stmt.executeQuery(sql);
 	         ResultSetMetaData metadata = rs.getMetaData();
-	         for(int i = 0; i < metadata.getColumnCount(); i++) {
+	         for(int i = 1; i <= metadata.getColumnCount(); i++) {
 		   	     String columnLabel = metadata.getColumnLabel(i);
 		   	     rowData.add(rs.getObject(columnLabel));	    
 	         }      

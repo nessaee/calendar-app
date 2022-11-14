@@ -16,7 +16,11 @@ public class DB {
 		this.fileName = fileName;
 		this.conn = connect();
 		Create.createDatabase(conn);
-		Create.createTable(conn, "Users");
+		// Initialize tables: CREATE TABLE IF NOT EXISTS <name> 
+		Create.createTable(conn, "Users"); 
+		Create.createTable(conn, "Sets");
+		Create.createTable(conn, "Categories");
+		Create.createTable(conn, "Events");
 	}
 	/*CONNECTION */
 	public Connection connect() {  

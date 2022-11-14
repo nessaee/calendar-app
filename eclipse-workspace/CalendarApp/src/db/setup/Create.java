@@ -22,19 +22,19 @@ public class Create {
 				break;
 			case "Sets":
                 // SQL statement for creating a new set table   
-                sql = "CREATE TABLE IF NOT EXISTS Sets(\n"  
+                sql = "CREATE TABLE IF NOT EXISTS Sets (\n"  
                     + " uID integer NOT NULL,\n"
                     + " sID integer PRIMARY KEY,\n"  
-                    + " label text NOT NULL,\n"   
+                    + " label text NOT NULL\n"   
                     + ");";  
 				break;
-			case "Collections":
+			case "Categories":
                 // SQL statement for creating a new collections table   
-                sql = "CREATE TABLE IF NOT EXISTS Collections (\n"  
+                sql = "CREATE TABLE IF NOT EXISTS Categories (\n"  
                     + " uID integer NOT NULL,\n"
                     + " sID integer NOT NULL,\n"  
                     + " cID integer PRIMARY KEY,\n"
-                    + " label text NOT NULL,\n"   
+                    + " label text NOT NULL\n"   
                     + ");";  
 				break;
 			case "Events":
@@ -46,11 +46,12 @@ public class Create {
                     + " eID integer PRIMARY KEY,\n"
                     + " label text NOT NULL,\n" 
                     + " description text NOT NULL,\n"
-                    + " urgency int NOT NULL,\n"
+                    + " urgency int NOT NULL\n"
                     + ");";  
 				break;
             default:
                 sql = "";
+                break;
 		}
        
        	
