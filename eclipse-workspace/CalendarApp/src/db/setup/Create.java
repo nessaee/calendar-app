@@ -24,26 +24,26 @@ public class Create {
                 // SQL statement for creating a new set table   
                 sql = "CREATE TABLE IF NOT EXISTS Sets(\n"  
                     + " uID integer NOT NULL,\n"
-                    + " sID integer NOT NULL,\n"  
+                    + " sID integer PRIMARY KEY,\n"  
                     + " label text NOT NULL,\n"   
                     + ");";  
 				break;
 			case "Collections":
                 // SQL statement for creating a new collections table   
                 sql = "CREATE TABLE IF NOT EXISTS Collections (\n"  
-                    + " uID integer PRIMARY KEY,\n"
+                    + " uID integer NOT NULL,\n"
                     + " sID integer NOT NULL,\n"  
-                    + " cID integer NOT NULL,\n"
+                    + " cID integer PRIMARY KEY,\n"
                     + " label text NOT NULL,\n"   
                     + ");";  
 				break;
 			case "Events":
 				// SQL statement for creating a new events table   
                 sql = "CREATE TABLE IF NOT EXISTS Events (\n"  
-                    + " uID integer PRIMARY KEY,\n"
+                    + " uID integer NOT NULL,\n"
                     + " sID integer NOT NULL,\n"  
                     + " cID integer NOT NULL,\n"
-                    + " eID integer NOT NULL,\n"
+                    + " eID integer PRIMARY KEY,\n"
                     + " label text NOT NULL,\n" 
                     + " description text NOT NULL,\n"
                     + " urgency int NOT NULL,\n"
@@ -56,7 +56,7 @@ public class Create {
        	
         try {  
             Statement stmt = conn.createStatement(); 
-            stmt.execute(sql);  
+            stmt.executeUpdate(sql);  
         } 
         catch (SQLException e) {  
             System.out.println(e.getMessage());  
