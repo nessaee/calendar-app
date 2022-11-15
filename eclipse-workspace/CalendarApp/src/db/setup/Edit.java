@@ -44,7 +44,6 @@ public class Edit {
 				} else if(element instanceof Integer) { // if typeof(element) is Integer 
 					pstmt.setInt(i+1, (int) rowData.get(i));  
 				}
-				System.out.println("Done");
 				i++;
 			}
 			pstmt.executeUpdate(); 
@@ -75,7 +74,7 @@ public class Edit {
 		} 
 	}
 	
-	/*
+	/* 
 	 * "Users" -> "uID" 
 	 * "Sets" -> "sID"
 	 * "Categories" -> "cID"
@@ -90,10 +89,11 @@ public class Edit {
 		ArrayList<Object> rowData = new ArrayList<Object>();
 		String sql = "SELECT * FROM " + tablename + "\n WHERE " + getID(tablename) + "=" + String.valueOf(ID); 
 		ResultSet rs = executeQuery(conn, sql);
+		String columnLabel;
 		try {   
 			 ResultSetMetaData metadata = rs.getMetaData();
 	         for(int i = 1; i <= metadata.getColumnCount(); i++) {
-		   	     String columnLabel = metadata.getColumnLabel(i);
+		   	     columnLabel = metadata.getColumnLabel(i);
 		   	     rowData.add(rs.getObject(columnLabel));	    
 	         }      
 		 } catch (SQLException e) {  
@@ -105,17 +105,32 @@ public class Edit {
     public static void viewTable(Connection conn, String tablename){  
         String sql = "SELECT * FROM " + tablename;     
         ResultSet rs = executeQuery(conn, sql);
-        // loop through the result set  
+        String columnLabel;
+         
         try {
-        	while (rs.next()) {  
-        		System.out.println(rs.getInt("uId") +  "\t" +   
-				                   rs.getString("username") + "\t" +  
-				                   rs.getString("password"));  
-			}
+        	ResultSetMetaData metadata = rs.getMetaData();
+        	// print column names
+        	for(int i = 1; i <= metadata.getColumnCount(); i++) {
+        		System.out.print(metadata.getColumnLabel(i) +  "\t\t");
+        	}
+        	System.out.println("");
+        	System.out.println("");
+        	// loop through table rows
+        	while(rs.next()) {
+        		// loop through column data for each row
+		        for(int i = 1; i <= metadata.getColumnCount(); i++) {
+		        	// extract column label 
+			   	    columnLabel = metadata.getColumnLabel(i);
+			   	    // print (row, column) cell data 
+			   	    System.out.print(rs.getObject(columnLabel) +  "\t\t"); 
+			   	    
+		        }  
+		        System.out.println("");
+        	}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}  
-     } 
+    } 
     
     public static ResultSet executeQuery(Connection conn, String sql) {
     	Statement stmt;
