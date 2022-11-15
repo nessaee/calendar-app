@@ -69,6 +69,7 @@ public class EditController {
 		rowData.add(e.getLabel());
 		rowData.add(e.getDescription());
 		rowData.add(e.getUrgency());
+		rowData.add(e.getDate().toInt());
 		Data.saveRow("Event", rowData);
 	}
 	public void removeEvent(Integer eID) {
