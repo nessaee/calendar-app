@@ -25,7 +25,7 @@ public class Edit {
 				sql += "(uID, sID, cID, label) VALUES(?,?,?,?)";
 				break;
 			case "Events":
-				sql += "(uID, sID, cID, eID, label, description, urgency) VALUES(?,?,?,?,?,?,?)";
+				sql += "(uID, sID, cID, eID, label, description, urgency, date) VALUES(?,?,?,?,?,?,?,?)";
 				break;
 		}
 		// ask about templates 
