@@ -52,6 +52,18 @@ public class Edit {
             System.out.println(e.getMessage());  
         }  
     }  
+	
+	public static int checkUser(Connection conn, String username, String password) {
+		String sql = "SELECT * FROM Users WHERE username = " + username + " AND password = " + password;
+		ResultSet rs = executeQuery(conn, sql);
+		try {
+			return rs.getInt("uID");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
 	public static void deleteRow(Connection conn, String tablename, int ID) {  
 		String sql = "DELETE FROM " + tablename + "\n WHERE " + getID(tablename) + "=" + String.valueOf(ID);  
 		PreparedStatement pstmt;
@@ -62,6 +74,7 @@ public class Edit {
 			e.printStackTrace();
 		} 
 	}
+	
 	/*
 	 * "Users" -> "uID" 
 	 * "Sets" -> "sID"
@@ -71,37 +84,51 @@ public class Edit {
 	private static String getID(String tablename){
 		return Character.toLowerCase(tablename.charAt(0)) + "ID";
 	}
+	
 	// FIXME: add exception for invalid key
 	public static ArrayList<Object> loadRow(Connection conn, String tablename, int ID){
 		ArrayList<Object> rowData = new ArrayList<Object>();
-		String sql = "SELECT * FROM " + tablename + "\n WHERE " + getID(tablename) + "=" + String.valueOf(ID);  
-		 try {   
-	         Statement stmt  = conn.createStatement();  
-	         ResultSet rs    = stmt.executeQuery(sql);
-	         ResultSetMetaData metadata = rs.getMetaData();
+		String sql = "SELECT * FROM " + tablename + "\n WHERE " + getID(tablename) + "=" + String.valueOf(ID); 
+		ResultSet rs = executeQuery(conn, sql);
+		try {   
+			 ResultSetMetaData metadata = rs.getMetaData();
 	         for(int i = 1; i <= metadata.getColumnCount(); i++) {
 		   	     String columnLabel = metadata.getColumnLabel(i);
 		   	     rowData.add(rs.getObject(columnLabel));	    
 	         }      
 		 } catch (SQLException e) {  
-	            System.out.println(e.getMessage());  
+	         System.out.println(e.getMessage());  
 	     }  
 		return rowData;
 	}
+	
     public static void viewTable(Connection conn, String tablename){  
         String sql = "SELECT * FROM " + tablename;     
-        try {   
-            Statement stmt  = conn.createStatement();  
-            ResultSet rs    = stmt.executeQuery(sql);  
-            // loop through the result set  
-            while (rs.next()) {  
-                System.out.println(rs.getInt("uId") +  "\t" +   
-                                   rs.getString("username") + "\t" +  
-                                   rs.getString("password"));  
-            }  
-        } catch (SQLException e) {  
+        ResultSet rs = executeQuery(conn, sql);
+        // loop through the result set  
+        try {
+        	while (rs.next()) {  
+        		System.out.println(rs.getInt("uId") +  "\t" +   
+				                   rs.getString("username") + "\t" +  
+				                   rs.getString("password"));  
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}  
+     } 
+    
+    public static ResultSet executeQuery(Connection conn, String sql) {
+    	Statement stmt;
+    	ResultSet rs = null;
+    	try {
+	    	stmt  = conn.createStatement();  
+	        rs    = stmt.executeQuery(sql);  
+    	} catch (SQLException e) {  
             System.out.println(e.getMessage());  
-        }  
-    }  
+        } 
+    	
+    	return rs;
+    
+    }
 	
 }

@@ -22,7 +22,8 @@ public class DB {
 		Create.createTable(conn, "Categories");
 		Create.createTable(conn, "Events");
 	}
-	/*CONNECTION */
+	
+	/* CONNECTION */
 	public Connection connect() {  
     	conn = null;
         try {  
@@ -47,7 +48,7 @@ public class DB {
         }
     }
 	
-	/* CONNECTION */
+	/* OPERATIONS */
 	public void saveRow(String tablename, List<Object> rowData) {
 		Edit.saveRow(this.conn, tablename, rowData);
 	}
@@ -57,7 +58,9 @@ public class DB {
 	public void removeRow(String tablename, int ID) {
 		Edit.deleteRow(this.conn, tablename,  ID);
 	}
-	
+	public void checkUser(String username, String password) {
+		Edit.checkUser(this.conn, username, password);
+	}
 	public Connection getConnection() {
 		return this.conn;
 	}

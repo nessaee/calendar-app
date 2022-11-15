@@ -23,6 +23,15 @@ public class Driver {
 	        System.out.println(userRowData);
 		}
 		
+		for(int i = 1; i < numUsers; i++){
+			if(i%2 == 0) {
+				db.removeRow("Users", i);
+			}
+	        userRowData = db.loadRow("Users", i);
+	        System.out.println(userRowData);
+		}
+		
+		
 		// Add numSets belonging to user 1 to sets table  
 		// rowData = {uID, sID, label}
 		int numSets = 10;
