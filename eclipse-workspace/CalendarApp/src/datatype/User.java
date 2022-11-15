@@ -1,5 +1,7 @@
 package datatype;
 
+import java.util.ArrayList;
+
 import db.setup.DB;
 
 public class User {
@@ -17,11 +19,10 @@ public class User {
 		this.calendar = new Calendar();
 		populateCalendar(db);
 	}
-	
-	public int getUserID() {
-		return userID;
-	}
 
+	public int getUserID() {
+		return this.userID;
+	}
 	public void setUserID(int id) {
 		this.userID = id;
 	}

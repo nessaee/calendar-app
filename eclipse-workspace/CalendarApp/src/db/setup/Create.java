@@ -15,7 +15,7 @@ public class Create {
 			case "Users":
 				// SQL statement for creating a new users table   
                 sql = "CREATE TABLE IF NOT EXISTS Users (\n"  
-                    + " uID integer PRIMARY KEY,\n"
+                    + " ID integer PRIMARY KEY,\n"
                     + " username text NOT NULL,\n"  
                     + " password text NOT NULL\n"
                     + ");"; 
@@ -23,27 +23,24 @@ public class Create {
 			case "Sets":
                 // SQL statement for creating a new set table   
                 sql = "CREATE TABLE IF NOT EXISTS Sets (\n"  
-                    + " uID integer NOT NULL,\n"
-                    + " sID integer PRIMARY KEY,\n"  
+                    + " pID integer NOT NULL,\n"
+                    + " ID integer PRIMARY KEY,\n"  
                     + " label text NOT NULL\n"   
                     + ");";  
 				break;
 			case "Categories":
                 // SQL statement for creating a new collections table   
                 sql = "CREATE TABLE IF NOT EXISTS Categories (\n"  
-                    + " uID integer NOT NULL,\n"
-                    + " sID integer NOT NULL,\n"  
-                    + " cID integer PRIMARY KEY,\n"
+                    + " pID integer NOT NULL,\n"
+                    + " ID integer PRIMARY KEY,\n"
                     + " label text NOT NULL\n"   
                     + ");";  
 				break;
 			case "Events":
 				// SQL statement for creating a new events table   
                 sql = "CREATE TABLE IF NOT EXISTS Events (\n"  
-                    + " uID integer NOT NULL,\n"
-                    + " sID integer NOT NULL,\n"  
-                    + " cID integer NOT NULL,\n"
-                    + " eID integer PRIMARY KEY,\n"
+                    + " pID integer NOT NULL,\n"
+                    + " ID integer PRIMARY KEY,\n"
                     + " label text NOT NULL,\n" 
                     + " description text NOT NULL,\n"
                     + " urgency int NOT NULL\n"

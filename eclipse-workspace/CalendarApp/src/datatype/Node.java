@@ -1,5 +1,7 @@
 package datatype;
 
+import java.util.ArrayList;
+
 public abstract class Node {
 	private String label;
 	private Integer currentID;
@@ -32,6 +34,14 @@ public abstract class Node {
 	}
 	public void setParentID(Integer parentID) {
 		this.parentID = parentID;
+	}
+	
+	public ArrayList<Object> getRowData(){
+		ArrayList<Object> rowData = new ArrayList<Object>();
+		rowData.add(this.getParentID());
+		rowData.add(this.getID());
+		rowData.add(this.getLabel());
+		return rowData;
 	}
 	
 }

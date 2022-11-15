@@ -4,20 +4,30 @@ import java.util.ArrayList;
 
 public class Calendar {
 	private ArrayList<Node> elementList;
-	private ArrayList<Set> setList;
-	private ArrayList<Event> eventList;
-	private ArrayList<Category> categoryList;
+	private ArrayList<Set> sets;
+	private ArrayList<Event> events;
+	private ArrayList<Category> categories;
 	
 	public Calendar() {
 		elementList = new ArrayList<Node>();
-		setList = new ArrayList<Set>();
-		eventList = new ArrayList<Event>();
-		categoryList = new ArrayList<Category>();
+		sets = new ArrayList<Set>();
+		events = new ArrayList<Event>();
+		categories = new ArrayList<Category>();
 	}
 	
 //	public String toString() { //q: format for string?
 //	
 //	}
+	
+	public void addSet(Set s) {
+		this.sets.add(s);
+	}
+	public void addCategory(Category c) {
+		this.categories.add(c);
+	}
+	public void addEvent(Event e) {
+		this.events.add(e);
+	}
 	public void setElementlist(ArrayList<Node> E) {
 		this.elementList = E;
 	}
@@ -26,19 +36,19 @@ public class Calendar {
 	}
 
 	public ArrayList<Set> getSetList() {
-		return setList;
+		return sets;
 	}
 
 	public void setSetList(ArrayList<Set> setList) {
-		this.setList = setList;
+		this.sets = setList;
 	}
 
 	public ArrayList<Event> getEventList() {
-		return eventList;
+		return events;
 	}
 
 	public void setEventList(ArrayList<Event> eventList) {
-		this.eventList = eventList;
+		this.events = eventList;
 	}
 
 	public void setElementList(ArrayList<Node> elementList) {
@@ -46,10 +56,22 @@ public class Calendar {
 	}
 
 	public ArrayList<Category> getCategoryList() {
-		return categoryList;
+		return categories;
 	}
 
 	public void setCategoryList(ArrayList<Category> categoryList) {
-		this.categoryList = categoryList;
+		this.categories = categoryList;
+	}
+
+	public void removeSet(Set s) {
+		this.sets.remove(s);
+	}
+
+	public void removeCategory(Category c) {
+		this.categories.remove(c);
+	}
+
+	public void removeEvent(Event e) {
+		this.events.remove(e);
 	}
 }

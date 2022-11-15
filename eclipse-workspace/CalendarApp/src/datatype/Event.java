@@ -1,5 +1,7 @@
 package datatype;
 
+import java.util.ArrayList;
+
 public class Event extends Node{
 	
 	private Date date;
@@ -50,6 +52,19 @@ public class Event extends Node{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	@Override 
+	public ArrayList<Object> getRowData() {
+		//Event: (uID, sID, cID, eID, label, description, urgency, date) 
+		ArrayList<Object> rowData = new ArrayList<Object>();
+		rowData.add(this.getParentID());
+		rowData.add(this.getID());
+		rowData.add(this.getLabel());
+		rowData.add(this.description);
+		rowData.add(this.urgency);
+		rowData.add(this.date.toInt());
+		return rowData;	
 	}
 
 }

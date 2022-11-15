@@ -50,23 +50,26 @@ public class DB {
     }
 	
 	/* OPERATIONS */
-	public void saveRow(String tablename, List<Object> rowData) {
+	public void saveRow(String tablename, ArrayList<Object> rowData) {
 		Edit.saveRow(this.conn, tablename, rowData);
 	}
 	public void removeRow(String tablename, int ID) {
 		Edit.deleteRow(this.conn, tablename,  ID);
 	}
-	public List<Object> loadRow(String tablename, int ID) {
+	public ArrayList<Object> loadRow(String tablename, int ID) {
 		return Edit.loadRow(this.conn, tablename, ID);
+	}
+	public ArrayList<ArrayList<Object>> loadSubset(int pID, String tablename){
+		return Edit.loadSubset(this.conn, pID, tablename);
 	}
 	public ArrayList<ArrayList<Object>> loadTable(String tablename) {
 		return Edit.loadTable(this.conn, tablename);
 	}
-	public int checkUser(String username, String password) {
-		return Edit.checkUser(this.conn, username, password);
-	}
 	public void viewTable(String tablename) {
 		Edit.viewTable(conn, tablename);
+	}
+	public int checkUser(String username, String password) {
+		return Edit.checkUser(this.conn, username, password);
 	}
 	public Connection getConnection() {
 		return this.conn;

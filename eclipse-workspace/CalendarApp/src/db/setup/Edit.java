@@ -10,22 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Edit {
-	public static void saveRow(Connection conn, String tablename, List<Object> rowData) {  
+	public static void saveRow(Connection conn, String tablename, ArrayList<Object> rowData) {  
 		String sql;
 		sql = "INSERT OR IGNORE INTO " + tablename;
 		
 		switch(tablename) {
 			case "Users":
-				sql += "(uID, username, password) VALUES(?,?,?)";
+				sql += "(ID, username, password) VALUES(?,?,?)";
 				break;
 			case "Sets":
-				sql += "(uID, sID, label) VALUES(?,?,?)";
+				sql += "(pID, ID, label) VALUES(?,?,?)";
 				break;
 			case "Categories":
-				sql += "(uID, sID, cID, label) VALUES(?,?,?,?)";
+				sql += "(pID, ID, label) VALUES(?,?,?)";
 				break;
 			case "Events":
-				sql += "(uID, sID, cID, eID, label, description, urgency, date) VALUES(?,?,?,?,?,?,?,?)";
+				sql += "(pID, ID, label, description, urgency, date) VALUES(?,?,?,?,?,?)";
 				break;
 		}
 		// ask about templates 
@@ -49,21 +49,52 @@ public class Edit {
 	
 	// FIXME: add exception for invalid key
 	public static ArrayList<Object> loadRow(Connection conn, String tablename, int ID){
-		String sql = "SELECT * FROM " + tablename + "\n WHERE " + getID(tablename) + "=" + String.valueOf(ID); 
+		String sql = "SELECT * FROM " + tablename + "\n WHERE ID = " + String.valueOf(ID); 
 		ResultSet rs = executeQuery(conn, sql);
 		return getRowData(rs);
 	}
 	
 	public static void deleteRow(Connection conn, String tablename, int ID) {  
-		String sql = "DELETE FROM " + tablename + "\n WHERE " + getID(tablename) + "=" + String.valueOf(ID);  
+		String sql = "DELETE FROM " + tablename + "\n WHERE ID = " + String.valueOf(ID);  
 		executeUpdate(conn, sql);
+		deleteSubset(conn, tablename, ID);
 	}
+	
+	public static void deleteSubset(Connection conn, String tablename, int ID) {
+		String sql;
+		String next; 
+		switch(tablename) {
+		case "Users":
+			next = "Sets";
+			break;
+		case "Sets":
+			next = "Categories";
+			break;
+		case "Categories":
+			next = "Events";
+			break;
+		default: 
+			next = "None";
+			break;
+		}
+		System.out.println("Next table = " + next);
+		if(next.equals("None")) {
+			return; 
+		}
+		else {
+			sql = "DELETE FROM " + next + " WHERE pID = " + String.valueOf(ID);  
+			executeUpdate(conn, sql);
+			deleteSubset(conn, next, ID);
+		}
+	}
+		
+
 	
 	public static int checkUser(Connection conn, String username, String password) {
 		String sql = "SELECT * FROM Users WHERE username = " + username + " AND password = " + password;
 		ResultSet rs = executeQuery(conn, sql);
 		try {
-			return rs.getInt("uID");
+			return rs.getInt("ID");
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -143,11 +174,7 @@ public class Edit {
 			e.printStackTrace();
 		} 
     }
-    
-    private static String getID(String tablename){
-		return Character.toLowerCase(tablename.charAt(0)) + "ID";
-	}
-	
+
     private static ArrayList<Object> getRowData(ResultSet rs) {
 		ArrayList<Object> rowData = new ArrayList<Object>();
 		String columnLabel;
@@ -165,5 +192,23 @@ public class Edit {
 		
 	     return rowData;
 	}
+    
+    public static ArrayList<ArrayList<Object>> loadSubset(Connection conn, int pID, String tablename){
+    	ArrayList<ArrayList<Object>> subsetData = new ArrayList<>();
+    	
+   	 	String sql = "SELECT * FROM " + tablename + "\n WHERE pID = " + String.valueOf(pID);
+        ResultSet rs = executeQuery(conn, sql);
+            
+        try {
+           // loop through table rows
+           while(rs.next()) {
+           	subsetData.add(getRowData(rs));
+           }
+   	 	} catch (SQLException e) {
+   		 	e.printStackTrace();
+   	 	}  	
+        return subsetData;
+    }
+    
 	
 }
