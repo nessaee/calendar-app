@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Category extends Node{
 	private ArrayList<Event> events;
-	
+
 	public Category() {
 		this.events = new ArrayList<Event>();
 	}
@@ -17,6 +17,6 @@ public class Category extends Node{
 		this.events.add(anEvent);
 	}
 	public String toString() {
-		return this.getName();
+		return this.getLabel();
 	}
 }

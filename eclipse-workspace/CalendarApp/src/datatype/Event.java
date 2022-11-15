@@ -1,32 +1,21 @@
 package datatype;
 
 public class Event extends Node{
-	private Category category;
+	
 	private Date date;
 	private Integer urgency;
-	
-	
-	public Event(Category C, Date D, Integer U) {
+	private Integer sID;
+	private String description;
+	public Event(Date D, Integer U, String De) {
 		this.date = D;
-		this.category = C;
 		this.urgency = U;
+		this.description = De;
 		
 	}
 	
 	public String toString() {
-		return this.getName();
+		return this.getLabel();
 	}
-
-
-	public Category getCategory() {
-		return category;
-	}
-
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
 
 	public Date getDate() {
 		return date;
@@ -45,6 +34,22 @@ public class Event extends Node{
 
 	public void setUrgency(Integer urgency) {
 		this.urgency = urgency;
+	}
+
+	public Integer getsID() {
+		return sID;
+	}
+
+	public void setsID(Integer sID) {
+		this.sID = sID;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

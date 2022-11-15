@@ -15,6 +15,8 @@ public class Date {
 		this.day = day;
 		this.year = year;
 	}
-	
+	public Integer toInt() {
+		return this.year * 10000 + this.month*100 + this.day;
+	}
 	
 }

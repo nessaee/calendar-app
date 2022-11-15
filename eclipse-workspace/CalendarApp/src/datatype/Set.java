@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Set extends Node{
 	private ArrayList<Category> categoryList;
-
+	
 	public Set() {
 		categoryList = new ArrayList<Category>();
 	}
@@ -16,6 +16,6 @@ public class Set extends Node{
 		this.categoryList.add(aCategory);
 	}
 	public String toString() {
-		return this.getName();
+		return this.getLabel();
 	}
 }
