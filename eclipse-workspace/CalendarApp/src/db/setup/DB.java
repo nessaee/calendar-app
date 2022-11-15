@@ -58,8 +58,11 @@ public class DB {
 	public void removeRow(String tablename, int ID) {
 		Edit.deleteRow(this.conn, tablename,  ID);
 	}
-	public void checkUser(String username, String password) {
-		Edit.checkUser(this.conn, username, password);
+	public int checkUser(String username, String password) {
+		return Edit.checkUser(this.conn, username, password);
+	}
+	public void viewTable(String tablename) {
+		Edit.viewTable(conn, tablename);
 	}
 	public Connection getConnection() {
 		return this.conn;
