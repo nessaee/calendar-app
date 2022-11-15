@@ -5,6 +5,7 @@ import db.setup.Edit;
 import java.sql.Connection;  
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
    
@@ -52,11 +53,14 @@ public class DB {
 	public void saveRow(String tablename, List<Object> rowData) {
 		Edit.saveRow(this.conn, tablename, rowData);
 	}
+	public void removeRow(String tablename, int ID) {
+		Edit.deleteRow(this.conn, tablename,  ID);
+	}
 	public List<Object> loadRow(String tablename, int ID) {
 		return Edit.loadRow(this.conn, tablename, ID);
 	}
-	public void removeRow(String tablename, int ID) {
-		Edit.deleteRow(this.conn, tablename,  ID);
+	public ArrayList<ArrayList<Object>> loadTable(String tablename) {
+		return Edit.loadTable(this.conn, tablename);
 	}
 	public int checkUser(String username, String password) {
 		return Edit.checkUser(this.conn, username, password);

@@ -29,15 +29,9 @@ public class Edit {
 				break;
 		}
 		// ask about templates 
-		/* "Users": // (uID, username, password) 
-		 * "Sets":// (uID, sID, label)
-		 *  case "Categories":// (uID, sID, cID, label)
-		 *  case "Events":// (uID, sID, cID, eID, label, description, urgency)
-		 */
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql); 
 			int i = 0; // list index 
-			// check datatype of current object 
 			for(Object element: rowData) { 
 				if(element instanceof String) {	// if typeof(element) is String
 					pstmt.setString(i+1, (String) rowData.get(i));  
@@ -47,62 +41,55 @@ public class Edit {
 				i++;
 			}
 			pstmt.executeUpdate(); 
-		} catch (SQLException e) {  
+		} 
+		catch (SQLException e) {  
             System.out.println(e.getMessage());  
         }  
     }  
+	
+	// FIXME: add exception for invalid key
+	public static ArrayList<Object> loadRow(Connection conn, String tablename, int ID){
+		String sql = "SELECT * FROM " + tablename + "\n WHERE " + getID(tablename) + "=" + String.valueOf(ID); 
+		ResultSet rs = executeQuery(conn, sql);
+		return getRowData(rs);
+	}
+	
+	public static void deleteRow(Connection conn, String tablename, int ID) {  
+		String sql = "DELETE FROM " + tablename + "\n WHERE " + getID(tablename) + "=" + String.valueOf(ID);  
+		executeUpdate(conn, sql);
+	}
 	
 	public static int checkUser(Connection conn, String username, String password) {
 		String sql = "SELECT * FROM Users WHERE username = " + username + " AND password = " + password;
 		ResultSet rs = executeQuery(conn, sql);
 		try {
 			return rs.getInt("uID");
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
 			return -1;
 		}
 	}
-	
-	public static void deleteRow(Connection conn, String tablename, int ID) {  
-		String sql = "DELETE FROM " + tablename + "\n WHERE " + getID(tablename) + "=" + String.valueOf(ID);  
-		PreparedStatement pstmt;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} 
+
+
+	public static ArrayList<ArrayList<Object>> loadTable(Connection conn, String tablename) {
+		 ArrayList<ArrayList<Object>> tableData = new ArrayList<>();
+    	 String sql = "SELECT * FROM " + tablename;     
+         ResultSet rs = executeQuery(conn, sql);
+             
+         try {
+            // loop through table rows
+            while(rs.next()) {
+            	tableData.add(getRowData(rs));
+            }
+    	 } catch (SQLException e) {
+    		 	e.printStackTrace();
+    	 }  	
+         return tableData;
 	}
+    
 	
-	/* 
-	 * "Users" -> "uID" 
-	 * "Sets" -> "sID"
-	 * "Categories" -> "cID"
-	 * "Events" -> "eID"
-	 */
-	private static String getID(String tablename){
-		return Character.toLowerCase(tablename.charAt(0)) + "ID";
-	}
-	
-	// FIXME: add exception for invalid key
-	public static ArrayList<Object> loadRow(Connection conn, String tablename, int ID){
-		ArrayList<Object> rowData = new ArrayList<Object>();
-		String sql = "SELECT * FROM " + tablename + "\n WHERE " + getID(tablename) + "=" + String.valueOf(ID); 
-		ResultSet rs = executeQuery(conn, sql);
-		String columnLabel;
-		try {   
-			 ResultSetMetaData metadata = rs.getMetaData();
-	         for(int i = 1; i <= metadata.getColumnCount(); i++) {
-		   	     columnLabel = metadata.getColumnLabel(i);
-		   	     rowData.add(rs.getObject(columnLabel));	    
-	         }      
-		 } catch (SQLException e) {  
-	         System.out.println(e.getMessage());  
-	     }  
-		return rowData;
-	}
-	
-    public static void viewTable(Connection conn, String tablename){  
+	public static void viewTable(Connection conn, String tablename){  
         String sql = "SELECT * FROM " + tablename;     
         ResultSet rs = executeQuery(conn, sql);
         String columnLabel;
@@ -127,7 +114,8 @@ public class Edit {
 		        }  
 		        System.out.println("");
         	}
-		} catch (SQLException e) {
+		} 
+        catch (SQLException e) {
 			e.printStackTrace();
 		}  
     } 
@@ -138,12 +126,44 @@ public class Edit {
     	try {
 	    	stmt  = conn.createStatement();  
 	        rs    = stmt.executeQuery(sql);  
-    	} catch (SQLException e) {  
+    	} 
+    	catch (SQLException e) {  
             System.out.println(e.getMessage());  
         } 
-    	
     	return rs;
-    
     }
+    
+    public static void executeUpdate(Connection conn, String sql) {
+    	PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		} 
+    }
+    
+    private static String getID(String tablename){
+		return Character.toLowerCase(tablename.charAt(0)) + "ID";
+	}
+	
+    private static ArrayList<Object> getRowData(ResultSet rs) {
+		ArrayList<Object> rowData = new ArrayList<Object>();
+		String columnLabel;
+		try {   
+			 ResultSetMetaData metadata = rs.getMetaData();
+			 // loop through column data for row
+	         for(int i = 1; i <= metadata.getColumnCount(); i++) {
+	        	 // extract column label 
+		   	     columnLabel = metadata.getColumnLabel(i);
+		   	     rowData.add(rs.getObject(columnLabel));	    
+	         }      
+		 } catch (SQLException e) {  
+	         System.out.println(e.getMessage());  
+	     }  
+		
+	     return rowData;
+	}
 	
 }
