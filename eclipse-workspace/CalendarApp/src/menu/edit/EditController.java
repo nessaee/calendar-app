@@ -6,11 +6,10 @@ import db.setup.DB;
 public class EditController {
 	//take in user
 	private User U;
-	public EditController(User u) {
-		U = new User();
-		U.setUserID(u.getUserID());
-		U.setCalendar(u.getCalendar());
-		DB db = new DB("Data.db");
+	private DB Data;
+	public EditController(User u, DB db) {
+		U = u;
+		Data = db;
 	}
 	
 	public void addSet(Set s) {
@@ -22,7 +21,7 @@ public class EditController {
 		for(int i = 0; i < U.getCalendar().getElementList().size(); i++) {
 			if (U.getCalendar().getElementList().get(i).getID() == sID) {
 				U.getCalendar().getElementList().remove(i);
-				//db
+				Data.removeRow("Set", sID);
 			}
 		}
 		
@@ -36,7 +35,7 @@ public class EditController {
 		for(int i = 0; i < U.getCalendar().getElementList().size(); i++) {
 			if (U.getCalendar().getElementList().get(i).getID() == sID) {
 				U.getCalendar().getElementList().remove(i);
-				//db
+				Data.removeRow("Category", sID);
 			}
 		}
 			
@@ -48,7 +47,7 @@ public class EditController {
 		for(int i = 0; i < U.getCalendar().getElementList().size(); i++) {
 			if (U.getCalendar().getElementList().get(i).getID() == sID) {
 				U.getCalendar().getElementList().remove(i);
-				//db
+				Data.removeRow("Event", sID);
 			}
 		}
 	}

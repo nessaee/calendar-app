@@ -8,21 +8,21 @@ import db.setup.DB;
 
 public class CalendarController {
 	private User U;
-	public CalendarController(User u) {
-		U = new User();
-		U.setUserID(u.getUserID());
-		U.setCalendar(u.getCalendar());
-		DB db = new DB("Data.db");
+	private DB Data;
+	public CalendarController(User u, DB db) {
+		U = u;
+		Data = db;
 	}
 	
-	public void loadSet(Set s) {
-		
+	
+	public void loadSet(Set s) { //loadrow(string tablename, id)
+		Data.loadRow("Set", s.getID());
 	}
 	public void loadCategory(Category c) {
-		
+		Data.loadRow("Category", c.getID());
 	}
 	public void loadEvent(Event e) {
-		
+		Data.loadRow("Event", e.getID());
 	}
 	public void printCalender() {
 		ArrayList<Node> EventList = new ArrayList<Node>();
@@ -34,9 +34,11 @@ public class CalendarController {
 		}
 		//now to sort this array by sID
 		Collections.sort(EventList, Comparator.comparing(Node::getID));
-		
-		for(int i = 0; i < 30; i++) {
-			System.out.println(i + ". " + EventList.get(i).getName());
-		}
+	
+//		for(int i = 0; i < 30; i++) {
+//			if(EventList.get(i).getDate() == i) {//ex 20221115
+//				System.out.println(i + ". " + EventList.get(i).getName());
+//			}
+//		}
 	}
 }

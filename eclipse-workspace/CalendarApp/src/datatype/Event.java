@@ -5,14 +5,14 @@ public class Event extends Node{
 	private Date date;
 	private Integer urgency;
 	
-	public Event() {
-		
-	}
+	
 	public Event(Category C, Date D, Integer U) {
+		this.date = D;
+		this.category = C;
+		this.urgency = U;
 		
 	}
-	//TODO: finish this method, push to dev, think about ID assignment, 
-	//ask about edit cal methods
+	
 	public String toString() {
 		return this.getName();
 	}
