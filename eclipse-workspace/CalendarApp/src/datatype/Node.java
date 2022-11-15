@@ -2,36 +2,36 @@ package datatype;
 
 public abstract class Node {
 	private String label;
-	private Integer cID;
-	private Integer pID;
+	private Integer currentID;
+	private Integer parentID;
 	
 	public Node() {
 		this.label = "unknown";
-		this.cID = 0;
-		this.pID = 0;
+		this.currentID = 0;
+		this.parentID = 0;
 	}
 	public Node(String name, Integer ID, Integer parentID){
 		this.label = name;
-		this.cID = ID;
-		this.pID = parentID;
+		this.currentID = ID;
+		this.parentID = parentID;
 	}
-	public String getName() {
+	public String getLabel() {
 		return label;
 	}
-	public void setName(String name) {
-		this.label = name;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 	public Integer getID() {
-		return cID;
+		return currentID;
 	}
 	public void setID(Integer iD) {
-		cID = iD;
+		currentID = iD;
 	}
 	public Integer getParentID() {
-		return pID;
+		return parentID;
 	}
 	public void setParentID(Integer parentID) {
-		this.pID = parentID;
+		this.parentID = parentID;
 	}
 	
 }
