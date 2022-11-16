@@ -17,7 +17,8 @@ public class Login {
 	}
 	
 	public Login(DB db, String command) {
-		while(true) {
+		String select = "Again";
+		while(!select.equals("Exit")) {
 			String info[] = inputInformation();		// Takes user information to create a username and password
 			if(command.equals("Create")) {	// If the user has chosen to create a new User, it takes this if statement
 				if(db.checkUser(info[0], info[1]) == -1) {	// Checks if the user already exists
@@ -29,15 +30,21 @@ public class Login {
 				}
 				System.out.println("This username and password already exist, please create a new one");
 			}
+			
 			else if(command.equals("Login")) {		// If the user has chosen to login, it takes this if statement
-				if(db.checkUser(info[0],  info[1]) == -1) {
+				if(db.checkUser(info[0],  info[1]) != -1) {
 					this.username = info[0];
 					this.password = info[1];
 					this.userID = db.checkUser(this.username, this.password);
 					break;
 				}
-				System.out.println("The username or password is incorrect, please try again");
+				Scanner input = new Scanner(System.in);
+				System.out.println("The username or password is invalid, enter 'Again' to try again, or 'Exit' to return to the main menu");
+				select = input.nextLine();
 			}
+		}
+		if(select.equals("Exit")) {
+			this.userID = -11;
 		}
 	}
 	

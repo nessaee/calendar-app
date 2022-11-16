@@ -5,6 +5,7 @@ import java.util.Scanner;
 import datatype.User;
 import db.setup.DB;
 import menu.login.LoginController;
+import menu.main.MainController;
 
 public class Driver {
 
@@ -34,15 +35,19 @@ public class Driver {
 				}
 				
 				else if(select.equals("Login")) {	// If the user has chosen to login, the login will be validated
-					userID = loginController.checkLogin();
-					if(userID != -1) {				// If the login is valid, a User object will be created populated from the database and the program will continue
+					user = loginController.loginUser(db);
+					if(user.getUserID() == -1) {
+						System.out.println("Invalid login, resetting to the main menu");	// If the login is invalid it will reset to the main 
+					}
+					else {
+						System.out.println("You are successfully logged in!");
 						break;
 					}
-					System.out.println("Invalid login, resetting to the main menu");	// If the login is invalid it will reset to the main menu
 				}
 				
 				else if(select.equals("Create")) {
-					loginController.createUser(db);
+					user = loginController.createUser(db);
+					System.out.println("A new user has succesfully been created. Returning to the login menu");
 				}
 				
 				else {
@@ -52,6 +57,7 @@ public class Driver {
 			
 			while(controlKey == 'y') {
 				user = new User(userID, db);
+				MainController mainController = new MainController();
 				
 				System.out.println("Would you like to Edit your calendar, display it, logout, or exit the program? Enter 'Edit', 'Display', 'Logout', or 'Exit': ");
 				select = input.nextLine();
@@ -68,7 +74,23 @@ public class Driver {
 				}
 				
 				else if(select.equals("Edit")) {
-					
+					System.out.println("You are now editing your Calendar, would you like to exit or add a Set, Category, or Event? Enter 'Exit', 'Set', 'Category', or 'Event': ");
+					select = input.nextLine();
+					if(select.equals("Exit")) {
+						break;
+					}
+					else if(select.equals("Set")) {
+						// FIXME Implement a CreateSetFromUserInput Method
+						mainController.getEditController().addSet(set);
+					}
+					else if(select.equals("Category")) {
+						// FIXME Implement a CreateCategoryFromUserInput Method
+						mainController.getEditController().addCategory(category);
+					}
+					else if(select.equals("Event")) {
+						//FIXME Implement a CreateEventFromUserInput Method
+						mainController.getEditController().addEvent(event);
+					}
 				}
 				
 				else if(select.equals("Display")) {
