@@ -12,10 +12,10 @@ public abstract class Node {
 		this.currentID = 0;
 		this.parentID = 0;
 	}
-	public Node(String name, Integer ID, Integer parentID){
-		this.label = name;
-		this.currentID = ID;
+	public Node(Integer parentID, Integer ID, String name){
 		this.parentID = parentID;
+		this.currentID = ID;
+		this.label = name;
 	}
 	public String getLabel() {
 		return label;
@@ -35,7 +35,9 @@ public abstract class Node {
 	public void setParentID(Integer parentID) {
 		this.parentID = parentID;
 	}
-	
+	public String toString() {
+		return "";
+	}
 	public ArrayList<Object> getRowData(){
 		ArrayList<Object> rowData = new ArrayList<Object>();
 		rowData.add(this.getParentID());

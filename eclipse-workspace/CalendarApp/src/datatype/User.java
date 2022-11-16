@@ -3,6 +3,7 @@ package datatype;
 import java.util.ArrayList;
 
 import db.setup.DB;
+import menu.calendar.CalendarController;
 
 public class User {
 
@@ -12,6 +13,7 @@ public class User {
 	public User() {
 		this.userID = -1;
 		this.calendar = new Calendar();
+		
 	}
 	
 	public User(int id, DB db) {
@@ -37,6 +39,7 @@ public class User {
 
 	// Method to use the the userID to populate the calendar with Sets, Categories, and Events from the database
 	private void populateCalendar(DB db) {
-		
+		System.out.println("calendar created, now populating...");
+		CalendarController c = new CalendarController(this, db);
 	}
 }

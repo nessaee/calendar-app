@@ -63,28 +63,15 @@ public class Edit {
 	public static void deleteSubset(Connection conn, String tablename, int ID) {
 		String sql;
 		String next; 
-		switch(tablename) {
-		case "Users":
-			next = "Sets";
-			break;
-		case "Sets":
-			next = "Categories";
-			break;
-		case "Categories":
-			next = "Events";
-			break;
-		default: 
-			next = "None";
-			break;
-		}
-		System.out.println("Next table = " + next);
-		if(next.equals("None")) {
+		
+		System.out.println("Next table = " + getNext(tablename));
+		if(getNext(tablename).equals("None")) {
 			return; 
 		}
 		else {
-			sql = "DELETE FROM " + next + " WHERE pID = " + String.valueOf(ID);  
+			sql = "DELETE FROM " + getNext(tablename) + " WHERE pID = " + String.valueOf(ID);  
 			executeUpdate(conn, sql);
-			deleteSubset(conn, next, ID);
+			deleteSubset(conn, getNext(tablename), ID);
 		}
 	}
 		
@@ -208,6 +195,48 @@ public class Edit {
    		 	e.printStackTrace();
    	 	}  	
         return subsetData;
+    }
+    
+    public static ArrayList<ArrayList<ArrayList<Object>>> loadAllSubsets(Connection conn, int pID){
+    	ArrayList<ArrayList<ArrayList<Object>>> subsetData = new ArrayList<>();
+    	String tablename = getTableName(pID);
+    	while( !getNext(tablename).equals("None")) {
+        	subsetData.add(loadSubset(conn, pID, getNext(tablename)));
+        	tablename = getNext(tablename);
+        }
+        return subsetData;
+    }
+    
+    private static String getNext(String tablename) {
+    
+    	switch(tablename) {
+    	case "Users":
+			return "Sets";
+		case "Sets":
+			return "Categories";
+		case "Categories":
+			return "Events";
+		default: 
+			return "None";
+    	}
+    }
+    
+    public static String getTableName(int ID) {
+    	if(ID <= 0) {
+    		return "Invalid";
+    	}
+    	else if(ID <= 100) {
+    		return "Sets";
+    	}
+    	else if(ID <= 500) {
+    		return "Categories";
+    	}
+    	else if(ID <= 1000) {
+    		return "Events";
+    	}
+    	else {
+    		return "Users";
+    	}
     }
     
 	

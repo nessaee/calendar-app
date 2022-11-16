@@ -8,13 +8,13 @@ public class Event extends Node{
 	private Integer urgency;
 	private Integer sID;
 	private String description;
-	public Event(Date D, Integer U, String De) {
-		this.date = D;
-		this.urgency = U;
-		this.description = De;
-		
+	public Event(Integer parentID, Integer ID, String label, String description, Integer urgency, Integer date) {
+		super(parentID, ID, label);
+		this.description = description;
+		this.urgency = urgency;
+		this.date = new Date(date);
 	}
-	
+	@Override
 	public String toString() {
 		return this.getLabel();
 	}

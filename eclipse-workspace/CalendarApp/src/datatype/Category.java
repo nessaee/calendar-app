@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import db.setup.DB;
 
 public class Category extends Node{
-	private ArrayList<Event> events;
+	private ArrayList<Event> events = new ArrayList<Event>();
 
 	public Category() {
-		this.events = new ArrayList<Event>();
 	}
 	
-	
+	public Category(Integer parentID, Integer ID, String name) {
+		super(parentID, ID, name);
+	}
 	public void importExisting() { //q: existing eventlist? 
 		
 	}
@@ -20,6 +21,7 @@ public class Category extends Node{
 		events.add(e);
 		db.saveRow("Events", e.getRowData());
 	}
+	@Override
 	public String toString() {
 		return this.getLabel();
 	}

@@ -62,6 +62,9 @@ public class DB {
 	public ArrayList<ArrayList<Object>> loadSubset(int pID, String tablename){
 		return Edit.loadSubset(this.conn, pID, tablename);
 	}
+	public ArrayList<ArrayList<ArrayList<Object>>> loadAllSubsets(int pID){
+		return Edit.loadAllSubsets(this.conn, pID);
+	}
 	public ArrayList<ArrayList<Object>> loadTable(String tablename) {
 		return Edit.loadTable(this.conn, tablename);
 	}

@@ -3,13 +3,13 @@ package datatype;
 import java.util.ArrayList;
 
 public class Calendar {
-	private ArrayList<Node> elementList;
+	private ArrayList<Node> nodes;
 	private ArrayList<Set> sets;
 	private ArrayList<Event> events;
 	private ArrayList<Category> categories;
 	
 	public Calendar() {
-		elementList = new ArrayList<Node>();
+		nodes = new ArrayList<Node>();
 		sets = new ArrayList<Set>();
 		events = new ArrayList<Event>();
 		categories = new ArrayList<Category>();
@@ -28,13 +28,22 @@ public class Calendar {
 	public void addEvent(Event e) {
 		this.events.add(e);
 	}
-	public void setElementlist(ArrayList<Node> E) {
-		this.elementList = E;
+	public void addNode(Node n) {
+		this.nodes.add(n);
 	}
-	public ArrayList<Node> getElementList(){
-		return this.elementList;
+	public void parseNodes() {
+		for(Node n : nodes) {
+			if (n instanceof Event) {
+				this.events.add((Event) n);
+			}
+			else if (n instanceof Category) {
+				this.categories.add((Category) n);
+			}
+			else if (n instanceof Set) {
+				this.sets.add((Set) n);
+			}
+		}
 	}
-
 	public ArrayList<Set> getSetList() {
 		return sets;
 	}
@@ -49,10 +58,6 @@ public class Calendar {
 
 	public void setEventList(ArrayList<Event> eventList) {
 		this.events = eventList;
-	}
-
-	public void setElementList(ArrayList<Node> elementList) {
-		this.elementList = elementList;
 	}
 
 	public ArrayList<Category> getCategoryList() {

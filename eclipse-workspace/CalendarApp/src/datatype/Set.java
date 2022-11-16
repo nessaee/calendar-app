@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import db.setup.DB;
 
 public class Set extends Node{
-	private ArrayList<Category> categories;
-	private ArrayList<Event> events;
+	private ArrayList<Category> categories = new ArrayList<Category>();
+	private ArrayList<Event> events = new ArrayList<Event>();
 	public Set() {
-		categories = new ArrayList<Category>();
-		events = new ArrayList<Event>();
+		
+	}
+	
+	public Set(Integer parentID, Integer ID, String name) {
+		super(parentID, ID, name);
 	}
 	
 	public void importExisting() {
@@ -25,6 +28,7 @@ public class Set extends Node{
 		events.add(e);
 		db.saveRow("Events", e.getRowData());
 	}
+	@Override
 	public String toString() {
 		return this.getLabel();
 	}
