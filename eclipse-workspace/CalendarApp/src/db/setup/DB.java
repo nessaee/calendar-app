@@ -15,7 +15,7 @@ public class DB {
 	
 	public DB(String fileName) {
 		this.fileName = fileName;
-		this.conn = connect();
+		Connection conn = connect();
 		Create.createDatabase(conn);
 		// Initialize tables: CREATE TABLE IF NOT EXISTS <name> 
 		Create.createTable(conn, "Users"); 
@@ -23,6 +23,7 @@ public class DB {
 		Create.createTable(conn, "Categories");
 		Create.createTable(conn, "Events");
 		System.out.println(fileName + " has been initialized");
+		close();
 	}
 	
 	/* CONNECTION */
@@ -30,7 +31,7 @@ public class DB {
     	conn = null;
         try {  
             // db parameters  
-            String url = "jdbc:sqlite:src/db/files/" + fileName;  
+            String url = "jdbc:sqlite:src/db/files/" + this.fileName;  
             // create a connection to the database  
             conn = DriverManager.getConnection(url);    
             System.out.println("Connection to SQLite has been established.");  
@@ -75,8 +76,14 @@ public class DB {
 	public int checkUser(String username, String password) {
 		return Edit.checkUser(this.conn, username, password);
 	}
+	public void setConnection(Connection conn) {
+		this.conn = conn;
+	}
 	public Connection getConnection() {
 		return this.conn;
+	}
+	public int getNextID(String tablename) {
+		return Edit.getNextID(this.conn, tablename);
 	}
 
 
