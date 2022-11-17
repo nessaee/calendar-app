@@ -13,15 +13,16 @@ public class Driver {
 		Scanner input = new Scanner(System.in);
 	    DB db = new DB("Data.db");
 		LoginController loginController = new LoginController(input);
-	    MainController mainController;
+	    MainController mainController = new MainController(input);
 	    int userID;
-	    
+	    db.setConnection(db.connect());
 	    while(true) {
 	      userID = loginController.menu(db);
 	      if(userID == -1) break; // exit program 
-	      mainController = new MainController(userID, db, input);  // userID passed to MainController
+	      mainController.menu(userID, db);  // userID passed to MainController
 	    }
-	    input.close();
 	    db.close();
+	    System.out.println("Exiting program, Goodbye!");
+	    input.close();
 	}
 }

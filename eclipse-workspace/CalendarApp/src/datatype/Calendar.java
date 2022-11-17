@@ -6,10 +6,10 @@ import db.setup.DB;
 import db.setup.Edit;
 
 public class Calendar {
-	private ArrayList<Node> nodes = new ArrayList<Node>();
-	private ArrayList<Set> sets = new ArrayList<Set>();
-	private ArrayList<Event> events = new ArrayList<Event>();
-	private ArrayList<Category> categories = new ArrayList<Category>();
+	private ArrayList<Node> nodes;
+	private ArrayList<Set> sets;
+	private ArrayList<Event> events;
+	private ArrayList<Category> categories;
 	
 	public Calendar() {
 		nodes = new ArrayList<Node>();
@@ -18,20 +18,18 @@ public class Calendar {
 		categories = new ArrayList<Category>();
 	}
 	
-	public Calendar(int userID, DB db) {
-		System.out.println("Calendar now loading...");
-		load(userID, db);
-		this.parseNodes();
-		System.out.println("Load complete!");
-	}
-	
 //	public String toString() { //q: format for string?
 //	
 //	}
+	
+	public void update(int ID, DB db) {
+		System.out.println("Calendar updating...");
+		this.load(ID, db);
+		System.out.println("Update complete!");
+	}
 	public void load(int ID, DB db) {
-		int currentID;
+		int currentID = 0;
 		String tablename;
-		
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		for(ArrayList<ArrayList<Object>> table : db.loadAllSubsets(ID)) {
 			if(!table.isEmpty()) {
@@ -56,6 +54,7 @@ public class Calendar {
 				}
 			}
 		}
+		this.parseNodes();
 	}
 	
 	private Set loadSet(Object pID, Object ID, Object label) {
@@ -69,6 +68,7 @@ public class Calendar {
 	}
 	public void addSet(Set s) {
 		this.sets.add(s);
+		
 	}
 	public void addCategory(Category c) {
 		this.categories.add(c);

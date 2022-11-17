@@ -13,16 +13,17 @@ public class CalendarController {
 	private User user;
 	private DB db;
 	private Scanner input;
-	public CalendarController(User u, DB db, Scanner input) {
-		this.user = u;
+	public CalendarController(User user, DB db, Scanner input) {
+		this.user = user;
 		this.db = db;
 		this.input = input;
 	}
 	
 	public void menu() {
-		Scanner input = new Scanner(System.in);;
 		while(true) {
-			System.out.println("Welcome to the Calendar!");
+			System.out.println("Welcome to the Calendar user #" + String.valueOf(user.getUserID()) + "!");
+			this.user.updateCalendar(this.db);
+			// this.user.getCalendar().update(user.getUserID(), db);
 			this.printCalendar();
 			System.out.println("Enter 'Exit' to return to Main Menu:");
 			String option = input.nextLine();
@@ -33,19 +34,18 @@ public class CalendarController {
 				System.out.println("Invalid input, please try again");
 			}
 		}
-		
 	}
 	public void printCalendar() {
 		System.out.println("----------------------------SETS---------------------------");
-		for(Set s : user.getCalendar().getSetList()) {
+		for(Set s : this.user.getCalendar().getSetList()) {
 			System.out.println(s);
 		}
 		System.out.println("-------------------------CATEGORIES-----------------------");
-		for(Category c : user.getCalendar().getCategoryList()) {
+		for(Category c : this.user.getCalendar().getCategoryList()) {
 			System.out.println(c);
 		}
 		System.out.println("---------------------------EVENTS-------------------------");
-		for(Event e : user.getCalendar().getEventList()) {
+		for(Event e : this.user.getCalendar().getEventList()) {
 			System.out.println(e);
 		}
 	}

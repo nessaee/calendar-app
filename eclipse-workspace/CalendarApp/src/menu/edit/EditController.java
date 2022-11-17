@@ -21,7 +21,7 @@ public class EditController {
 	
 	public void menu() {
 		int parentID;
-		System.out.println("Welcome to the Calendar Editor!");
+		System.out.println("Welcome to the Calendar Editor! User " + String.valueOf(user.getUserID()) );
 		while(true) {
 			System.out.println("Would you like to exit or add a Set, Category, or Event? Enter 'Exit', 'Set', 'Category', or 'Event': ");
 			String option = input.nextLine();
@@ -92,29 +92,30 @@ public class EditController {
 	
 	public int inputUrgency() {
 		System.out.println("Please enter the event urgency (1-10):");
-		return this.input.nextInt();
+		int urgency = this.input.nextInt();
+		this.input.nextLine(); // clear \n buffer
+		return urgency;
 	}
 	
 	public int inputDate() {
 		System.out.println("Please enter the event date:");
-		return this.input.nextInt();
+		int date = this.input.nextInt();
+		this.input.nextLine(); // clear \n buffer
+		return date;
 	}
 	
 	/* ADD METHODS */
 	public void addSet(Set s) {
-		s.setParentID(user.getUserID());
 		user.getCalendar().addSet(s);
 		db.saveRow("Sets", s.getRowData());
 	}
 
 	public void addCategory(Category c) {
-		c.setParentID(user.getUserID());
 		user.getCalendar().addCategory(c);
 		db.saveRow("Categories", c.getRowData());
 	}
 	
 	public void addEvent(Event e) {
-		e.setParentID(user.getUserID());
 		user.getCalendar().addEvent(e);
 		db.saveRow("Events", e.getRowData());
 	}

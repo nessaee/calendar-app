@@ -43,7 +43,7 @@ public class Create {
                     + " ID integer PRIMARY KEY,\n"
                     + " label text NOT NULL,\n" 
                     + " description text NOT NULL,\n"
-                    + " urgency int NOT NULL\n"
+                    + " urgency int NOT NULL\n,"
                     + " date int NOT NULL\n"
                     + ");";  
 				break;
@@ -64,7 +64,7 @@ public class Create {
 	
     public static void createDatabase(Connection conn) {  
         try {  
-            //Connection conn = DriverManager.getConnection(url);  
+            //conn = DriverManager.getConnection(url);  
             if (conn != null) {  
                 DatabaseMetaData meta = conn.getMetaData();   
             }  

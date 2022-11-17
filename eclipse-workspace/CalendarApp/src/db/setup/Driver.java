@@ -17,6 +17,9 @@ public class Driver {
 			case "Categories":
 				db.saveRow(tablename, categoryData(i,startID));
 				break;
+			case "Events":
+				db.saveRow(tablename, eventData(i,startID));
+				break;
 			}
 		}
 		db.viewTable(tablename);
@@ -48,10 +51,25 @@ public class Driver {
 		return rowData;
 	}
 	
+	public static ArrayList<Object> eventData(int i, int startID) {
+		int index = i - startID;
+		ArrayList<Object> rowData = new ArrayList<Object>();
+		int pID = (i%2==0) ? 1001 : 1002;
+		rowData.add(pID); // parent ID
+		rowData.add(i); // event ID
+		rowData.add("event" + String.valueOf(index));
+		rowData.add("event_description" + String.valueOf(index));
+		rowData.add(10);
+		rowData.add(20221117);
+		return rowData;
+	}
+	
+	
 
 	
 	public static void main(String[] args) {
 		DB db = new DB("Data.db");
+		db.setConnection(db.connect());
 		int numObjects, startID;
 		// Add numUsers user table 
 		// rowData = {uID, username, password}
@@ -69,7 +87,8 @@ public class Driver {
 		startID = 101;
 		loadData(db, startID, numObjects, "Categories");
 		System.out.println("\n\n\n");
-
+		startID = 101;
+		loadData(db, startID, numObjects, "Events");
 		
 		System.out.println(db.loadSubset(1001, "Sets"));
 		
