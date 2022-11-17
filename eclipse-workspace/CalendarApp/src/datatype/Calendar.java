@@ -2,11 +2,14 @@ package datatype;
 
 import java.util.ArrayList;
 
+import db.setup.DB;
+import db.setup.Edit;
+
 public class Calendar {
-	private ArrayList<Node> nodes;
-	private ArrayList<Set> sets;
-	private ArrayList<Event> events;
-	private ArrayList<Category> categories;
+	private ArrayList<Node> nodes = new ArrayList<Node>();
+	private ArrayList<Set> sets = new ArrayList<Set>();
+	private ArrayList<Event> events = new ArrayList<Event>();
+	private ArrayList<Category> categories = new ArrayList<Category>();
 	
 	public Calendar() {
 		nodes = new ArrayList<Node>();
@@ -15,10 +18,56 @@ public class Calendar {
 		categories = new ArrayList<Category>();
 	}
 	
+	public Calendar(int userID, DB db) {
+		System.out.println("Calendar now loading...");
+		load(userID, db);
+		this.parseNodes();
+		System.out.println("Load complete!");
+	}
+	
 //	public String toString() { //q: format for string?
 //	
 //	}
+	public void load(int ID, DB db) {
+		int currentID;
+		String tablename;
+		
+		ArrayList<Node> nodes = new ArrayList<Node>();
+		System.out.println("loading db data...");
+		for(ArrayList<ArrayList<Object>> table : db.loadAllSubsets(ID)) {
+			if(!table.isEmpty()) {
+				tablename = Edit.getTableName( (int) table.get(0).get(1));
+				for(ArrayList<Object> row : table) {
+					if(!row.isEmpty()) {
+						currentID = (int) row.get(1);
+						switch(tablename) {
+							case "Sets":
+								this.nodes.add(loadSet(row.get(0), row.get(1), row.get(2)));
+								break;
+							case "Categories":
+								this.nodes.add(loadCategory(row.get(0), row.get(1), row.get(2)));
+								break;
+							case "Events":
+								this.nodes.add(loadEvent(row.get(0), row.get(1), row.get(2), row.get(3), row.get(4), row.get(5)));
+								break;
+							default: 
+								break;
+						}
+					}
+				}
+			}
+		}
+	}
 	
+	private Set loadSet(Object pID, Object ID, Object label) {
+		return new Set((int) pID, (int) ID, (String) label);
+	}
+	private Category loadCategory(Object pID, Object ID, Object label) {
+		return new Category((int) pID, (int) ID, (String) label);
+	}
+	private Event loadEvent(Object pID, Object ID, Object label, Object description, Object urgency, Object date) {
+		return new Event((int) pID, (int) ID, (String) label, (String) label, (int) urgency, (int) date);
+	}
 	public void addSet(Set s) {
 		this.sets.add(s);
 	}
@@ -28,9 +77,7 @@ public class Calendar {
 	public void addEvent(Event e) {
 		this.events.add(e);
 	}
-	public void addNode(Node n) {
-		this.nodes.add(n);
-	}
+
 	public void parseNodes() {
 		for(Node n : nodes) {
 			if (n instanceof Event) {

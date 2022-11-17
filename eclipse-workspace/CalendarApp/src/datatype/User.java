@@ -18,13 +18,13 @@ public class User {
 	
 	public User(int id, DB db) {
 		this.userID = id;
-		this.calendar = new Calendar();
-		populateCalendar(db);
+		this.calendar = new Calendar(id, db);
 	}
 
 	public int getUserID() {
 		return this.userID;
 	}
+	
 	public void setUserID(int id) {
 		this.userID = id;
 	}
@@ -35,11 +35,5 @@ public class User {
 
 	public void setCalendar(Calendar c) {
 		this.calendar = c;
-	}
-
-	// Method to use the the userID to populate the calendar with Sets, Categories, and Events from the database
-	private void populateCalendar(DB db) {
-		System.out.println("calendar created, now populating...");
-		CalendarController c = new CalendarController(this, db);
 	}
 }
