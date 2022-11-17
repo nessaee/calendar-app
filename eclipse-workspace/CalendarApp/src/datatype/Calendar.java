@@ -33,7 +33,6 @@ public class Calendar {
 		String tablename;
 		
 		ArrayList<Node> nodes = new ArrayList<Node>();
-		System.out.println("loading db data...");
 		for(ArrayList<ArrayList<Object>> table : db.loadAllSubsets(ID)) {
 			if(!table.isEmpty()) {
 				tablename = Edit.getTableName( (int) table.get(0).get(1));

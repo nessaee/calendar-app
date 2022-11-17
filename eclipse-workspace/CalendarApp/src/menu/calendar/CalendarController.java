@@ -2,65 +2,39 @@ package menu.calendar;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Scanner;
 
 import datatype.*;
 import db.setup.DB;
 import db.setup.Edit;
+import menu.main.User;
 
 public class CalendarController {
 	private User user;
 	private DB db;
-	public CalendarController(User u, DB db) {
+	private Scanner input;
+	public CalendarController(User u, DB db, Scanner input) {
 		this.user = u;
 		this.db = db;
-		System.out.println("calendar retrieved user ID, now loading...");
-		this.load(u.getUserID());
-		this.user.getCalendar().parseNodes();
-		System.out.println("calendar load complete!");
-		this.printCalendar();
+		this.input = input;
 	}
 	
-	public void load(int ID) {
-		int currentID;
-		String tablename;
-		
-		ArrayList<Node> nodes = new ArrayList<Node>();
-		System.out.println("loading db data...");
-		for(ArrayList<ArrayList<Object>> table : db.loadAllSubsets(ID)) {
-			if(!table.isEmpty()) {
-				tablename = Edit.getTableName( (int) table.get(0).get(1));
-				for(ArrayList<Object> row : table) {
-					if(!row.isEmpty()) {
-						currentID = (int) row.get(1);
-						switch(tablename) {
-							case "Sets":
-								user.getCalendar().addNode(loadSet(row.get(0), row.get(1), row.get(2)));
-								break;
-							case "Categories":
-								user.getCalendar().addNode(loadCategory(row.get(0), row.get(1), row.get(2)));
-								break;
-							case "Events":
-								user.getCalendar().addNode(loadEvent(row.get(0), row.get(1), row.get(2), row.get(3), row.get(4), row.get(5)));
-								break;
-							default: 
-								break;
-						}
-					}
-				}
+	public void menu() {
+		Scanner input = new Scanner(System.in);;
+		while(true) {
+			System.out.println("Welcome to the Calendar!");
+			this.printCalendar();
+			System.out.println("Enter 'Exit' to return to Main Menu:");
+			String option = input.nextLine();
+			if(option.equals("Exit")) {
+				break;
+			}
+			else {
+				System.out.println("Invalid input, please try again");
 			}
 		}
+		
 	}
-	
-	private Set loadSet(Object pID, Object ID, Object label) {
-		return new Set((int) pID, (int) ID, (String) label);
-	}
-	private Category loadCategory(Object pID, Object ID, Object label) {
-		return new Category((int) pID, (int) ID, (String) label);
-	}
-	private Event loadEvent(Object pID, Object ID, Object label, Object description, Object urgency, Object date) {
-		return new Event((int) pID, (int) ID, (String) label, (String) label, (int) urgency, (int) date);
-	}
-	
 	public void printCalendar() {
 		System.out.println("----------------------------SETS---------------------------");
 		for(Set s : user.getCalendar().getSetList()) {

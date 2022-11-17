@@ -44,6 +44,7 @@ public class Create {
                     + " label text NOT NULL,\n" 
                     + " description text NOT NULL,\n"
                     + " urgency int NOT NULL\n"
+                    + " date int NOT NULL\n"
                     + ");";  
 				break;
             default:
@@ -65,9 +66,7 @@ public class Create {
         try {  
             //Connection conn = DriverManager.getConnection(url);  
             if (conn != null) {  
-                DatabaseMetaData meta = conn.getMetaData();  
-                System.out.println("The driver name is " + meta.getDriverName());  
-                System.out.println("A new database has been created.");  
+                DatabaseMetaData meta = conn.getMetaData();   
             }  
    
         } catch (SQLException e) {  

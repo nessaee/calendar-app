@@ -10,7 +10,7 @@ import java.util.List;
 
    
 public class DB {  
-	private Connection conn;
+	private Connection conn = null;
 	private String fileName;
 	
 	public DB(String fileName) {
@@ -22,6 +22,7 @@ public class DB {
 		Create.createTable(conn, "Sets");
 		Create.createTable(conn, "Categories");
 		Create.createTable(conn, "Events");
+		System.out.println(fileName + " has been initialized");
 	}
 	
 	/* CONNECTION */

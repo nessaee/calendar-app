@@ -78,13 +78,20 @@ public class Edit {
 
 	
 	public static int checkUser(Connection conn, String username, String password) {
-		String sql = "SELECT * FROM Users WHERE username = " + username + " AND password = " + password;
+		username = username.replace(" ", "");
+		password = password.replace(" ", "");
+		String sql = "SELECT * FROM Users\n WHERE username = '" + username + "' AND password = '" + password + "'";
 		ResultSet rs = executeQuery(conn, sql);
 		try {
-			return rs.getInt("ID");
+			if(rs == null) {
+				return -1;
+			}
+			else {
+				return rs.getInt("ID");
+			}
 		} 
 		catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return -1;
 		}
 	}
@@ -100,8 +107,9 @@ public class Edit {
             while(rs.next()) {
             	tableData.add(getRowData(rs));
             }
-    	 } catch (SQLException e) {
-    		 	e.printStackTrace();
+    	 } 
+         catch (SQLException e) {
+        	 e.printStackTrace();
     	 }  	
          return tableData;
 	}
@@ -188,8 +196,10 @@ public class Edit {
             
         try {
            // loop through table rows
-           while(rs.next()) {
-           	subsetData.add(getRowData(rs));
+           if(rs != null) {
+	           while(rs.next()) {
+	           	subsetData.add(getRowData(rs));
+	           }
            }
    	 	} catch (SQLException e) {
    		 	e.printStackTrace();
