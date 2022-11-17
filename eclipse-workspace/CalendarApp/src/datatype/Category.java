@@ -21,10 +21,5 @@ public class Category extends Node{
 		events.add(e);
 		db.saveRow("Events", e.getRowData());
 	}
-	@Override
-	public String toString() {
-		return this.getLabel();
-	}
-	
 	//Category: (uID, sID, cID, label)
 }

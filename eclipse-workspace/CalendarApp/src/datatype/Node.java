@@ -36,7 +36,10 @@ public abstract class Node {
 		this.parentID = parentID;
 	}
 	public String toString() {
-		return "";
+		String id = String.format("%6s", String.valueOf(this.getID()) + "|");
+		String label = String.format("%10s", this.getLabel() + "|");
+		String text = "|" + id + label;
+		return text;
 	}
 	public ArrayList<Object> getRowData(){
 		ArrayList<Object> rowData = new ArrayList<Object>();

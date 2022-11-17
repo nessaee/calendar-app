@@ -15,45 +15,49 @@ public class LoginController {
 	}
 	
 	public int menu(DB db) {
-		String select = "Continue";
-		
+		int option = -1;
+		String buffer;
 		while(true) {		// Loops so long as the user has not entered exit
-			System.out.println("Welcome to the Login menu, would you like to create a user, or login to an existing account");
-			System.out.println("Enter 'Create' to create a new user, 'Login' to login to an existing account, or 'Exit' to exit the program");
-			select = input.nextLine();
+			System.out.println("-------------------------------------------------------------\n");
+			System.out.println("Welcome to the Login menu!");
+			System.out.println("(0) Exit Application\n(1) Login \n(2) Register\nEnter the option you would like to choose: ");
+			option = input.nextInt();
+			buffer = input.nextLine();
 			
-			if(select.equals("Create")) {	// If the Actor chooses to create a User, the createUser method is called
-				createUser(db);
-			}
-			
-			else if(select.equals("Login")) {	// If the Actor chooses to login to an existing account
-				this.userID = loginUser(db);	// a Login object is created, then checked for validity
-				if(this.userID != -1) {	// If the login is valid, then a user object is created and returned. Will break into another smaller checkLogin function
-					System.out.println("Successfully logged in! Moving to the Main Menu");
+			switch(option) {
+				case 0: // Exit 
+					return -1;
+					
+				case 1: // Login
+					this.userID = loginUser(db);
+					if(this.userID != -1) {	// Valid Login 
+						System.out.println("Successfully logged in!");
+						return this.userID;
+					}
+					else {	// Invalid Login 
+						System.out.println("Invalid login, returning to the Login menu");
+					}
 					break;
-				}
-				else {	// If the login is invalid, then the Actor is returned to the login menu
-					System.out.println("Invalid login, returning to the Login menu");
-				}
+					
+				case 2: // Register
+					createUser(db);
+					break;
+					
+				default:
+					System.out.println("Invalid input, please try again");
+					break;		
 			}
-			else if(select.equals("Exit")) {	// If the user chooses to exit, the default User will be returned which will give an id of -1
-				break;
-			}
-			else {
-				System.out.println("Invalid input, please try again");
-			}
-		}	
-		return this.userID;
+		}
 	}
 	
 	private void createUser(DB db) {
-		String info[] = inputInformation("Create");
+		String info[] = inputInformation("Register");
 		if(db.checkUser(info[0], info[1]) == -1) {	// If the User does not already exist, a new user will be created
 			Login login = new Login(db, "Create", info[0], info[1]);	// through a login object and the helper method addUserToDatabase
 			addUserToDatabase(login, db);
 		}
 		else {
-			System.out.println("This user already exists, please try 'Login' instead of 'Create'. Returning to the Login menu");
+			System.out.println("This user already exists, please try 'Login' instead of 'Register'");
 		}
 	}
 	
@@ -84,7 +88,7 @@ public class LoginController {
 				continue;
 			}
 			// Gets password confirmation input and checks if it matches password
-			if(command.equals("Create")) {
+			if(command.equals("Register")) {
 				String passwordConfirm = "";
 				System.out.print("Confirm password: ");
 				passwordConfirm = input.nextLine();
@@ -93,6 +97,7 @@ public class LoginController {
 					continue;
 				}
 			}
+			
 			break;
 		}
 		String[] returnInfo = {username, password};

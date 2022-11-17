@@ -22,6 +22,7 @@ public class DB {
 		Create.createTable(conn, "Sets");
 		Create.createTable(conn, "Categories");
 		Create.createTable(conn, "Events");
+		Create.createTable(conn, "IDs");
 		System.out.println(fileName + " has been initialized");
 		close();
 	}
@@ -55,8 +56,8 @@ public class DB {
 	public void saveRow(String tablename, ArrayList<Object> rowData) {
 		Edit.saveRow(this.conn, tablename, rowData);
 	}
-	public void removeRow(String tablename, int ID) {
-		Edit.deleteRow(this.conn, tablename,  ID);
+	public void removeRow(int ID) {
+		Edit.deleteRow(this.conn,  ID);
 	}
 	public ArrayList<Object> loadRow(String tablename, int ID) {
 		return Edit.loadRow(this.conn, tablename, ID);

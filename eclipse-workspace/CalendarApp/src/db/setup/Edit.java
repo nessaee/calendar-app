@@ -7,7 +7,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Edit {
 	public static void saveRow(Connection conn, String tablename, ArrayList<Object> rowData) {  
@@ -27,6 +26,9 @@ public class Edit {
 			case "Events":
 				sql += "(pID, ID, label, description, urgency, date) VALUES(?,?,?,?,?,?)";
 				break;
+			case "IDs":
+				sql += "(type, id) VALUES(?,?)";
+				break;
 		}
 		// ask about templates 
 		try {
@@ -40,6 +42,7 @@ public class Edit {
 				}
 				i++;
 			}
+			System.out.println("Saving Data...");
 			pstmt.executeUpdate(); 
 		} 
 		catch (SQLException e) {  
@@ -54,17 +57,14 @@ public class Edit {
 		return getRowData(rs);
 	}
 	
-	public static void deleteRow(Connection conn, String tablename, int ID) {  
-		String sql = "DELETE FROM " + tablename + "\n WHERE ID = " + String.valueOf(ID);  
+	public static void deleteRow(Connection conn, int ID) {  
+		String sql = "DELETE FROM " + getTableName(ID) + "\n WHERE ID = " + String.valueOf(ID);  
 		executeUpdate(conn, sql);
-		deleteSubset(conn, tablename, ID);
+		deleteSubset(conn, getTableName(ID), ID);
 	}
 	
 	public static void deleteSubset(Connection conn, String tablename, int ID) {
 		String sql;
-		String next; 
-		
-		System.out.println("Next table = " + getNext(tablename));
 		if(getNext(tablename).equals("None")) {
 			return; 
 		}
@@ -159,6 +159,17 @@ public class Edit {
     	return rs;
     }
     
+    public static void initializeIDs(Connection conn, String sql) {
+    	PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} 
+		catch (SQLException e) {
+			//e.printStackTrace();
+		} 
+    }
+    
     public static void executeUpdate(Connection conn, String sql) {
     	PreparedStatement pstmt;
 		try {
@@ -209,9 +220,9 @@ public class Edit {
     
     public static ArrayList<ArrayList<ArrayList<Object>>> loadAllSubsets(Connection conn, int pID){
     	ArrayList<ArrayList<ArrayList<Object>>> subsetData = new ArrayList<>();
-    	String tablename = getTableName(pID);
-    	while( !getNext(tablename).equals("None")) {
-        	subsetData.add(loadSubset(conn, pID, getNext(tablename)));
+    	String tablename = getNext(getTableName(pID));
+    	while( !tablename.equals("None")) {
+        	subsetData.add(loadSubset(conn, pID, tablename));
         	tablename = getNext(tablename);
         }
         return subsetData;
@@ -232,21 +243,28 @@ public class Edit {
     }
     
     public static String getTableName(int ID) {
-    	if(ID <= 0) {
-    		return "Invalid";
-    	}
-    	else if(ID <= 100) {
-    		return "Sets";
-    	}
-    	else if(ID <= 500) {
-    		return "Categories";
-    	}
-    	else if(ID <= 1000) {
-    		return "Events";
-    	}
-    	else {
-    		return "Users";
-    	}
+    	if(ID <= 0) return "Invalid";
+    	else if(ID <= 100) return "Sets";
+    	else if(ID <= 500) return "Categories"; 
+    	else if(ID <= 1000) return "Events";
+    	else return "Users";
+    }
+    // idType = set, category, or event 
+    public static int getNextID(Connection conn, String idType) {
+    	
+    	String sql = "SELECT * FROM IDs \n WHERE type = '" + idType + "'";
+		ResultSet rs = executeQuery(conn, sql);
+		int id = 0;
+		try {
+			id = rs.getInt("id");
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		sql = "UPDATE IDs SET id = " + String.valueOf(id+1) + " WHERE type = '" + idType + "'";
+		executeUpdate(conn, sql);
+		
+		return id;
     }
     
 	

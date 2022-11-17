@@ -28,10 +28,5 @@ public class Set extends Node{
 		events.add(e);
 		db.saveRow("Events", e.getRowData());
 	}
-	@Override
-	public String toString() {
-		return this.getLabel();
-	}
-	
 	//Set: (uID, sID, label) 
 }

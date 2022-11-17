@@ -9,5 +9,4 @@ public class datatypeDriver {
 		DB db = new DB("Data.db");
 		User u1 = new User(1001, db);
 	}
-
 }

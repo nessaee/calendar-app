@@ -14,10 +14,6 @@ public class Event extends Node{
 		this.urgency = urgency;
 		this.date = new Date(date);
 	}
-	@Override
-	public String toString() {
-		return this.getLabel();
-	}
 
 	public Date getDate() {
 		return date;
@@ -56,7 +52,7 @@ public class Event extends Node{
 	
 	@Override 
 	public ArrayList<Object> getRowData() {
-		//Event: (uID, sID, cID, eID, label, description, urgency, date) 
+		//Event: (pID, ID, label, description, urgency, date) 
 		ArrayList<Object> rowData = new ArrayList<Object>();
 		rowData.add(this.getParentID());
 		rowData.add(this.getID());
@@ -65,6 +61,18 @@ public class Event extends Node{
 		rowData.add(this.urgency);
 		rowData.add(this.date.toInt());
 		return rowData;	
+	}
+	
+	@Override 
+	public String toString() {
+		String id = String.format("%6s", String.valueOf(this.getID()) + "|");
+		String label = String.format("%10s", this.getLabel() + "|");
+		String description = String.format("%20s", this.description + "|");
+		String urgency = String.format("%10s", String.valueOf(this.urgency) + "|");
+		String date = String.format("%14s", this.date.toString() + "|");
+		String text = "|" + id + label + description + urgency + date ;
+		
+		return text;
 	}
 
 }

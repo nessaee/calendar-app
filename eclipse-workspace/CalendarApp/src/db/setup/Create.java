@@ -47,6 +47,18 @@ public class Create {
                     + " date int NOT NULL\n"
                     + ");";  
 				break;
+			case "IDs":
+				// SQL statement for creating a new events table   
+                sql = "CREATE TABLE IF NOT EXISTS IDs (\n"  
+                    + " type text PRIMARY KEY,\n"
+                    + " id integer NOT NULL\n"
+                    + ");\n";  
+                Edit.executeUpdate(conn, sql);
+                sql =  " INSERT INTO IDs VALUES ('set', 1);\n";
+                sql += " INSERT INTO IDs VALUES ('category', 101);\n";
+                sql += " INSERT INTO IDs VALUES ('event', 501);\n";
+                Edit.initializeIDs(conn, sql);
+				return;
             default:
                 sql = "";
                 break;
@@ -59,7 +71,7 @@ public class Create {
         } 
         catch (SQLException e) {  
             System.out.println(e.getMessage());  
-        }  
+        }
     }  
 	
     public static void createDatabase(Connection conn) {  

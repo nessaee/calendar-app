@@ -19,14 +19,10 @@ public class User {
 	public User(int id, DB db) {
 		this.userID = id;
 		this.calendar = new Calendar();
-		this.calendar.update(id, db);
 	}
 	
 	public void updateCalendar(DB db) {
-		System.out.println("Calendar updating...");
 		this.calendar.load(this.userID, db);
-		this.calendar.parseNodes();
-		System.out.println("Update complete!");
 	}
 
 	public int getUserID() {

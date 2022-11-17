@@ -23,17 +23,16 @@ public class Calendar {
 //	}
 	
 	public void update(int ID, DB db) {
-		System.out.println("Calendar updating...");
 		this.load(ID, db);
-		System.out.println("Update complete!");
 	}
+	
 	public void load(int ID, DB db) {
 		int currentID = 0;
 		String tablename;
-		ArrayList<Node> nodes = new ArrayList<Node>();
+		this.clear();
 		for(ArrayList<ArrayList<Object>> table : db.loadAllSubsets(ID)) {
 			if(!table.isEmpty()) {
-				tablename = Edit.getTableName( (int) table.get(0).get(1));
+				tablename = Edit.getTableName((int) table.get(0).get(1));
 				for(ArrayList<Object> row : table) {
 					if(!row.isEmpty()) {
 						currentID = (int) row.get(1);
@@ -57,6 +56,48 @@ public class Calendar {
 		this.parseNodes();
 	}
 	
+	public void printCalendar() {
+		String id = String.format("%6s", "ID|");
+		String label = String.format("%10s", "Label|");
+		String description = String.format("%20s", "Description|");
+		String urgency = String.format("%10s", "Urgency|");
+		String date = String.format("%14s", "Date|");
+		
+		/* PRINT SETS */
+		System.out.println("-----------------");
+		System.out.println("|-----SETS------|");
+		System.out.println("-----------------");
+		System.out.println("|" + id + label);
+		System.out.println("-----------------");
+		for(Set s : sets) {
+			System.out.println(s);
+		}
+		System.out.println("-----------------\n\n");
+		
+		
+		/* PRINT CATEGORIES */
+		System.out.println("-----------------");
+		System.out.println("|--CATEGORIES---|");
+		System.out.println("-----------------");
+		System.out.println("|" + id + label);
+		System.out.println("-----------------");
+		for(Category c : categories) {
+			System.out.println(c);
+		}
+		System.out.println("-----------------\n\n");
+		
+		/* PRINT EVENTS */
+		System.out.println("-------------------------------------------------------------");
+		System.out.println("|---------------------------EVENTS--------------------------|");
+		System.out.println("-------------------------------------------------------------");
+		System.out.println("|" + id + label + description + urgency + date);
+		System.out.println("-------------------------------------------------------------");
+		for(Event e : events) {
+			System.out.println(e);
+		}
+		System.out.println("-------------------------------------------------------------\n\n");
+	}
+	
 	private Set loadSet(Object pID, Object ID, Object label) {
 		return new Set((int) pID, (int) ID, (String) label);
 	}
@@ -68,7 +109,6 @@ public class Calendar {
 	}
 	public void addSet(Set s) {
 		this.sets.add(s);
-		
 	}
 	public void addCategory(Category c) {
 		this.categories.add(c);
@@ -89,6 +129,13 @@ public class Calendar {
 				this.sets.add((Set) n);
 			}
 		}
+	}
+	
+	public void clear() {
+		this.nodes.clear();
+		this.sets.clear();
+		this.categories.clear();
+		this.events.clear();
 	}
 	public ArrayList<Set> getSetList() {
 		return sets;

@@ -21,54 +21,103 @@ public class EditController {
 	
 	public void menu() {
 		int parentID;
-		System.out.println("Welcome to the Calendar Editor! User " + String.valueOf(user.getUserID()) );
+		int option = -1;
+		String buffer;
+		System.out.println("-------------------------------------------------------------\n");
+		System.out.println("Welcome to the Calendar Editor!" );
 		while(true) {
-			System.out.println("Would you like to exit or add a Set, Category, or Event? Enter 'Exit', 'Set', 'Category', or 'Event': ");
-			String option = input.nextLine();
-			if(option.equals("Exit")) {
-				break;
-			}
-			else if(option.equals("Set")) {
-				parentID = user.getUserID();
-				addSet(createSet(parentID));
-				System.out.println("Set successfully added!");
-			}
-			else if(option.equals("Category")) {
-				// FIXME: Currently assuming parentID is userID
-				parentID = user.getUserID();
-				addCategory(createCategory(parentID));
-				System.out.println("Category successfully added!");
-			}
-			else if(option.equals("Event")) {
-				// FIXME: Currently assuming parentID is userID
-				parentID = user.getUserID();
-				addEvent(createEvent(parentID));
-				System.out.println("Event successfully added!");
-			}
-			else {
-				System.out.println("Invalid input, please try again");
+			
+			System.out.println("(0) Exit\n(1) Add data\n(2) Remove data\nEnter the option you would like to choose: ");
+			
+			option = input.nextInt();
+			buffer = input.nextLine();
+			switch(option) {
+				case 0: 
+					return;
+				case 1:
+					addMenu();
+					break;
+				case 2:
+					removeMenu();
+					break;
+				default:
+					System.out.println("Invalid input, please try again");
+					break;
 			}
 		}
 	}
 	
-	public Set createSet(int parentID) {
+	public void addMenu() {
+		int option = -1;
+		String buffer;
+		System.out.println("(0) Exit\n(1) Add Event\n(2) Add Category\n(3) Add Set\nEnter option: ");
+		option = input.nextInt();
+		buffer = input.nextLine();
+		switch(option) {
+			case 0:
+				return;
+			case 1:
+				// FIXME: Currently assuming parentID is userID
+				addEvent(createEvent(db, user.getUserID()));
+				System.out.println("Event successfully added!");
+				break;
+			case 2:
+				// FIXME: Currently assuming parentID is userID
+				addCategory(createCategory(db, user.getUserID()));
+				System.out.println("Category successfully added!");
+				break;
+			case 3:
+				// FIXME: Currently assuming parentID is userID
+				addSet(createSet(db, user.getUserID()));
+				System.out.println("Set successfully added!");
+				break;
+			default:
+				System.out.println("Invalid input, please try again");
+				break;
+				
+		}
+	}
+	
+	public void removeMenu() {
+		int option = -1;
+		String buffer;
+		System.out.println("(0) Exit\n(1) Remove Object\nEnter option: ");
+		option = input.nextInt();
+		buffer = input.nextLine();
+		switch(option) {
+		case 0:
+			return;
+		case 1:
+			user.getCalendar().update(user.getUserID(), db);
+			user.getCalendar().printCalendar();
+			System.out.println("Please enter ID of object to remove: ");
+			option = input.nextInt();
+			buffer = input.nextLine();
+			db.removeRow(option);
+			break;
+		default:
+			System.out.println("Invalid input, please try again");
+			break;
+		}
+	}
+	public Set createSet(DB db, int parentID) {
 		String name = inputName("set");
-		int id = generateID();
+		int id = generateID(db, "set");
 		Set set = new Set(parentID, id, name);
 		return set;
 	}
 	
-	public Category createCategory(int parentID) {
+	public Category createCategory(DB db, int parentID) {
 		String name = inputName("category");
-		int id = generateID();
+		int id = generateID(db, "category");
 		Category category = new Category(parentID, id, name);
 		
 		return category;
 	}
 	
-	public Event createEvent(int parentID) {
+	public Event createEvent(DB db, int parentID) {
 		String name = inputName("event");
-		int id = generateID();
+		int id = generateID(db, "event");
 		String description = inputDescription();
 		int urgency = inputUrgency();
 		int date = inputDate();
@@ -76,8 +125,8 @@ public class EditController {
 		return event;
 	}
 
-	public int generateID() {
-		return 0;
+	public int generateID(DB db, String idType) {
+		return db.getNextID(idType);
 	}
 	
 	/* INPUT METHODS */
@@ -119,22 +168,6 @@ public class EditController {
 		user.getCalendar().addEvent(e);
 		db.saveRow("Events", e.getRowData());
 	}
-	
-	/* REMOVE METHODS */
-	public void removeSet(Set s) {
-		user.getCalendar().removeSet(s);
-		db.removeRow("Sets", s.getID());
-	}
-	
-	public void removeCategory(Category c) {
-		//q: will removing category also remove events? now it will ;)
-		user.getCalendar().removeCategory(c);
-		db.removeRow("Categories", c.getID());		
-	}
-	
-	public void removeEvent(Event e) {
-		user.getCalendar().removeEvent(e);
-		db.removeRow("Events", e.getID());
-	}
+
 	
 }

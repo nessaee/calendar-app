@@ -19,25 +19,28 @@ public class MainController {
 		this.user = new User(userID, db);
 		this.editController = new EditController(this.user, db, input);
 		this.calendarController = new CalendarController(this.user, db, input);
-		String option = "";
+		int option = -1;
+		String buffer = "";
 		while(true) {
+			System.out.println("-------------------------------------------------------------\n");
 			System.out.println("Welcome to the Main Menu!");
-			System.out.println("Would you like to Exit or View/Edit your Calendar? Enter 'Exit', 'View', or 'Edit':");
-			option = input.nextLine();
-			if(option.equals("View")) {
-				// Update calendar
-				this.user.updateCalendar(db);
+			System.out.println("(0) Logout\n(1) View Calendar\n(2) Edit Calendar\nEnter the option you would like to choose: ");
+			option = input.nextInt();
+			buffer = input.nextLine();
+			switch(option) {
+			case 0:
+				return;
+			case 1:
 				this.calendarController.menu();
-			}
-			else if(option.equals("Edit")) {
+				break;
+			case 2:
 				this.editController.menu();
-			}
-			else if(option.equals("Exit")) {
+				break;
+			default:
+				System.out.println("Invalid input, please try again");
 				break;
 			}
-			else {
-				System.out.println("Invalid input, please try again");
-			}
+			
 		}
 	
 	}
