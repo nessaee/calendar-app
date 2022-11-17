@@ -4,16 +4,25 @@ import datatype.*;
 import db.setup.DB;
 import menu.main.User;
 
+/*
+ * This class controls the display of the calendar. It ensures the calendar is updated, and displays it.
+ */
 public class CalendarController {
+	
+	// Declaration of fields
 	private User user;
 	private DB db;
 	private Scanner input;
+	
+	// Constructor that takes in a User, database, and Scanner
 	public CalendarController(User user, DB db, Scanner input) {
 		this.user = user;
 		this.db = db;
 		this.input = input;
 	}
 	
+	// Method to display the menu, and allow the user to select what they would like to happen. It displays the user's 
+	// calendar, and gives the option to exit.
 	public void menu() {
 		while(true) {
 			System.out.println("-------------------------------------------------------------\n");

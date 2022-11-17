@@ -4,9 +4,14 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;  
 import java.sql.Statement;  
-   
+  
+/*
+ * This class creates the databse upon initialization. It makes the database in the necessary format
+ * to have it store the Calendar information.
+ */
 public class Create {  
    
+	// Static method that takes in a Connection and String as parameters to create the database table formatting.
 	public static void createTable(Connection conn, String tablename) {  
         // SQLite connection string  
     
@@ -74,6 +79,7 @@ public class Create {
         }
     }  
 	
+	// Static method that creates the databse from a Connection.
     public static void createDatabase(Connection conn) {  
         try {  
             //conn = DriverManager.getConnection(url);  

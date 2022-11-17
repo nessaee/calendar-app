@@ -1,31 +1,37 @@
 package datatype;
 
 import java.util.ArrayList;
-
 import db.setup.DB;
 import db.setup.Edit;
 
+/* This is a Calendar class used to hold User's sets, categories, and events. It populates with values from the database
+ * upon construction, and is used to display the calendar to the User. Any time a set, category, or event is added or removed
+ * it is updated both in the database, and the Calendar.
+ */
 public class Calendar {
 	private ArrayList<Node> nodes;
 	private ArrayList<Set> sets;
 	private ArrayList<Event> events;
 	private ArrayList<Category> categories;
 	
+	/* This is a Calendar class used to hold User's sets, categories, and events. It populates with values from the database
+	 * upon construction, and is used to display the calendar to the User. Any time a set, category, or event is added or removed
+	 * it is updated both in the database, and the Calendar.
+	 */
 	public Calendar() {
 		nodes = new ArrayList<Node>();
 		sets = new ArrayList<Set>();
 		events = new ArrayList<Event>();
 		categories = new ArrayList<Category>();
 	}
-	
-//	public String toString() { //q: format for string?
-//	
-//	}
-	
+
+	// Method used to populate the calendar with values from the database
 	public void update(int ID, DB db) {
 		this.load(ID, db);
 	}
 	
+	// Helper method for the update method. This takes in an ID and database as parameters, and
+	// adds all associated Sets, Events, and Categories from the database to the Calendar
 	public void load(int ID, DB db) {
 		int currentID = 0;
 		String tablename;
@@ -56,6 +62,7 @@ public class Calendar {
 		this.parseNodes();
 	}
 	
+	// Method to print all Sets, Categories, and Events in the User's calendar
 	public void printCalendar() {
 		String id = String.format("%6s", "ID|");
 		String label = String.format("%10s", "Label|");
@@ -98,25 +105,33 @@ public class Calendar {
 		System.out.println("-------------------------------------------------------------\n\n");
 	}
 	
+	// Method used to create a Set object from a given parent id, personal id, and label
 	private Set loadSet(Object pID, Object ID, Object label) {
 		return new Set((int) pID, (int) ID, (String) label);
 	}
+	// Method used to create a Category object from a given parent id, personal id, and label
 	private Category loadCategory(Object pID, Object ID, Object label) {
 		return new Category((int) pID, (int) ID, (String) label);
 	}
+	// Method used to create an Event object from a given parent id, personal id, label, description, urgency, and date
 	private Event loadEvent(Object pID, Object ID, Object label, Object description, Object urgency, Object date) {
 		return new Event((int) pID, (int) ID, (String) label, (String) label, (int) urgency, (int) date);
 	}
+	// Method used to add a Set object to the sets field of the calendar
 	public void addSet(Set s) {
 		this.sets.add(s);
 	}
+	// Method used to add a Category object to the categories field of the calendar
 	public void addCategory(Category c) {
 		this.categories.add(c);
 	}
+	// Method used to add an Event object to the events field of the calendar
 	public void addEvent(Event e) {
 		this.events.add(e);
 	}
-
+	
+	// Helper method used to transfer all nodes in the nodes field of the calendar to their respective sets, events, or categories
+	// field in the calendar
 	public void parseNodes() {
 		for(Node n : nodes) {
 			if (n instanceof Event) {
@@ -131,44 +146,43 @@ public class Calendar {
 		}
 	}
 	
+	// Methodd used to clear all fields of the calendar
 	public void clear() {
 		this.nodes.clear();
 		this.sets.clear();
 		this.categories.clear();
 		this.events.clear();
 	}
+	
+	// GETTERS AND SETTERS
 	public ArrayList<Set> getSetList() {
 		return sets;
 	}
-
 	public void setSetList(ArrayList<Set> setList) {
 		this.sets = setList;
 	}
-
 	public ArrayList<Event> getEventList() {
 		return events;
 	}
-
 	public void setEventList(ArrayList<Event> eventList) {
 		this.events = eventList;
 	}
-
 	public ArrayList<Category> getCategoryList() {
 		return categories;
 	}
-
 	public void setCategoryList(ArrayList<Category> categoryList) {
 		this.categories = categoryList;
 	}
-
+	
+	// Method used to remove a Set object from the sets field of the calendar
 	public void removeSet(Set s) {
 		this.sets.remove(s);
 	}
-
+	// Method used to remove a Category object from the categories field of the calendar
 	public void removeCategory(Category c) {
 		this.categories.remove(c);
 	}
-
+	// Method used to remove an Event object from the events field of the calendar
 	public void removeEvent(Event e) {
 		this.events.remove(e);
 	}

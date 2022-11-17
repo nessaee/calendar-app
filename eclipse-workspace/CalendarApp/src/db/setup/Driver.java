@@ -3,6 +3,9 @@ package db.setup;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * This is a Driver class used to test the database functionality.
+ */
 public class Driver {
 	public static void loadData(DB db, int startID, int numObjects, String tablename) {
 		ArrayList<Object> rowData = new ArrayList<Object>();

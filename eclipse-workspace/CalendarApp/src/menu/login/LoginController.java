@@ -5,15 +5,23 @@ import java.util.Scanner;
 
 import db.setup.DB;
 
+/*
+ * This is a class that controls the user logging in. It uses user input to decide if a user is logging in, or being
+ * created, and utilizes the Login class to accomplish these tasks.
+ */
 public class LoginController {
+	// Declaration of fields
 	private int userID;
 	Scanner input;
 	
+	// Constructor that takes in a Scanner object
 	public LoginController(Scanner input) {
 		this.input = input;
 		this.userID = -1;
 	}
 	
+	// Method to create a menu, and take user input. It allows the user to select whether they would like to create a new User,
+	// or login to an existing account. It then executes these commands.
 	public int menu(DB db) {
 		int option = -1;
 		String buffer;
@@ -50,6 +58,7 @@ public class LoginController {
 		}
 	}
 	
+	// Method to create a new User
 	private void createUser(DB db) {
 		String info[] = inputInformation("Register");
 		if(db.checkUser(info[0], info[1]) == -1) {	// If the User does not already exist, a new user will be created
@@ -61,6 +70,7 @@ public class LoginController {
 		}
 	}
 	
+	// Method to login as an existing user
 	private int loginUser(DB db) {
 		String info[] = inputInformation("Login");
 		Login login = new Login(db, "Login", info[0], info[1]);
@@ -68,6 +78,7 @@ public class LoginController {
 		return login.getUserID();
 	}
 	
+	// Method to input username and password information
 	private String[] inputInformation(String command) {
 		String username = "";
 		String password = "";
@@ -104,6 +115,7 @@ public class LoginController {
 		return returnInfo;
 	}
 
+	// Method to add a User's information to the database
 	private void addUserToDatabase(Login login, DB db) {
 		ArrayList<Object> rowData = new ArrayList<>();
 		rowData.add(login.getUserID());

@@ -8,7 +8,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/*
+ * This is an Edit class that contains methods to interact with the database. It is used to allow the user to 
+ * interact with the database.
+ */
 public class Edit {
+	// Method to save a row into the database
 	public static void saveRow(Connection conn, String tablename, ArrayList<Object> rowData) {  
 		String sql;
 		sql = "INSERT OR IGNORE INTO " + tablename;
@@ -50,19 +55,21 @@ public class Edit {
         }  
     }  
 	
-	// FIXME: add exception for invalid key
+	// Method to load a row from the database
 	public static ArrayList<Object> loadRow(Connection conn, String tablename, int ID){
 		String sql = "SELECT * FROM " + tablename + "\n WHERE ID = " + String.valueOf(ID); 
 		ResultSet rs = executeQuery(conn, sql);
 		return getRowData(rs);
 	}
 	
+	// Method to delete a row from the database
 	public static void deleteRow(Connection conn, int ID) {  
 		String sql = "DELETE FROM " + getTableName(ID) + "\n WHERE ID = " + String.valueOf(ID);  
 		executeUpdate(conn, sql);
 		deleteSubset(conn, getTableName(ID), ID);
 	}
 	
+	// Method to delete a subset from the database
 	public static void deleteSubset(Connection conn, String tablename, int ID) {
 		String sql;
 		if(getNext(tablename).equals("None")) {
@@ -75,8 +82,7 @@ public class Edit {
 		}
 	}
 		
-
-	
+	// Method to check if a user exists in the database. If they do their userID is returned
 	public static int checkUser(Connection conn, String username, String password) {
 		username = username.replace(" ", "");
 		password = password.replace(" ", "");
@@ -96,7 +102,7 @@ public class Edit {
 		}
 	}
 
-
+	// Method to load a table from the database
 	public static ArrayList<ArrayList<Object>> loadTable(Connection conn, String tablename) {
 		 ArrayList<ArrayList<Object>> tableData = new ArrayList<>();
     	 String sql = "SELECT * FROM " + tablename;     
@@ -114,7 +120,7 @@ public class Edit {
          return tableData;
 	}
     
-	
+	// Method to view a table from the database
 	public static void viewTable(Connection conn, String tablename){  
         String sql = "SELECT * FROM " + tablename;     
         ResultSet rs = executeQuery(conn, sql);
@@ -146,6 +152,7 @@ public class Edit {
 		}  
     } 
     
+	// Method to execute a Query in the database
     public static ResultSet executeQuery(Connection conn, String sql) {
     	Statement stmt;
     	ResultSet rs = null;
@@ -159,6 +166,7 @@ public class Edit {
     	return rs;
     }
     
+    // Method to initialize IDs in the database
     public static void initializeIDs(Connection conn, String sql) {
     	PreparedStatement pstmt;
 		try {
@@ -170,6 +178,7 @@ public class Edit {
 		} 
     }
     
+    // Method to execute an update in the database
     public static void executeUpdate(Connection conn, String sql) {
     	PreparedStatement pstmt;
 		try {
@@ -181,6 +190,7 @@ public class Edit {
 		} 
     }
 
+    // Method to return row data from the database
     private static ArrayList<Object> getRowData(ResultSet rs) {
 		ArrayList<Object> rowData = new ArrayList<Object>();
 		String columnLabel;
@@ -199,6 +209,7 @@ public class Edit {
 	     return rowData;
 	}
     
+    // Method to load a subset of data from the database
     public static ArrayList<ArrayList<Object>> loadSubset(Connection conn, int pID, String tablename){
     	ArrayList<ArrayList<Object>> subsetData = new ArrayList<>();
     	
@@ -218,6 +229,7 @@ public class Edit {
         return subsetData;
     }
     
+    // Method to load all subsets from the database
     public static ArrayList<ArrayList<ArrayList<Object>>> loadAllSubsets(Connection conn, int pID){
     	ArrayList<ArrayList<ArrayList<Object>>> subsetData = new ArrayList<>();
     	String tablename = getNext(getTableName(pID));
@@ -228,6 +240,7 @@ public class Edit {
         return subsetData;
     }
     
+    // Method to move to the next data table in the database
     private static String getNext(String tablename) {
     
     	switch(tablename) {
@@ -242,6 +255,7 @@ public class Edit {
     	}
     }
     
+    // Method to return a specific table from the database based on the id given
     public static String getTableName(int ID) {
     	if(ID <= 0) return "Invalid";
     	else if(ID <= 100) return "Sets";
@@ -249,7 +263,8 @@ public class Edit {
     	else if(ID <= 1000) return "Events";
     	else return "Users";
     }
-    // idType = set, category, or event 
+    
+    // Method to return a specific table from the database based on the id given
     public static int getNextID(Connection conn, String idType) {
     	
     	String sql = "SELECT * FROM IDs \n WHERE type = '" + idType + "'";
