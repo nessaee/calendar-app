@@ -28,7 +28,6 @@ public class DB {
 		Create.createTable(conn, "Categories");
 		Create.createTable(conn, "Events");
 		Create.createTable(conn, "IDs");
-		System.out.println(fileName + " has been initialized");
 		close();
 	}
 	
@@ -41,7 +40,6 @@ public class DB {
             String url = "jdbc:sqlite:src/db/files/" + this.fileName;  
             // create a connection to the database  
             conn = DriverManager.getConnection(url);    
-            System.out.println("Connection to SQLite has been established.");  
         } 
         catch (SQLException e) {  
             System.out.println(e.getMessage());  

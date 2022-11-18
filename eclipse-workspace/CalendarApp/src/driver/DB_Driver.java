@@ -1,12 +1,14 @@
-package db.setup;
+package driver;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import db.setup.DB;
+
 /*
  * This is a Driver class used to test the database functionality.
  */
-public class Driver {
+public class DB_Driver {
 	public static void loadData(DB db, int startID, int numObjects, String tablename) {
 		ArrayList<Object> rowData = new ArrayList<Object>();
 		int ID = 0;
@@ -32,6 +34,7 @@ public class Driver {
 		}
 		db.viewTable(tablename);
 	}
+	
 	public static ArrayList<Object> userData(int i, int startID) {
 		ArrayList<Object> rowData = new ArrayList<Object>();
 		int index = i - startID;
@@ -40,6 +43,7 @@ public class Driver {
 		rowData.add("password" + String.valueOf(index));
 		return rowData;
 	}
+	
 	public static ArrayList<Object> setData(int i, int id, int startID) {
 		int index = i - startID;
 		ArrayList<Object> rowData = new ArrayList<Object>();
@@ -49,6 +53,7 @@ public class Driver {
 		rowData.add("set" + String.valueOf(index));
 		return rowData;
 	}
+	
 	public static ArrayList<Object> categoryData(int i, int id, int startID) {
 		int index = i - startID;
 		ArrayList<Object> rowData = new ArrayList<Object>();
@@ -71,9 +76,6 @@ public class Driver {
 		rowData.add(20221117);
 		return rowData;
 	}
-	
-	
-
 	
 	public static void main(String[] args) {
 		DB db = new DB("Data.db");

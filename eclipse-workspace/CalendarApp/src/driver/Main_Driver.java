@@ -11,7 +11,7 @@ import menu.main.MainController;
  * form of User information, Set information, Category information, and Event information. It accesses controllers to run the 
  * program.
  */
-public class Driver {
+public class Main_Driver {
 
 	public static void main(String[] args) {
 		System.out.println("WELCOME TO THE ECE373 CALENDAR PROJECT");
@@ -22,8 +22,6 @@ public class Driver {
 	    MainController mainController = new MainController(input);
 	    int userID;
 	    db.setConnection(db.connect());
-	    
-	    db.viewTable("IDs");
 	    // While the user has not entered "Exit" into the loginController, the program will continue giving the opportunity to login and logout
 	    while(true) {	// of multiple user accounts
 	      userID = loginController.menu(db);	// The LoginController controls logging in and out of user accounts
