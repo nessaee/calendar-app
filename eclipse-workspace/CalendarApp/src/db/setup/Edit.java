@@ -46,7 +46,6 @@ public class Edit {
 				}
 				i++;
 			}
-			System.out.println("Saving Data...");
 			pstmt.executeUpdate(); 
 		} 
 		catch (SQLException e) {  

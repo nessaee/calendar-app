@@ -30,9 +30,12 @@ public class DB_Driver {
 				db.saveRow(tablename, eventData(i,ID,startID));
 				break;
 			}
-			System.out.println("NEXT ID: " + String.valueOf(ID));
 		}
+		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("Table: " + tablename);
+		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------");
 		db.viewTable(tablename);
+		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------");
 	}
 	
 	public static ArrayList<Object> userData(int i, int startID) {
@@ -86,9 +89,7 @@ public class DB_Driver {
 	
 		
 		numObjects = 10;
-		
 		startID = 1001;
-
 		loadData(db, startID, numObjects, "Users");
 		System.out.println("\n\n\n");
 		startID = 1;
@@ -99,12 +100,8 @@ public class DB_Driver {
 		System.out.println("\n\n\n");
 		startID = 101;
 		loadData(db, startID, numObjects, "Events");
+	
 		
-		System.out.println(db.loadSubset(1001, "Sets"));
-		
-		db.removeRow(1002);
-		db.viewTable("Users");
-		db.viewTable("Sets");
 		
 		db.close();
 	
