@@ -9,8 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /*
- * This is an Edit class that contains methods to interact with the database. It is used to allow the user to 
- * interact with the database.
+ * This is an Edit class that contains methods to interact with the database. It is used as a utility bank for DB.java
  */
 public class Edit {
 	// Method to save a row into the database
@@ -166,7 +165,7 @@ public class Edit {
     	return rs;
     }
     
-    // Method to initialize IDs in the database
+    // Method to execute ID initialization inserts for empty IDs table
     public static void initializeIDs(Connection conn, String sql) {
     	PreparedStatement pstmt;
 		try {
@@ -174,7 +173,7 @@ public class Edit {
 			pstmt.executeUpdate();
 		} 
 		catch (SQLException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		} 
     }
     
@@ -264,7 +263,8 @@ public class Edit {
     	else return "Users";
     }
     
-    // Method to return a specific table from the database based on the id given
+    // Method to return a the next available ID for a type of object 
+    // idType = "set", "category", or "event"
     public static int getNextID(Connection conn, String idType) {
     	
     	String sql = "SELECT * FROM IDs \n WHERE type = '" + idType + "'";

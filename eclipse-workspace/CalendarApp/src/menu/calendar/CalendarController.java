@@ -22,13 +22,12 @@ public class CalendarController {
 	}
 	
 	// Method to display the menu, and allow the user to select what they would like to happen. It displays the user's 
-	// calendar, and gives the option to exit.
+	// calendar, and loops until exit option is chosen.
 	public void menu() {
 		while(true) {
 			System.out.println("-------------------------------------------------------------\n");
 			System.out.println("Welcome to your Calendar!");
 			this.user.updateCalendar(this.db);
-			// this.user.getCalendar().update(user.getUserID(), db);
 			user.getCalendar().printCalendar();
 			System.out.println("Enter 0 to return to Main Menu:");
 			int option = input.nextInt();

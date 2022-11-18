@@ -59,10 +59,8 @@ public class Create {
                     + " id integer NOT NULL\n"
                     + ");\n";  
                 Edit.executeUpdate(conn, sql);
-                sql =  " INSERT INTO IDs VALUES ('set', 1);\n";
-                sql += " INSERT INTO IDs VALUES ('category', 101);\n";
-                sql += " INSERT INTO IDs VALUES ('event', 501);\n";
-                Edit.initializeIDs(conn, sql);
+                sql =  "INSERT OR IGNORE INTO IDs (type, id) VALUES ('set', 1),('category', 101),('event', 501);";
+                Edit.executeUpdate(conn, sql);
 				return;
             default:
                 sql = "";

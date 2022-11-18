@@ -28,7 +28,6 @@ public class EditController {
 	// Method that displays the menu. It takes in user input and calls methods based on it. All edit functionality
 	// is implemented through this controller.
 	public void menu() {
-		int parentID;
 		int option = -1;
 		String buffer;
 		System.out.println("-------------------------------------------------------------\n");
@@ -118,6 +117,7 @@ public class EditController {
 		Set set = new Set(parentID, id, name);
 		return set;
 	}
+	
 	// Method to create a Category given a parent ID
 	public Category createCategory(DB db, int parentID) {
 		String name = inputName("category");
@@ -126,6 +126,7 @@ public class EditController {
 		
 		return category;
 	}
+	
 	// Method to create an Event given a parent ID
 	public Event createEvent(DB db, int parentID) {
 		String name = inputName("event");
@@ -143,6 +144,7 @@ public class EditController {
 	}
 	
 	/* INPUT METHODS */
+	
 	// Method to input a name
 	public String inputName(String type) {
 		System.out.println("Please enter the name of your " + type + ":");
@@ -169,6 +171,7 @@ public class EditController {
 	}
 	
 	/* ADD METHODS */
+	
 	// Method to add a Set to the User calendar and database
 	public void addSet(Set s) {
 		user.getCalendar().addSet(s);

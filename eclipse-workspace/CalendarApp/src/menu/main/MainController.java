@@ -38,17 +38,17 @@ public class MainController {
 			option = input.nextInt();
 			buffer = input.nextLine();
 			switch(option) {
-			case 0:
-				return;
-			case 1:
-				this.calendarController.menu();
-				break;
-			case 2:
-				this.editController.menu();
-				break;
-			default:
-				System.out.println("Invalid input, please try again");
-				break;
+				case 0:
+					return;
+				case 1:
+					this.calendarController.menu();
+					break;
+				case 2:
+					this.editController.menu();
+					break;
+				default:
+					System.out.println("Invalid input, please try again");
+					break;
 			}
 			
 		}

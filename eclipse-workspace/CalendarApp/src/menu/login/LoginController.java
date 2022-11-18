@@ -38,11 +38,13 @@ public class LoginController {
 					
 				case 1: // Login
 					this.userID = loginUser(db);
-					if(this.userID != -1) {	// Valid Login 
+					// Valid Login 
+					if(this.userID != -1) {
 						System.out.println("Successfully logged in!");
 						return this.userID;
 					}
-					else {	// Invalid Login 
+					// Invalid Login 
+					else {	 
 						System.out.println("Invalid login, returning to the Login menu");
 					}
 					break;
