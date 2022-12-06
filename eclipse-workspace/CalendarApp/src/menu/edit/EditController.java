@@ -18,6 +18,7 @@ public class EditController {
 	private DB db;
 	private Scanner input;
 	
+
 	// Constructor that takes in a user, database, and scanner
 	public EditController(User u, DB db, Scanner input) {
 		this.user = u;
@@ -86,6 +87,32 @@ public class EditController {
 		}
 	}
 	
+	public void addMenu(int option) {
+		switch(option) {
+
+			case 0:
+				// FIXME: Currently assuming parentID is userID
+				addEvent(createEvent(db, user.getUserID()));
+				System.out.println("Event successfully added!");
+				break;
+			case 1:
+				// FIXME: Currently assuming parentID is userID
+				addCategory(createCategory(db, user.getUserID()));
+				System.out.println("Category successfully added!");
+				break;
+			case 3:
+				// FIXME: Currently assuming parentID is userID
+				addSet(createSet(db, user.getUserID()));
+				System.out.println("Set successfully added!");
+				break;
+			default:
+				System.out.println("Invalid input, please try again");
+				break;
+				
+		}
+	}
+	
+	
 	// Method to get user input and decide if a Set, Category, or Event is removed
 	public void removeMenu() {
 		int option = -1;
@@ -97,12 +124,12 @@ public class EditController {
 		case 0:
 			return;
 		case 1:
-			user.getCalendar().update(user.getUserID(), db);
-			user.getCalendar().printCalendar();
+			this.user.getCalendar().update(user.getUserID(), db);
+			this.user.getCalendar().printCalendar();
 			System.out.println("Please enter ID of object to remove: ");
 			option = input.nextInt();
 			buffer = input.nextLine();
-			db.removeRow(option);
+			this.db.removeRow(option);
 			break;
 		default:
 			System.out.println("Invalid input, please try again");
@@ -117,6 +144,12 @@ public class EditController {
 		Set set = new Set(parentID, id, name);
 		return set;
 	}
+	public Set createSet(String name) {
+		int id = generateID(this.db, "set");
+		Set set = new Set(this.user.getUserID(), id, name);
+		return set;
+	}
+
 	
 	// Method to create a Category given a parent ID
 	public Category createCategory(DB db, int parentID) {
@@ -126,7 +159,12 @@ public class EditController {
 		
 		return category;
 	}
-	
+	public Category createCategory(String name, int parentID) {
+		int id = generateID(this.db, "category");
+		Category category = new Category(parentID, id, name);
+		return category;
+	}
+
 	// Method to create an Event given a parent ID
 	public Event createEvent(DB db, int parentID) {
 		String name = inputName("event");
@@ -137,6 +175,11 @@ public class EditController {
 		Event event = new Event(parentID, id, name, description, urgency, date);
 		return event;
 	}
+    public Event createEvent(int parentID, String name, String description, int urgency, int date) {
+    	int id = generateID(this.db, "event");
+    	Event event = new Event(parentID, id, name, description, urgency, date);
+    	return event;
+    }	
 
 	// Method to generate a unique ID
 	public int generateID(DB db, String idType) {
@@ -174,19 +217,39 @@ public class EditController {
 	
 	// Method to add a Set to the User calendar and database
 	public void addSet(Set s) {
-		user.getCalendar().addSet(s);
-		db.saveRow("Sets", s.getRowData());
+		this.user.getCalendar().addSet(s);
+		this.db.saveRow("Sets", s.getRowData());
 	}
 	// Method to add a Category to the User calendar and database
 	public void addCategory(Category c) {
-		user.getCalendar().addCategory(c);
-		db.saveRow("Categories", c.getRowData());
+		this.user.getCalendar().addCategory(c);
+		this.db.saveRow("Categories", c.getRowData());
 	}
 	// Method to add an event to the User calendar and database
 	public void addEvent(Event e) {
-		user.getCalendar().addEvent(e);
-		db.saveRow("Events", e.getRowData());
+		this.user.getCalendar().addEvent(e);
+		this.db.saveRow("Events", e.getRowData());
 	}
+	
+	
+	/* SETTERS AND GETTERS */
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public DB getDB() {
+		return db;
+	}
+
+	public void setDB(DB db) {
+		this.db = db;
+	}
+
 
 	
 }
