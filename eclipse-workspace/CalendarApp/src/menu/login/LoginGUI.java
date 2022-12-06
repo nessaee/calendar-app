@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import db.setup.DB;
+import menu.main.MainGUI;
 
 public class LoginGUI extends JFrame {
 	
@@ -17,9 +18,9 @@ public class LoginGUI extends JFrame {
 	private DB db;
 	
 	// LoginGUI Constructor that creates the Login Menu and calls BuildGUI to build it
-	public LoginGUI() {
+	public LoginGUI(DB db) {
 		super("Login Menu");
-		this.db = new DB("Data.db");
+		this.db = db;
 		
 		setSize(1000, 300);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -79,7 +80,6 @@ public class LoginGUI extends JFrame {
 			}
 		}
 		
-		// FIXME Debug back-end interaction with database, not adding Users
 		// FIXME If user presses close, then the program displays an error message
 		/* This method handles the Register button. If it is pressed User input will be taken for
 		 * a username, password, and confirmPassword. It will perform error checking on the input
@@ -88,8 +88,10 @@ public class LoginGUI extends JFrame {
 		private void handleRegister() {
 			// Creating Panel Components
 			JTextField username = new JTextField(5);
-			JTextField password = new JTextField(5);
-			JTextField passwordConfirm = new JTextField(5);
+			JPasswordField password = new JPasswordField(5);
+			password.setEchoChar('*');
+			JPasswordField passwordConfirm = new JPasswordField(5);
+			passwordConfirm.setEchoChar('*');
 			
 			// Getting Panel Inputs and Displaying Panel
 			JPanel panelR = new JPanel(new GridLayout(3, 1));
@@ -105,8 +107,8 @@ public class LoginGUI extends JFrame {
 			JOptionPane.showMessageDialog(null, panelR);
 			// Getting Panel Inputs as Strings
 			String u = username.getText();
-			String p = password.getText();
-			String pc = passwordConfirm.getText();
+			String p = new String(password.getPassword());
+			String pc = new String(passwordConfirm.getPassword());
 			
 			// Creating the new User based on given information
 			String result = createUser(u, p, pc);
@@ -151,7 +153,8 @@ public class LoginGUI extends JFrame {
 		private void handleLogin() {
 			// Creating Panel Components
 			JTextField username = new JTextField(5);
-			JTextField password = new JTextField(5);
+			JPasswordField password = new JPasswordField(5);
+			password.setEchoChar('*');
 			
 			// Getting Panel Inputs and Displaying Panel
 			JPanel panelL = new JPanel(new GridLayout(2, 1));
@@ -164,7 +167,7 @@ public class LoginGUI extends JFrame {
 			JOptionPane.showMessageDialog(null,  panelL);
 			// Getting Panel Inputs as Strings
 			String u = username.getText();
-			String p = password.getText();
+			String p = new String(password.getPassword());
 			
 			if(checkInput(u, p)) {		// Checking if User input is valid
 				Login login = new Login(db, "Login", u, p);		// Checking User Login information
@@ -172,7 +175,7 @@ public class LoginGUI extends JFrame {
 					JOptionPane.showMessageDialog(null, "Username/Password does not exist", "Login Menu", JOptionPane.PLAIN_MESSAGE);
 				}
 				else {
-					// FIXME OPEN MAIN MENU
+					MainGUI mainMenu = new MainGUI(db, login.getUserID(), u);
 				}
 			}
 		}
