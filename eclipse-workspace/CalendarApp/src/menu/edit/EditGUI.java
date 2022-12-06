@@ -37,7 +37,7 @@ public class EditGUI extends JFrame{
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JLabel("<HTML><center>Welcome to the Editor" +
 				"<BR>Choose an action from the above menus.</center></HTML>"));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		buildGUI();	
 		setVisible(true);
 	}
@@ -195,15 +195,15 @@ public class EditGUI extends JFrame{
 				
 			case 4:
 				int categoryID = Integer.parseInt(data.get(0));
+				controller.getDB().removeRow(categoryID);
 				break;
 			case 5:
 				int eventID = Integer.parseInt(data.get(0));
+				controller.getDB().removeRow(eventID);
 				break;
 			case 6:
-
 				break;
 			case 7:
-
 				break;
 				
 			}
@@ -370,7 +370,7 @@ public class EditGUI extends JFrame{
 		    controller.getUser().updateCalendar(controller.getDB());
 		    datatype.Calendar calendar = controller.getUser().getCalendar();
 		    ArrayList<datatype.Set> sets = calendar.getSetList();
-		    Object[][] setData = {};
+		    Object[][] setData = new Object[sets.size()][2];
 		    Object[] setRow = new Object[2];
 		    int rowCount = 0;
 		    for(datatype.Set s : sets) {
@@ -391,7 +391,7 @@ public class EditGUI extends JFrame{
 			datatype.Calendar calendar = controller.getUser().getCalendar();
 	
 		    ArrayList<datatype.Category> categories = calendar.getCategoryList();
-		    Object[][] categoryData = {};
+		    Object[][] categoryData = new Object[categories.size()][3];
 		    Object[] categoryRow = new Object[3];
 		    int rowCount = 0;
 		    
@@ -412,16 +412,16 @@ public class EditGUI extends JFrame{
 		    
 			datatype.Calendar calendar = controller.getUser().getCalendar();
 			calendar.update(controller.getUser().getUserID(), controller.getDB());
-	
+			
 		    ArrayList<datatype.Category> categories = calendar.getCategoryList();
 		    Object[][] categoryData = {};
 		    Object[] categoryRow = new Object[3];
 		    int rowCount = 0;
 		    
-		    for(datatype.Category c : categories) {
-		    	categoryRow[0] = c.getParentID();
-		    	categoryRow[1] = c.getID();
-		    	categoryRow[2] = c.getLabel();
+		    for(datatype.Event e : events) {
+		    	categoryRow[0] = e.getParentID();
+		    	categoryRow[1] = e.getID();
+		    	categoryRow[2] = e.getLabel();
 		    	categoryData[rowCount] = categoryRow;
 		    	categoryRow = null;
 		    	rowCount += 1;

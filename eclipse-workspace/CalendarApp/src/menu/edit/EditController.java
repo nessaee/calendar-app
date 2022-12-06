@@ -26,6 +26,12 @@ public class EditController {
 		this.input = input;
 	}
 	
+	// Constructor that takes in a user, database, and scanner
+	public EditController(User u, DB db) {
+		this.user = u;
+		this.db = db;
+	}
+	
 	// Method that displays the menu. It takes in user input and calls methods based on it. All edit functionality
 	// is implemented through this controller.
 	public void menu() {
