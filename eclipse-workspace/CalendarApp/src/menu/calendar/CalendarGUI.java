@@ -28,7 +28,7 @@ public class CalendarGUI extends JFrame{
 		
 		JFrame frame = new JFrame("Calendar");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(900,900);
+		frame.setSize(400,300);
 		frame.setLayout(new BorderLayout());
 		
 		//----------------------------------------
@@ -51,15 +51,28 @@ public class CalendarGUI extends JFrame{
 		//-------------------------------------
 		
 		JPanel topPanel = new JPanel();
+		JPanel middlePanel = new JPanel();
 		JPanel bottomPanel = new JPanel();
 		
-		JButton select = new JButton("Select");
+		JButton select = new JButton("View Date");
 		select.setBounds(EXIT_ON_CLOSE, ABORT, 100, 100);
 		topPanel.add(datePicker);
+		topPanel.setBounds(100, 100, 450, 450);
+		middlePanel.setBounds(EXIT_ON_CLOSE, ABORT, 100, 100);
 		bottomPanel.add(select);
-		JSplitPane pane = new JSplitPane( JSplitPane.VERTICAL_SPLIT, 
-                topPanel, bottomPanel );
-		frame.add(pane);
+		
+		JPanel mainPanel = new JPanel();
+	
+		mainPanel.add(topPanel);
+		//mainPanel.add(middlePanel);
+		mainPanel.add(bottomPanel);
+		
+		
+		//---------------------------------------------
+//		pane.setDividerSize(0);
+//		pane2.setDividerSize(0);
+		frame.add(mainPanel);
+		
 		
 		//--------------------------------------
 		
