@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,26 +13,30 @@ import javax.swing.JPanel;
 
 import db.setup.DB;
 import menu.calendar.CalendarGUI;
+import menu.edit.EditController;
 import menu.edit.EditGUI;
 
 public class MainGUI extends JFrame {
 	private JPanel panel;
 	private JButton editButton;
 	private JButton displayButton;
+	private JButton exitButton;
 	private DB db;
-	private int userID;
+	private User user;
+	private String username;
 	
-	public MainGUI(DB db, int userID) {
+	public MainGUI(DB db, int userID, String un) {
 		super("Main Menu");
 		this.db = db;
-		this.userID = userID;
+		this.user = new User(userID, db);
+		this.username = un;
 		
-		setSize(500, 300);
+		setSize(600, 300);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setBackground(Color.white);
-		add(new JLabel("<HTML><center>Welcome to the Main Menu" + "<BR>Please select Edit to edit your calendar, or"
-						+ " Display to display your calendar</center><HTML>"));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		add(new JLabel("<HTML><center>Welcome to the Main Menu " + un + "<BR>Please select Edit to edit your calendar,"
+						+ " Display to display your calendar, or Exit to exit the Main Menu</center><HTML>"));
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		buildGUI();
 		setVisible(true);
 	}
@@ -43,7 +48,7 @@ public class MainGUI extends JFrame {
 		
 		editButton = new JButton("Edit");
 		editButton.setBounds(500, 1000, 80, 30);
-		editButton.setBackground(Color.red);
+		editButton.setBackground(Color.orange);
 		editButton.addActionListener(new ActionPerformed());
 		
 		displayButton = new JButton("Display");
@@ -51,8 +56,14 @@ public class MainGUI extends JFrame {
 		displayButton.setBackground(Color.green);
 		displayButton.addActionListener(new ActionPerformed());
 		
+		exitButton = new JButton("Exit");
+		exitButton.setBounds(1500, 1000, 80, 30);
+		exitButton.setBackground(Color.red);
+		exitButton.addActionListener(new ActionPerformed());
+		
 		panel.add(editButton);
 		panel.add(displayButton);
+		panel.add(exitButton);
 		
 		add(panel);
 	}
@@ -69,14 +80,23 @@ public class MainGUI extends JFrame {
 			else if(source.equals(displayButton)) {	// Calls handleLogin if Login is pressed
 				handleDisplay();
 			}
+			else if(source.equals(exitButton)) {
+				handleExit();
+			}
 		}
 		
 		private void handleEdit() {
-			EditGUI edit = new EditGUI();
+			Scanner input = new Scanner(System.in);
+			EditController editController = new EditController(user, db, input);
+			EditGUI edit = new EditGUI("Edit Menu", editController);
 		}
 		
 		private void handleDisplay() {
 			CalendarGUI calendar = new CalendarGUI();
+		}
+		
+		private void handleExit() {
+			dispose();
 		}
 	}
 }
