@@ -153,18 +153,18 @@ public class EditGUI extends JFrame{
 			String successMessage = "";
 			switch(this.option) {
 			case 0: // Add Event 
-				String eventName = data.get(0);
-				String eventDescription = data.get(1);
-				int eventDate = Integer.parseInt(data.get(2));
-				int eventUrgency = Integer.parseInt(data.get(3));
-				int eventParentID = Integer.parseInt(data.get(4));
+				int eventParentID = Integer.parseInt(data.get(0));
+				String eventName = data.get(1);
+				String eventDescription = data.get(2);
+				int eventDate = Integer.parseInt(data.get(3));
+				int eventUrgency = Integer.parseInt(data.get(4));
 				controller.addEvent(controller.createEvent(eventParentID, eventName, eventDescription, eventUrgency, eventDate));
 				successMessage = "Event " + eventName + " has been added to your calendar";
 				popupSuccess(windowTitle, successMessage);
 				break;
 			case 1: // Add Category 
-				String categoryName = data.get(0);
-				int categoryParentID = Integer.parseInt(data.get(1));
+				int categoryParentID = Integer.parseInt(data.get(0));
+				String categoryName = data.get(1);
 				controller.addCategory(controller.createCategory(categoryName, categoryParentID));
 				successMessage = "Category " + categoryName + " has been added to your calendar";
 				popupSuccess(windowTitle, successMessage);
@@ -174,8 +174,8 @@ public class EditGUI extends JFrame{
 				controller.addSet(controller.createSet(setName));
 				//System.out.println(controller.createSet(setName));
 				//controller.getUser().getCalendar().printCalendar();
-				successMessage = "Set " + setName + "has been added to your calendar";
-				//popupSuccess(windowTitle, successMessage);
+				successMessage = "Set " + setName + " has been added to your calendar";
+				popupSuccess(windowTitle, successMessage);
 				break;
 				
 			case 3: // Remove Set
@@ -279,9 +279,9 @@ public class EditGUI extends JFrame{
 		// option 0: add event 
 		private void handleAddEvent(){ 
 			String[] labels = {
+				"Parent ID:",
 				"Name: ",
 				"Description",
-				"Parent ID:",
 				"Date: ",
 				"Urgency: "
 			};
@@ -289,7 +289,7 @@ public class EditGUI extends JFrame{
 		}
 		// option 1: add category 
 		private void handleAddCategory(){ 
-			String[] labels = {"Name: ", "Parent ID"};
+			String[] labels = {"Parent ID", "Name: "};
 			createInputWindow("Create New Category", labels, 1, 300, 275);	
 		}
 		// option 2: add set
@@ -316,7 +316,7 @@ public class EditGUI extends JFrame{
 		public void handleViewSets() {
 			datatype.Calendar calendar = controller.getUser().getCalendar();
 			JFrame frame = buildJFrame("View Sets", 300, 300);
-			String[] columnNames = {"Set ID", "Set Name"};
+			String[] columnNames = {"Location", "Set ID", "Set Name"};
 			int[] columnWidths = {40,60};
 		    Object[][] setData = this.getSetTableData(calendar);
 		    frame = createDisplayWindow(frame, columnNames, columnWidths, setData, 300, 300);
@@ -327,7 +327,7 @@ public class EditGUI extends JFrame{
 		public void handleViewCategories() {
 			datatype.Calendar calendar = controller.getUser().getCalendar();
 			JFrame frame = buildJFrame("View Categories", 300, 300);
-			String[] columnNames = {"Parent ID", "Category ID", "Category Name"};
+			String[] columnNames = {"Location", "Parent ID", "Category ID", "Category Name"};
 			int[] columnWidths = {10,10,80};
 			Object[][] categoryData = this.getCategoryTableData(calendar);
 		    frame = createDisplayWindow(frame, columnNames, columnWidths, categoryData, 300, 300);
@@ -339,7 +339,7 @@ public class EditGUI extends JFrame{
 		public void handleViewEvents() {
 			datatype.Calendar calendar = controller.getUser().getCalendar();
 			JFrame frame = buildJFrame("View Events", 400, 300);
-			String[] columnNames = {"Parent ID", "Event ID", "Event Name", "Description", "Date", "Urgency"};
+			String[] columnNames = {"Location", "Parent ID", "Event ID", "Event Name", "Description", "Date", "Urgency"};
 			int[] columnWidths = {3, 3, 34, 35, 15, 10};
 		    Object[][] eventData = this.getEventTableData(calendar);
 		    frame = createDisplayWindow(frame, columnNames, columnWidths, eventData, 400, 300);
@@ -352,19 +352,19 @@ public class EditGUI extends JFrame{
 			datatype.Calendar calendar = controller.getUser().getCalendar();
 			JFrame frame = buildJFrame("View All", 750, 300);
 			frame.setLocationRelativeTo(null);
-			String[] eventColumnNames = {"pID", "eID", "Event Name", "Description", "Date", "Urgency"};
+			String[] eventColumnNames = {"Location", "pID", "eID", "Event Name", "Description", "Date", "Urgency"};
 			int[] eventColumnWidths = {3, 3, 34, 35, 15, 10};
 			Object[][] eventData = this.getEventTableData(calendar);
 			JTable eventTable = this.createTable(eventColumnNames, eventData, eventColumnWidths);
 			JScrollPane eventSP = this.createScrollPane(eventTable, 400, 300);
 			
-			String[] categoryColumnNames = {"pID", "cID", "Category Name"};
+			String[] categoryColumnNames = {"Location", "pID", "cID", "Category Name"};
 			int[] categoryColumnWidths = {10,10,80};
 			Object[][] categoryData = this.getCategoryTableData(calendar);
 			JTable categoryTable = this.createTable(categoryColumnNames, categoryData, categoryColumnWidths);
 			JScrollPane categorySP = this.createScrollPane(categoryTable, 200, 300);
 			
-			String[] setColumnNames = {"sID", "Set Name"};
+			String[] setColumnNames = {"Location", "sID", "Set Name"};
 			int[] setColumnWidths = {40,60};
 		    Object[][] setData = this.getSetTableData(calendar);
 		    JTable setTable = this.createTable(setColumnNames, setData, setColumnWidths);
@@ -464,15 +464,16 @@ public class EditGUI extends JFrame{
 		}
 		public Object[][] getEventTableData(datatype.Calendar calendar) {
 			ArrayList<Event> events = calendar.getEventList();
-		    Object[][] eventData = new Object[events.size()][6];
+		    Object[][] eventData = new Object[events.size()][7];
 		    int rowCount = 0; 
 		    for(Event e : events) {
-		    	eventData[rowCount][0] = e.getParentID();
-		    	eventData[rowCount][1] = e.getID();
-		    	eventData[rowCount][2] = e.getLabel();
-		    	eventData[rowCount][3] = e.getDescription();
-		    	eventData[rowCount][4] = e.getDate();
-		    	eventData[rowCount][5] = e.getUrgency();
+		    	eventData[rowCount][0] = controller.getDB().getName(e.getParentID());
+		    	eventData[rowCount][1] = e.getParentID();
+		    	eventData[rowCount][2] = e.getID();
+		    	eventData[rowCount][3] = e.getLabel();
+		    	eventData[rowCount][4] = e.getDescription();
+		    	eventData[rowCount][5] = e.getDate();
+		    	eventData[rowCount][6] = e.getUrgency();
 		    	rowCount += 1;
 		    }
 			return eventData;
@@ -480,12 +481,13 @@ public class EditGUI extends JFrame{
 		
 		public Object[][] getCategoryTableData(datatype.Calendar calendar) {
 			ArrayList<Category> categories = calendar.getCategoryList();
-		    Object[][] categoryData = new Object[categories.size()][3];
+		    Object[][] categoryData = new Object[categories.size()][4];
 		    int rowCount = 0;
 		    for(datatype.Category c : categories) {
-		    	categoryData[rowCount][0] = c.getParentID();
-		    	categoryData[rowCount][1] = c.getID();
-		    	categoryData[rowCount][2] = c.getLabel();
+		    	categoryData[rowCount][0] = controller.getDB().getName(c.getParentID());
+		    	categoryData[rowCount][1] = c.getParentID();
+		    	categoryData[rowCount][2] = c.getID();
+		    	categoryData[rowCount][3] = c.getLabel();
 		    	rowCount += 1;
 		    }
 		    return categoryData;
@@ -493,13 +495,16 @@ public class EditGUI extends JFrame{
 		
 		public Object[][] getSetTableData(datatype.Calendar calendar) {
 			ArrayList<datatype.Set> sets = calendar.getSetList();
-		    Object[][] setData = new Object[sets.size()][2];
+		    Object[][] setData = new Object[sets.size()][3];
 		    int rowCount = 0;
+		    
 		    for(datatype.Set s : sets) {
-		    	setData[rowCount][0] = s.getID();
-		    	setData[rowCount][1] = s.getLabel();
+		    	setData[rowCount][0] = controller.getUser().getUsername();
+		    	setData[rowCount][1] = s.getID();
+		    	setData[rowCount][2] = s.getLabel();
 		    	rowCount += 1;
 		    }
+		    
 			return setData;
 		}
 		

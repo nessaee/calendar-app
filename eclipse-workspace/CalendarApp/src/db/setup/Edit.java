@@ -227,7 +227,7 @@ public class Edit {
         return subsetData;
     }
     
-    // Method to load all subsets from the database
+    // Method to load all row data for subsets of an object 
     public static ArrayList<ArrayList<ArrayList<Object>>> loadAllSubsets(Connection conn, int pID){
     	ArrayList<ArrayList<ArrayList<Object>>> subsetData = new ArrayList<>();
     	String tablename = getNext(getTableName(pID));
@@ -281,5 +281,35 @@ public class Edit {
 		return id;
     }
     
-	
+    public static String getName(Connection conn, int ID) {
+    	String tableName = getTableName(ID);
+    	String sql = "SELECT * FROM " + tableName + " \n WHERE ID = " + String.valueOf(ID);
+		ResultSet rs = executeQuery(conn, sql);
+		String name = "";
+		String pName = "";
+		int pID = 0;
+		try {
+			if(tableName.equals("Users")) {
+				name = rs.getString("username") + "/";
+			}
+			else if (tableName.equals("Sets")) {
+				pID = rs.getInt("pID");
+				pName = getName(conn, pID);
+				name = pName + rs.getString("label") + "/";
+			}
+			else if (tableName.equals("Categories")) {
+				pID = rs.getInt("pID");
+				pName = getName(conn, pID);
+				name = pName + rs.getString("label") + "/";
+			}
+			else {
+				name = rs.getString("label") + "/";
+			}
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return name;
+    }
+    
 }

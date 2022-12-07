@@ -12,6 +12,7 @@ import menu.calendar.CalendarController;
  */
 public class User {
 	// Declaration of fields
+	private String username;
 	private int userID;
 	private Calendar calendar;
 	
@@ -22,7 +23,8 @@ public class User {
 	}
 	
 	// Constructor that takes in a user ID, and database. It uses the given user ID to populate the calendar field with the database
-	public User(int id, DB db) {
+	public User(int id, String username, DB db) {
+		this.username = username;
 		this.userID = id;
 		this.calendar = new Calendar();
 	}
@@ -35,6 +37,10 @@ public class User {
 	// Getters and Setters
 	public int getUserID() {
 		return this.userID;
+	}
+	
+	public String getUsername() {
+		return this.username;
 	}
 	
 	public void setUserID(int id) {

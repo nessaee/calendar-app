@@ -30,9 +30,9 @@ public class MainGUI extends JFrame {
 	public MainGUI(DB db, int userID, String un) {
 		super("Main Menu");
 		this.db = db;
-		this.user = new User(userID, db);
+		this.user = new User(userID, un, db);
 		this.username = un;
-		
+		user.updateCalendar(db);
 		setSize(400, 200);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setBackground(Color.white);

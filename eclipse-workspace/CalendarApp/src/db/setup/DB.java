@@ -102,6 +102,11 @@ public class DB {
 	public int getNextID(String tablename) {
 		return Edit.getNextID(this.conn, tablename);
 	}
+	// Method to get the parent name given ID
+	public String getName(int ID) {
+		return Edit.getName(this.conn, ID);
+	}
+	
 
 
 	
