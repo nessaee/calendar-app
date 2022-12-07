@@ -40,8 +40,8 @@ public class EditGUI extends JFrame{
 		this.controller = EC;
 		//this.controller.getUser().updateCalendar(this.controller.getDB());
 		//this.controller.getUser().getCalendar().printCalendar();
-		setSize(300, 100);
-		setLayout(new FlowLayout(FlowLayout.LEFT));
+		setSize(300, 150);
+		setLayout(new FlowLayout(FlowLayout.CENTER));
 		add(new JLabel("<HTML><center>Welcome to the Editor" +
 				"<BR>Choose an action from the above menus.</center></HTML>"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -339,10 +339,10 @@ public class EditGUI extends JFrame{
 			createInputWindow("Remove Category", labels, 5, 300, 275);	
 		}
 		
-		public void handleViewSets() {
+		public void handleViewSets() {W
 			JFrame frame = buildJFrame("View Sets", 300, 300);
-			String[] columnNames = {"Location", "Set ID", "Set Name"};
-			int[] columnWidths = {40,60};
+			String[] columnNames = {"Location", "sID", "Set Name"};
+			int[] columnWidths = {20, 10, 70};
 		    Object[][] setData = this.getSetTableData();
 		    frame = createDisplayWindow(frame, columnNames, columnWidths, setData, 300, 300);
 		    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -351,8 +351,8 @@ public class EditGUI extends JFrame{
 		}
 		public void handleViewCategories() {
 			JFrame frame = buildJFrame("View Categories", 300, 300);
-			String[] columnNames = {"Location", "Parent ID", "Category ID", "Category Name"};
-			int[] columnWidths = {10,10,80};
+			String[] columnNames = {"Location", "pID", "cID", "Category Name"};
+			int[] columnWidths = {10,10,10,60};
 			Object[][] categoryData = this.getCategoryTableData();
 		    frame = createDisplayWindow(frame, columnNames, columnWidths, categoryData, 300, 300);
 		    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -361,8 +361,8 @@ public class EditGUI extends JFrame{
 		}
 		public void handleViewEvents() {
 			JFrame frame = buildJFrame("View Events", 400, 300);
-			String[] columnNames = {"Location", "Parent ID", "Event ID", "Event Name", "Description", "Date", "Urgency"};
-			int[] columnWidths = {3, 3, 34, 35, 15, 10};
+			String[] columnNames = {"Location", "pID", "eID", "Event Name", "Description", "Date", "Urgency"};
+			int[] columnWidths = {10,5,5,30,30, 10, 10};
 		    Object[][] eventData = this.getEventTableData();
 		    frame = createDisplayWindow(frame, columnNames, columnWidths, eventData, 400, 300);
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -371,25 +371,25 @@ public class EditGUI extends JFrame{
 		}
 		
 		public void handleViewAll() {
-			JFrame frame = buildJFrame("View All", 750, 300);
+			JFrame frame = buildJFrame("View All", 1050, 300);
 			frame.setLocationRelativeTo(null);
-			String[] eventColumnNames = {"Location", "pID", "eID", "Event Name", "Description", "Date", "Urgency"};
-			int[] eventColumnWidths = {3, 3, 34, 35, 15, 10};
+			String[] eventColumnNames = {"Loc", "pID", "eID", "Event Name", "Description", "Date", "Urgency"};
+			int[] eventColumnWidths = {10,5,5,30,30, 10, 10};
 			Object[][] eventData = this.getEventTableData();
 			JTable eventTable = this.createTable(eventColumnNames, eventData, eventColumnWidths);
-			JScrollPane eventSP = this.createScrollPane(eventTable, 400, 300);
+			JScrollPane eventSP = this.createScrollPane(eventTable, 500, 300);
 			
-			String[] categoryColumnNames = {"Location", "pID", "cID", "Category Name"};
-			int[] categoryColumnWidths = {10,10,80};
+			String[] categoryColumnNames = {"Loc", "pID", "cID", "Category Name"};
+			int[] categoryColumnWidths = {10,10,10,60};
 			Object[][] categoryData = this.getCategoryTableData();
 			JTable categoryTable = this.createTable(categoryColumnNames, categoryData, categoryColumnWidths);
-			JScrollPane categorySP = this.createScrollPane(categoryTable, 200, 300);
+			JScrollPane categorySP = this.createScrollPane(categoryTable, 250, 300);
 			
-			String[] setColumnNames = {"Location", "sID", "Set Name"};
-			int[] setColumnWidths = {40,60};
+			String[] setColumnNames = {"Loc", "sID", "Set Name"};
+			int[] setColumnWidths = {20, 10, 70};
 		    Object[][] setData = this.getSetTableData();
 		    JTable setTable = this.createTable(setColumnNames, setData, setColumnWidths);
-		    JScrollPane setSP = this.createScrollPane(setTable, 150, 300);
+		    JScrollPane setSP = this.createScrollPane(setTable, 250, 300);
 		    
 		    frame = this.createDisplayWindow(frame, eventSP, categorySP, setSP);
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
