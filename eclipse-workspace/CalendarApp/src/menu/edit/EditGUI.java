@@ -339,7 +339,7 @@ public class EditGUI extends JFrame{
 			createInputWindow("Remove Category", labels, 5, 300, 275);	
 		}
 		
-		public void handleViewSets() {W
+		public void handleViewSets() {
 			JFrame frame = buildJFrame("View Sets", 300, 300);
 			String[] columnNames = {"Location", "sID", "Set Name"};
 			int[] columnWidths = {20, 10, 70};
@@ -487,6 +487,7 @@ public class EditGUI extends JFrame{
 			ArrayList<Event> events = controller.getUser().getCalendar().getEventList();
 		    Object[][] eventData = new Object[events.size()][7];
 		    int rowCount = 0; 
+		    
 		    for(Event e : events) {
 		    	eventData[rowCount][0] = controller.getDB().getName(e.getParentID());
 		    	eventData[rowCount][1] = e.getParentID();
