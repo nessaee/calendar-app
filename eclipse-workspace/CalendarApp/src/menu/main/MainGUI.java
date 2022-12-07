@@ -96,7 +96,8 @@ public class MainGUI extends JFrame {
 		}
 		
 		private void handleDisplay() {
-			CalendarGUI calendar = new CalendarGUI();
+			CalendarGUI calendar = new CalendarGUI(user,db);
+			calendar.CalendarPage();
 		}
 		
 		private void handleExit() {
