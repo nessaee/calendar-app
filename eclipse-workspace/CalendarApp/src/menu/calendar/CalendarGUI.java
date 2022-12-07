@@ -2,6 +2,7 @@ package menu.calendar;
 
 import datatype.*;
 import db.*;
+import db.setup.DB;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -18,10 +19,12 @@ import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
@@ -31,19 +34,23 @@ import org.jdatepicker.impl.UtilCalendarModel;
 import org.jdatepicker.impl.UtilDateModel;
 import menu.*
 ;
-import menu.main.User;public class CalendarGUI extends JFrame{
+import menu.main.User;
+
+public class CalendarGUI extends JFrame{
 	
 	private int DateSelected;
 	private UtilDateModel model = new UtilDateModel();
 	JFrame frame;
 	User user;
-	public CalendarGUI(User user) {
+	DB db;
+	public CalendarGUI(User user,DB db) {
 		this.frame = new JFrame("Calendar");
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.setSize(400,300);
 		this.frame.setLayout(new BorderLayout());
 		this.frame.setLocationRelativeTo(null);
 		this.user = user;
+		this.db = db;
 	}
 	/**
 	 * 
@@ -166,7 +173,8 @@ import menu.main.User;public class CalendarGUI extends JFrame{
 		frame.resize(650, 300);
 		
 		JTable table = new JTable();
-		String[] Columns = {"Name", "Description","Categories","Sets"};
+		
+		String[] Columns = {"Name", "Description","Urgency","Location"};
 		DefaultTableModel model = new DefaultTableModel();
 		
 		//-----getting numeventa and creating data array-----
@@ -182,27 +190,19 @@ import menu.main.User;public class CalendarGUI extends JFrame{
 		int rowCount = 0;
 		for(Event e : user.getCalendar().getEventList()) {
 
-			int cnt = 0;
+			
 			if (e.getDate().toInt().equals(D.toInt())) {
 				//Display event title
 				System.out.println(e.getLabel());
-				eventData[rowCount][cnt++] = e.getLabel();
+				eventData[rowCount][0] = e.getLabel();
 				//Display event description
-				eventData[rowCount][cnt++] = e.getDescription();
+				eventData[rowCount][1] = e.getDescription();
 				
-				//Display categories event is a part of
-				for(Category C : user.getCalendar().getCategoryList()) {
-					if(C.getID().equals(e.getParentID())) {
-						eventData[rowCount][cnt++] = C.getLabel();
-					}
-				}
-				//Display sets event is a part of 
-				for(Set S : user.getCalendar().getSetList()) {
-					if(S.getID().equals(e.getParentID())) {
-						eventData[rowCount][cnt++] = S.getLabel();
-					}
-				}
+				//Display Urgency event is a part of
+				eventData[rowCount][2] = e.getUrgency();
 				
+				eventData[rowCount][3] = db.getName(e.getParentID());
+				//eventData[rowCount][3] = "";
 				rowCount++;
 			}
 		}
@@ -216,14 +216,16 @@ import menu.main.User;public class CalendarGUI extends JFrame{
 		
 		table.setModel(model);
 		//------resize columns---------
-		int[] columnWidths = {20,50,15,15};
+		int[] columnWidths = {20,50,5,25};
 		int i = 0;
 		for(int width : columnWidths) {
 			table.getColumnModel().getColumn(i).setPreferredWidth(width);
 			i++;
 		}
 		table.setRowHeight(50);
+		
 		//-------------------------------
+		
 		
 		table.setAutoCreateColumnsFromModel(true);
 		table.setAutoCreateRowSorter(true);
