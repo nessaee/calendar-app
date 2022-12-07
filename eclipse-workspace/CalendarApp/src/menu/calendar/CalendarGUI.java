@@ -12,12 +12,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -158,45 +160,78 @@ import menu.main.User;public class CalendarGUI extends JFrame{
 	}
 	
 	public void ViewDay(datatype.Date D) {
-		//JTable here
+		
+		
 		System.out.println(D);
+		frame.resize(650, 300);
+		
 		JTable table = new JTable();
-		Object[] Columns = {"Name", "Description","Categories","Sets",};
+		String[] Columns = {"Name", "Description","Categories","Sets"};
 		DefaultTableModel model = new DefaultTableModel();
 		
-		model.setColumnIdentifiers(Columns);
-		
+		//-----getting numeventa and creating data array-----
+		int numEvents = 0;
 		for(Event e : user.getCalendar().getEventList()) {
-//			System.out.println(e.getLabel() + " " + e.getDate().toInt());
-//			System.out.println("Chosen date(as int): " + D.toInt());
-//			System.out.println();
-			
+			if (e.getDate().toInt().equals(D.toInt())) numEvents++;
+		}
+		Object[][] eventData = new Object[numEvents][4];
+		//---------------------------------------------------
+		
+		//model.setColumnIdentifiers(Columns);
+		//2d data array
+		int rowCount = 0;
+		for(Event e : user.getCalendar().getEventList()) {
+
+			int cnt = 0;
 			if (e.getDate().toInt().equals(D.toInt())) {
 				//Display event title
 				System.out.println(e.getLabel());
-			
+				eventData[rowCount][cnt++] = e.getLabel();
 				//Display event description
-				
+				eventData[rowCount][cnt++] = e.getDescription();
 				
 				//Display categories event is a part of
-				
-				
+				for(Category C : user.getCalendar().getCategoryList()) {
+					if(C.getID().equals(e.getParentID())) {
+						eventData[rowCount][cnt++] = C.getLabel();
+					}
+				}
 				//Display sets event is a part of 
+				for(Set S : user.getCalendar().getSetList()) {
+					if(S.getID().equals(e.getParentID())) {
+						eventData[rowCount][cnt++] = S.getLabel();
+					}
+				}
 				
-				
-				//Display some kind of divider before next event is displayed
+				rowCount++;
 			}
 		}
 		
+		for(String columnName : Columns){
+			model.addColumn(columnName);
+		}
+		for(Object[] o : eventData) {
+			model.addRow(o);
+		}
+		
 		table.setModel(model);
-		table.setRowHeight(30);
+		//------resize columns---------
+		int[] columnWidths = {20,50,15,15};
+		int i = 0;
+		for(int width : columnWidths) {
+			table.getColumnModel().getColumn(i).setPreferredWidth(width);
+			i++;
+		}
+		table.setRowHeight(50);
+		//-------------------------------
+		
 		table.setAutoCreateColumnsFromModel(true);
 		table.setAutoCreateRowSorter(true);
-		frame.add(table);
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		frame.getContentPane().add(scrollPane,BorderLayout.CENTER);
+		//frame.add(table);
 		frame.setVisible(true);
 	}
-	
-	
-	
-	
+
 }
