@@ -45,7 +45,7 @@ public class EditGUI extends JFrame{
 		add(new JLabel("<HTML><center>Welcome to the Editor" +
 				"<BR>Choose an action from the above menus.</center></HTML>"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+		this.setLocationRelativeTo(null);
 		
 		buildGUI();	
 		setVisible(true);

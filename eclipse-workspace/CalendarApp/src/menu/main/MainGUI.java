@@ -37,6 +37,7 @@ public class MainGUI extends JFrame {
 		this.username = un;
 		setSize(400, 200);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
+		this.setLocationRelativeTo(null);
 		setBackground(Color.white);
 		add(new JLabel("<HTML><center><b>Welcome to the Main Menu " + un + "</b><BR>Select Edit to edit your calendar"
 						+ "<BR>Select Display to display your calendar<BR>Select Logout to exit the Login Menu</center><HTML>"));

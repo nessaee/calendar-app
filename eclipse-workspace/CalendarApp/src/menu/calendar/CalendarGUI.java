@@ -45,7 +45,7 @@ public class CalendarGUI extends JFrame{
 	DB db;
 	public CalendarGUI(User user,DB db) {
 		this.frame = new JFrame("Calendar");
-		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.frame.setSize(400,300);
 		this.frame.setLayout(new BorderLayout());
 		this.frame.setLocationRelativeTo(null);

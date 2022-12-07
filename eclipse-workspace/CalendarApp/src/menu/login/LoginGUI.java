@@ -28,6 +28,7 @@ public class LoginGUI extends JFrame {
 		add(new JLabel("<HTML><center><b>Welcome to the ECE373 Calendar Project</b>"
 						+ "<BR>Select Register if you would like to create a new account<BR>Select Login if you would"
 						+ " like to login to an existing account<BR>Select Exit to exit the program</center><HTML>"));
+		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		buildGUI();
 		setVisible(true);
