@@ -180,6 +180,7 @@ public class EditGUI extends JFrame{
 			switch(this.option) {
 			case 0: // Add Event 
 				int eventParentID = Integer.parseInt(data.get(0));
+				eventParentID = (eventParentID == 0) ? controller.getUser().getUserID() : eventParentID;
 				String eventName = data.get(1);
 				String eventDescription = data.get(2);
 				int eventDate = Integer.parseInt(data.get(3));
@@ -190,6 +191,7 @@ public class EditGUI extends JFrame{
 				break;
 			case 1: // Add Category 
 				int categoryParentID = Integer.parseInt(data.get(0));
+				categoryParentID = (categoryParentID == 0) ? controller.getUser().getUserID() : categoryParentID;
 				String categoryName = data.get(1);
 				controller.addCategory(controller.createCategory(categoryName, categoryParentID));
 				successMessage = "Category " + categoryName + " has been added to your calendar";
@@ -208,17 +210,23 @@ public class EditGUI extends JFrame{
 				int setID = Integer.parseInt(data.get(0));
 				controller.getDB().removeRow(setID);
 				controller.getUser().getCalendar().removeSet(setID);
+				successMessage = "Set #" + String.valueOf(setID) + " has been removed from your calendar";
+				popupSuccess(windowTitle, successMessage);
 				break;
 				 
 			case 4: // Remove Category
 				int categoryID = Integer.parseInt(data.get(0));
 				controller.getDB().removeRow(categoryID);
 				controller.getUser().getCalendar().removeCategory(categoryID);
+				successMessage = "Category #" + String.valueOf(categoryID) + " has been removed from your calendar";
+				popupSuccess(windowTitle, successMessage);
 				break;
 			case 5: // Remove Event
 				int eventID = Integer.parseInt(data.get(0));
 				controller.getDB().removeRow(eventID);
 				controller.getUser().getCalendar().removeEvent(eventID);
+				successMessage = "Event #" + String.valueOf(eventID) + " has been removed from your calendar";
+				popupSuccess(windowTitle, successMessage);
 				break;
 			case 6:
 				break;
@@ -248,22 +256,22 @@ public class EditGUI extends JFrame{
     		String windowTitle = "";
 			switch(option) {
 			case 0:
-				windowTitle = "Error Creating Campus Course"; 
+				windowTitle = "Error Adding Event"; 
 				break;
 			case 1:
-				windowTitle = "Error Creating Online Course"; 
+				windowTitle = "Error Adding Category"; 
 				break;
 			case 2:
-				windowTitle = "Error Assigning Campus Course to Classroom"; 
+				windowTitle = "Error Adding Set"; 
 				break;
 			case 3:
-				windowTitle = "Error Adding Department to University"; 
+				windowTitle = "Error Removing Set"; 
 				break;
 			case 4:
-				windowTitle = "Error"; 
+				windowTitle = "Error Removing Category"; 
 				break;
 			case 5:
-				windowTitle = "Error"; 
+				windowTitle = "Error Removing Event"; 
 				break;
 			}
 			return windowTitle;
@@ -305,66 +313,66 @@ public class EditGUI extends JFrame{
 		// option 0: add event 
 		private void handleAddEvent(){ 
 			String[] labels = {
-				"Parent ID:",
+				"Parent ID: ",
 				"Name: ",
-				"Description",
-				"Date: ",
-				"Urgency: "
+				"Description: ",
+				"Date (yyyymmdd): ",
+				"Urgency (1-10): "
 			};
-			createInputWindow("Add New Event", labels, 0, 300, 275);
+			createInputWindow("Add New Event", labels, 0, 300, 250);
 		}
 		// option 1: add category 
 		private void handleAddCategory(){ 
 			String[] labels = {"Parent ID", "Name: "};
-			createInputWindow("Create New Category", labels, 1, 300, 275);	
+			createInputWindow("Create New Category", labels, 1, 300, 175);	
 		}
 		// option 2: add set
 		private void handleAddSet(){ 
 			String[] labels = {"Name: "};
-			createInputWindow("Create New Set", labels, 2, 300, 200);
+			createInputWindow("Create New Set", labels, 2, 300, 150);
 		}
 		// option 3: remove set
 		private void handleRemoveSet(){ 
 			String[] labels = {"Set ID: "};
-			createInputWindow("Remove Set", labels, 3, 300, 275);		
+			createInputWindow("Remove Set", labels, 3, 300, 150);		
 		}	
 		// option 4: remove event
 		private void handleRemoveEvent(){ 
 			String[] labels = {"Event ID: "};
-			createInputWindow("Remove Event", labels, 4, 300, 200);
+			createInputWindow("Remove Event", labels, 4, 300, 150);
 		}
 		// option 5: remove category
 		private void handleRemoveCategory(){ 
 			String[] labels = {"Category ID: "};
-			createInputWindow("Remove Category", labels, 5, 300, 275);	
+			createInputWindow("Remove Category", labels, 5, 300, 150);	
 		}
 		
 		public void handleViewSets() {
-			JFrame frame = buildJFrame("View Sets", 300, 300);
+			JFrame frame = buildJFrame("View Sets", 500, 300);
 			String[] columnNames = {"Location", "sID", "Set Name"};
 			int[] columnWidths = {20, 10, 70};
 		    Object[][] setData = this.getSetTableData();
-		    frame = createDisplayWindow(frame, columnNames, columnWidths, setData, 300, 300);
+		    frame = createDisplayWindow(frame, columnNames, columnWidths, setData, 500, 300);
 		    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        frame.pack();
 	        frame.setVisible(true);
 		}
 		public void handleViewCategories() {
-			JFrame frame = buildJFrame("View Categories", 300, 300);
+			JFrame frame = buildJFrame("View Categories", 500, 300);
 			String[] columnNames = {"Location", "pID", "cID", "Category Name"};
-			int[] columnWidths = {10,10,10,60};
+			int[] columnWidths = {10,5,5,70};
 			Object[][] categoryData = this.getCategoryTableData();
-		    frame = createDisplayWindow(frame, columnNames, columnWidths, categoryData, 300, 300);
+		    frame = createDisplayWindow(frame, columnNames, columnWidths, categoryData, 500, 300);
 		    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        frame.pack();
 	        frame.setVisible(true);
 		}
 		public void handleViewEvents() {
-			JFrame frame = buildJFrame("View Events", 400, 300);
+			JFrame frame = buildJFrame("View Events", 500, 300);
 			String[] columnNames = {"Location", "pID", "eID", "Event Name", "Description", "Date", "Urgency"};
-			int[] columnWidths = {10,5,5,30,30, 10, 10};
+			int[] columnWidths = {10,3,3,30,30, 10, 5};
 		    Object[][] eventData = this.getEventTableData();
-		    frame = createDisplayWindow(frame, columnNames, columnWidths, eventData, 400, 300);
+		    frame = createDisplayWindow(frame, columnNames, columnWidths, eventData, 500, 300);
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        frame.pack();
 	        frame.setVisible(true);
@@ -444,6 +452,7 @@ public class EditGUI extends JFrame{
 				table.getColumnModel().getColumn(i).setPreferredWidth(width);
 				i++;
 			}
+			table.setRowHeight(25);
 		    return table;
 		}
 		
@@ -473,7 +482,7 @@ public class EditGUI extends JFrame{
 			layout.setVerticalGroup(vGroup);
 			frame.add(panel);	
 			panel = new JPanel();
-			JButton okButton = new JButton("Save");
+			JButton okButton = new JButton("OK");
 			okButton.addActionListener(new OKListener(frame, textFieldList, option));
 			JButton cancelButton = new JButton("Cancel");
 			cancelButton.addActionListener(new ExitListener(frame));
@@ -521,7 +530,7 @@ public class EditGUI extends JFrame{
 		    int rowCount = 0;
 		    
 		    for(datatype.Set s : sets) {
-		    	setData[rowCount][0] = controller.getUser().getUsername();
+		    	setData[rowCount][0] = controller.getUser().getUsername() + "/";
 		    	setData[rowCount][1] = s.getID();
 		    	setData[rowCount][2] = s.getLabel();
 		    	rowCount += 1;

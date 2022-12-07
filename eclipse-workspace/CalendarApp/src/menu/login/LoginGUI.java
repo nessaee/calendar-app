@@ -22,7 +22,7 @@ public class LoginGUI extends JFrame {
 		super("Login Menu");
 		this.db = db;
 		
-		setSize(400, 200);
+		setSize(400, 150);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setBackground(Color.white);
 		add(new JLabel("<HTML><center><b>Welcome to the ECE373 Calendar Project</b>"

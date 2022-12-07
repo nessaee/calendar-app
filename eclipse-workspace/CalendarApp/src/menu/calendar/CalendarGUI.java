@@ -34,7 +34,6 @@ import org.jdatepicker.impl.UtilCalendarModel;
 import org.jdatepicker.impl.UtilDateModel;
 import menu.*
 ;
-import menu.main.User;
 
 public class CalendarGUI extends JFrame{
 	

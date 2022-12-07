@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import datatype.User;
 import db.setup.DB;
 import menu.calendar.CalendarGUI;
 import menu.edit.EditController;
@@ -35,7 +36,7 @@ public class MainGUI extends JFrame {
 		this.user.updateCalendar(db);
 		this.user.getCalendar().printCalendar();
 		this.username = un;
-		setSize(400, 200);
+		setSize(300, 150);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		this.setLocationRelativeTo(null);
 		setBackground(Color.white);
