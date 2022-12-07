@@ -22,12 +22,12 @@ public class LoginGUI extends JFrame {
 		super("Login Menu");
 		this.db = db;
 		
-		setSize(1000, 300);
+		setSize(400, 200);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setBackground(Color.white);
-		add(new JLabel("<HTML><center>Welcome to the ECE373 Calendar Project" + "<BR>This is the Login menu. "
-						+ "Please select Register if you would like to create a new user, Login if you would"
-						+ " like to login to an existing account, or Exit to exit the program</center><HTML>"));
+		add(new JLabel("<HTML><center><b>Welcome to the ECE373 Calendar Project</b>"
+						+ "<BR>Select Register if you would like to create a new account<BR>Select Login if you would"
+						+ " like to login to an existing account<BR>Select Exit to exit the program</center><HTML>"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		buildGUI();
 		setVisible(true);
@@ -174,8 +174,10 @@ public class LoginGUI extends JFrame {
 				if(login.getUserID() == -1) {
 					JOptionPane.showMessageDialog(null, "Username/Password does not exist", "Login Menu", JOptionPane.PLAIN_MESSAGE);
 				}
-				else {
+				else { 
+					dispose();
 					MainGUI mainMenu = new MainGUI(db, login.getUserID(), u);
+
 				}
 			}
 		}

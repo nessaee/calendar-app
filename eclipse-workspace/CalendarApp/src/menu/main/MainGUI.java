@@ -15,6 +15,7 @@ import db.setup.DB;
 import menu.calendar.CalendarGUI;
 import menu.edit.EditController;
 import menu.edit.EditGUI;
+import menu.login.LoginGUI;
 
 public class MainGUI extends JFrame {
 	private JPanel panel;
@@ -24,6 +25,7 @@ public class MainGUI extends JFrame {
 	private DB db;
 	private User user;
 	private String username;
+
 	
 	public MainGUI(DB db, int userID, String un) {
 		super("Main Menu");
@@ -31,11 +33,11 @@ public class MainGUI extends JFrame {
 		this.user = new User(userID, db);
 		this.username = un;
 		
-		setSize(600, 300);
+		setSize(400, 200);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setBackground(Color.white);
-		add(new JLabel("<HTML><center>Welcome to the Main Menu " + un + "<BR>Please select Edit to edit your calendar,"
-						+ " Display to display your calendar, or Exit to exit the Main Menu</center><HTML>"));
+		add(new JLabel("<HTML><center><b>Welcome to the Main Menu " + un + "</b><BR>Select Edit to edit your calendar"
+						+ "<BR>Select Display to display your calendar<BR>Select Logout to exit the Login Menu</center><HTML>"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		buildGUI();
 		setVisible(true);
@@ -56,7 +58,7 @@ public class MainGUI extends JFrame {
 		displayButton.setBackground(Color.green);
 		displayButton.addActionListener(new ActionPerformed());
 		
-		exitButton = new JButton("Exit");
+		exitButton = new JButton("Logout");
 		exitButton.setBounds(1500, 1000, 80, 30);
 		exitButton.setBackground(Color.red);
 		exitButton.addActionListener(new ActionPerformed());
@@ -86,8 +88,8 @@ public class MainGUI extends JFrame {
 		}
 		
 		private void handleEdit() {
-			Scanner input = new Scanner(System.in);
-			EditController editController = new EditController(user, db, input);
+			user.updateCalendar(db);
+			EditController editController = new EditController(user, db);
 			EditGUI edit = new EditGUI("Edit Menu", editController);
 		}
 		
@@ -97,6 +99,7 @@ public class MainGUI extends JFrame {
 		
 		private void handleExit() {
 			dispose();
+			LoginGUI login = new LoginGUI(db);
 		}
 	}
 }

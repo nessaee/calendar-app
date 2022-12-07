@@ -8,7 +8,9 @@ import java.io.PrintStream;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import datatype.*;
 import datatype.Event;
@@ -24,8 +26,8 @@ public class EditGUI extends JFrame{
 	
 	// File submenus
     
-	//JMenuItem objects are added to JMenu objects as the drop down selections.
-	private JMenuItem viewSets, viewCategories, viewEvents; 
+	// View Objects
+	private JMenuItem viewSets, viewCategories, viewEvents, viewAll; 
 	// Add Object
 	private JMenuItem addSet, addCategory, addEvent; 
 	// Remove Object
@@ -33,7 +35,10 @@ public class EditGUI extends JFrame{
 	
 	public EditGUI(String windowTitle, EditController EC) {
 		super(windowTitle);
+		
 		this.controller = EC;
+		//this.controller.getUser().updateCalendar(this.controller.getDB());
+		//this.controller.getUser().getCalendar().printCalendar();
 		setSize(300, 100);
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JLabel("<HTML><center>Welcome to the Editor" +
@@ -52,14 +57,17 @@ public class EditGUI extends JFrame{
 	    viewSets = new JMenuItem ("Set");
 	    viewCategories = new JMenuItem ("Category");
 	    viewEvents = new JMenuItem ("Event");
+	    viewAll = new JMenuItem ("All");
 	    
 	    viewSets.addActionListener(new MenuListener());
 	    viewCategories.addActionListener(new MenuListener());
 	    viewEvents.addActionListener(new MenuListener());
+	    viewAll.addActionListener(new MenuListener());
 	    
 	    viewMenu.add(viewSets);
 	    viewMenu.add(viewCategories);
 	    viewMenu.add(viewEvents);
+	    viewMenu.add(viewAll);
 	    menuBar.add(viewMenu);
 	    
 		/* Add Menu */
@@ -122,9 +130,11 @@ public class EditGUI extends JFrame{
     	ArrayList<JTextField> textFieldList;
     	ArrayList<String> data = new ArrayList<String>();
     	int option;
+    	JFrame frame;
     
     	
-    	public  OKListener(ArrayList<JTextField> textFieldList, int option) {
+    	public  OKListener(JFrame frame, ArrayList<JTextField> textFieldList, int option) {
+    		this.frame = frame;
     		this.option = option;
     		this.textFieldList = textFieldList;
     	}
@@ -163,7 +173,7 @@ public class EditGUI extends JFrame{
 				String setName = data.get(0);
 				controller.addSet(controller.createSet(setName));
 				//System.out.println(controller.createSet(setName));
-				controller.getUser().getCalendar().printCalendar();
+				//controller.getUser().getCalendar().printCalendar();
 				successMessage = "Set " + setName + "has been added to your calendar";
 				//popupSuccess(windowTitle, successMessage);
 				break;
@@ -190,6 +200,7 @@ public class EditGUI extends JFrame{
 				break;
 				
 			}
+			frame.dispose();
 			
 		}
 	
@@ -207,7 +218,6 @@ public class EditGUI extends JFrame{
     	public void popupSuccess(String title, String label) {
     		JOptionPane.showMessageDialog(new JFrame(), label, title, JOptionPane.INFORMATION_MESSAGE);
     	}
-    	
     	public String getErrorWindowTitle(int option) {
     		String windowTitle = "";
 			switch(option) {
@@ -232,7 +242,6 @@ public class EditGUI extends JFrame{
 			}
 			return windowTitle;
 		}
-    	
     	public boolean checkEmpty(String windowTitle) {
     		boolean emptyError = false;
 			for(JTextField textField : this.textFieldList) {
@@ -254,35 +263,20 @@ public class EditGUI extends JFrame{
 		//this is the method MenuListener must implement, as it comes from the ActionListener interface.
 		public void actionPerformed(ActionEvent e) {
 			JMenuItem source = (JMenuItem)(e.getSource());
-			if(source.equals(addEvent)){
-				handleAddEvent();
-			}
-			else if(source.equals(addCategory)){
-				handleAddCategory();
-			}
-			else if(source.equals(addSet)){ 
-				handleAddSet(); 
-			}
-			else if(source.equals(removeSet)){ 
-				handleRemoveSet(); 
-			}
-			else if(source.equals(removeEvent)){ 
-				handleRemoveEvent(); 
-			}
-			else if(source.equals(removeCategory)){ 
-				handleRemoveCategory();
-			}
-			else if(source.equals(viewSets)){ 
-				handleViewSets(); 
-			}
-			else if(source.equals(viewCategories)){
-				handleViewCategories();
-			}
-			else if(source.equals(viewEvents)){ 
-				handleViewEvents(); 
-			}
+			if      (source.equals(addEvent))       handleAddEvent();		
+			else if (source.equals(addCategory))    handleAddCategory();		
+			else if (source.equals(addSet))         handleAddSet(); 		
+			else if (source.equals(removeSet))      handleRemoveSet(); 		
+			else if (source.equals(removeEvent))    handleRemoveEvent(); 		
+			else if (source.equals(removeCategory)) handleRemoveCategory();		
+			else if (source.equals(viewSets))       handleViewSets(); 		
+			else if (source.equals(viewCategories)) handleViewCategories();			
+			else if (source.equals(viewEvents))     handleViewEvents(); 		
+			else if (source.equals(viewAll))        handleViewAll(); 
+			
 		}
 		
+		// option 0: add event 
 		private void handleAddEvent(){ 
 			String[] labels = {
 				"Name: ",
@@ -291,111 +285,147 @@ public class EditGUI extends JFrame{
 				"Date: ",
 				"Urgency: "
 			};
-			// option 0: add event 
 			createInputWindow("Add New Event", labels, 0, 300, 275);
 		}
+		// option 1: add category 
 		private void handleAddCategory(){ 
 			String[] labels = {"Name: ", "Parent ID"};
-			// option 1: add category 
 			createInputWindow("Create New Category", labels, 1, 300, 275);	
 		}
+		// option 2: add set
 		private void handleAddSet(){ 
 			String[] labels = {"Name: "};
-			// option 2: add set
 			createInputWindow("Create New Set", labels, 2, 300, 200);
 		}
+		// option 3: remove set
 		private void handleRemoveSet(){ 
 			String[] labels = {"Set ID: "};
-			// option 3: remove set
 			createInputWindow("Remove Set", labels, 3, 300, 275);		
 		}	
+		// option 4: remove event
 		private void handleRemoveEvent(){ 
 			String[] labels = {"Event ID: ",};
-			// option 3: remove event
 			createInputWindow("Remove Event", labels, 4, 300, 200);
 		}
+		// option 5: remove category
 		private void handleRemoveCategory(){ 
 			String[] labels = {"Category ID: "};
-			// option 5: remove category
 			createInputWindow("Remove Category", labels, 5, 300, 275);	
 		}
 		
 		public void handleViewSets() {
+			datatype.Calendar calendar = controller.getUser().getCalendar();
+			JFrame frame = buildJFrame("View Sets", 300, 300);
 			String[] columnNames = {"Set ID", "Set Name"};
-		    datatype.Calendar calendar = controller.getUser().getCalendar();
-		    ArrayList<datatype.Set> sets = calendar.getSetList();
-		    Object[][] setData = new Object[sets.size()][2];
-		    int rowCount = 0;
-		    for(datatype.Set s : sets) {
-		    	setData[rowCount][0] = s.getID();
-		    	setData[rowCount][1] = s.getLabel();
-		    	rowCount += 1;
-		    }
-		    createDisplayWindow("View Sets", columnNames, setData);
-		   
-		}
-		public void handleViewCategories() {
-			String[] columnNames = {"Parent ID", "Category ID", "Category Name"};
-			datatype.Calendar calendar = controller.getUser().getCalendar();
-		    ArrayList<Category> categories = calendar.getCategoryList();
-		    Object[][] categoryData = new Object[categories.size()][3];
-		    int rowCount = 0;
-		    for(datatype.Category c : categories) {
-		    	categoryData[rowCount][0] = c.getParentID();
-		    	categoryData[rowCount][1] = c.getID();
-		    	categoryData[rowCount][2] = c.getLabel();
-		    	rowCount += 1;
-		    }
-		    
-		    createDisplayWindow("View Categories", columnNames, categoryData);
-			
-		}
-		public void handleViewEvents() {
-			String[] columnNames = {"Parent ID", "Event ID", "Event Name", "Description", "Date", "Urgency"};
-			datatype.Calendar calendar = controller.getUser().getCalendar();
-		    ArrayList<Event> events = calendar.getEventList();
-		    Object[][] eventData = new Object[events.size()][6];
-		    int rowCount = 0; 
-		    for(Event e : events) {
-		    	eventData[rowCount][0] = e.getParentID();
-		    	eventData[rowCount][1] = e.getID();
-		    	eventData[rowCount][2] = e.getLabel();
-		    	eventData[rowCount][3] = e.getDescription();
-		    	eventData[rowCount][4] = e.getDate();
-		    	eventData[rowCount][5] = e.getUrgency();
-		    	rowCount += 1;
-		    }
-		    createDisplayWindow("View Events", columnNames, eventData);
-			
-		}
-
-		private void createDisplayWindow(String windowTitle, String[] columnNames, Object[][] data) {
-			
-			JFrame frame = buildJFrame(windowTitle, 300, 300);
-			Container contentPane = frame.getContentPane();
-	
-			DefaultTableModel tableModel = new DefaultTableModel();
-			JTable table = new JTable();
-			for(String columnName : columnNames){
-				tableModel.addColumn(columnName);
-			}
-			for(Object[] o : data) {
-				tableModel.addRow(o);
-			}
-		    
-		
-		    table.setModel(tableModel);
-		    
-		    JScrollPane scrollPane = new JScrollPane(table);
-			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-			//scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-			
-	        contentPane.setLayout(new BorderLayout ());
-	        contentPane.add(scrollPane, BorderLayout.CENTER);
-	        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			int[] columnWidths = {40,60};
+		    Object[][] setData = this.getSetTableData(calendar);
+		    frame = createDisplayWindow(frame, columnNames, columnWidths, setData, 300, 300);
+		    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        frame.pack();
 	        frame.setVisible(true);
 		}
+		public void handleViewCategories() {
+			datatype.Calendar calendar = controller.getUser().getCalendar();
+			JFrame frame = buildJFrame("View Categories", 300, 300);
+			String[] columnNames = {"Parent ID", "Category ID", "Category Name"};
+			int[] columnWidths = {10,10,80};
+			Object[][] categoryData = this.getCategoryTableData(calendar);
+		    frame = createDisplayWindow(frame, columnNames, columnWidths, categoryData, 300, 300);
+		    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	        frame.pack();
+	        frame.setVisible(true);
+			
+		}
+		public void handleViewEvents() {
+			datatype.Calendar calendar = controller.getUser().getCalendar();
+			JFrame frame = buildJFrame("View Events", 400, 300);
+			String[] columnNames = {"Parent ID", "Event ID", "Event Name", "Description", "Date", "Urgency"};
+			int[] columnWidths = {3, 3, 34, 35, 15, 10};
+		    Object[][] eventData = this.getEventTableData(calendar);
+		    frame = createDisplayWindow(frame, columnNames, columnWidths, eventData, 400, 300);
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	        frame.pack();
+	        frame.setVisible(true);
+		}
+		
+		public void handleViewAll() {
+			datatype.Calendar calendar = controller.getUser().getCalendar();
+			JFrame frame = buildJFrame("View All", 750, 300);
+			frame.setLocationRelativeTo(null);
+			String[] eventColumnNames = {"pID", "eID", "Event Name", "Description", "Date", "Urgency"};
+			int[] eventColumnWidths = {3, 3, 34, 35, 15, 10};
+			Object[][] eventData = this.getEventTableData(calendar);
+			JTable eventTable = this.createTable(eventColumnNames, eventData, eventColumnWidths);
+			JScrollPane eventSP = this.createScrollPane(eventTable, 400, 300);
+			
+			String[] categoryColumnNames = {"pID", "cID", "Category Name"};
+			int[] categoryColumnWidths = {10,10,80};
+			Object[][] categoryData = this.getCategoryTableData(calendar);
+			JTable categoryTable = this.createTable(categoryColumnNames, categoryData, categoryColumnWidths);
+			JScrollPane categorySP = this.createScrollPane(categoryTable, 200, 300);
+			
+			String[] setColumnNames = {"sID", "Set Name"};
+			int[] setColumnWidths = {40,60};
+		    Object[][] setData = this.getSetTableData(calendar);
+		    JTable setTable = this.createTable(setColumnNames, setData, setColumnWidths);
+		    JScrollPane setSP = this.createScrollPane(setTable, 150, 300);
+		    
+		    frame = this.createDisplayWindow(frame, eventSP, categorySP, setSP);
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	        //frame.setPreferredSize(new Dimension(frameDimension[0],frameDimension[1]));
+	        frame.pack();
+	        frame.setVisible(true);
+		}
+
+		private JFrame createDisplayWindow(JFrame frame, String[] columnNames, int[] columnWidths, Object[][] data, int dimensionX, int dimensionY) {	
+			Container contentPane = frame.getContentPane();
+			JTable table = createTable(columnNames, data, columnWidths);
+			JScrollPane scrollPane = this.createScrollPane(table, dimensionX, dimensionY);
+	        contentPane.setLayout(new BorderLayout ());
+	        contentPane.add(scrollPane, BorderLayout.CENTER);
+	        return frame;
+	       
+		}
+		
+		private JFrame createDisplayWindow(JFrame frame, JScrollPane eventSP, JScrollPane categorySP, JScrollPane setSP) {
+			Container contentPane = frame.getContentPane();
+	        contentPane.setLayout(new BorderLayout ());
+	        contentPane.add(setSP, BorderLayout.WEST);
+	        contentPane.add(categorySP, BorderLayout.CENTER);
+	        contentPane.add(eventSP, BorderLayout.EAST);
+	        return frame;
+	       
+		}
+		
+		
+		private JScrollPane createScrollPane(JTable table,  int dimensionX, int dimensionY) {
+			Dimension dimension = new Dimension(dimensionX, dimensionY);
+		    JScrollPane scrollPane = new JScrollPane(table);
+			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			scrollPane.setPreferredSize(dimension);
+			//scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+	        return scrollPane;
+	       
+		}
+		
+		private JTable createTable(String[] columnNames, Object[][] data, int[] columnWidths) {
+		
+			DefaultTableModel tableModel = new DefaultTableModel();
+			for(String columnName : columnNames) tableModel.addColumn(columnName);
+			for(Object[] o : data) tableModel.addRow(o);
+			JTable table = new JTable();
+			DefaultTableCellRenderer renderer = (DefaultTableCellRenderer)table.getDefaultRenderer(Object.class);
+		    renderer.setHorizontalAlignment( SwingConstants.RIGHT );
+		    table.setModel(tableModel);
+		    //table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		    int i = 0;
+			for(int width : columnWidths) {
+				table.getColumnModel().getColumn(i).setPreferredWidth(width);
+				i++;
+			}
+		    return table;
+		}
+		
 		private void createInputWindow(String name, String[] labels, int option, int width, int height) {
 			JFrame frame = buildJFrame(name, width, height);
 			JComponent panel = new JPanel();
@@ -422,8 +452,8 @@ public class EditGUI extends JFrame{
 			layout.setVerticalGroup(vGroup);
 			frame.add(panel);	
 			panel = new JPanel();
-			JButton okButton = new JButton("OK");
-			okButton.addActionListener(new OKListener(textFieldList, option));
+			JButton okButton = new JButton("Save");
+			okButton.addActionListener(new OKListener(frame, textFieldList, option));
 			JButton cancelButton = new JButton("Cancel");
 			cancelButton.addActionListener(new ExitListener(frame));
 			panel.add(okButton);
@@ -431,6 +461,46 @@ public class EditGUI extends JFrame{
 			frame.add(panel);
 			frame.add(panel);
 	        frame.setVisible(true);
+		}
+		public Object[][] getEventTableData(datatype.Calendar calendar) {
+			ArrayList<Event> events = calendar.getEventList();
+		    Object[][] eventData = new Object[events.size()][6];
+		    int rowCount = 0; 
+		    for(Event e : events) {
+		    	eventData[rowCount][0] = e.getParentID();
+		    	eventData[rowCount][1] = e.getID();
+		    	eventData[rowCount][2] = e.getLabel();
+		    	eventData[rowCount][3] = e.getDescription();
+		    	eventData[rowCount][4] = e.getDate();
+		    	eventData[rowCount][5] = e.getUrgency();
+		    	rowCount += 1;
+		    }
+			return eventData;
+		}
+		
+		public Object[][] getCategoryTableData(datatype.Calendar calendar) {
+			ArrayList<Category> categories = calendar.getCategoryList();
+		    Object[][] categoryData = new Object[categories.size()][3];
+		    int rowCount = 0;
+		    for(datatype.Category c : categories) {
+		    	categoryData[rowCount][0] = c.getParentID();
+		    	categoryData[rowCount][1] = c.getID();
+		    	categoryData[rowCount][2] = c.getLabel();
+		    	rowCount += 1;
+		    }
+		    return categoryData;
+		}
+		
+		public Object[][] getSetTableData(datatype.Calendar calendar) {
+			ArrayList<datatype.Set> sets = calendar.getSetList();
+		    Object[][] setData = new Object[sets.size()][2];
+		    int rowCount = 0;
+		    for(datatype.Set s : sets) {
+		    	setData[rowCount][0] = s.getID();
+		    	setData[rowCount][1] = s.getLabel();
+		    	rowCount += 1;
+		    }
+			return setData;
 		}
 		
 	}
