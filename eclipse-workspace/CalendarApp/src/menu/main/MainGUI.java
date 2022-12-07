@@ -25,14 +25,16 @@ public class MainGUI extends JFrame {
 	private DB db;
 	private User user;
 	private String username;
-
+	EditController editController;
 	
 	public MainGUI(DB db, int userID, String un) {
 		super("Main Menu");
 		this.db = db;
 		this.user = new User(userID, un, db);
+		editController = new EditController(user, db);
+		this.user.updateCalendar(db);
+		this.user.getCalendar().printCalendar();
 		this.username = un;
-		user.updateCalendar(db);
 		setSize(400, 200);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setBackground(Color.white);
@@ -88,9 +90,9 @@ public class MainGUI extends JFrame {
 		}
 		
 		private void handleEdit() {
-			user.updateCalendar(db);
-			EditController editController = new EditController(user, db);
+			dispose();
 			EditGUI edit = new EditGUI("Edit Menu", editController);
+		
 		}
 		
 		private void handleDisplay() {

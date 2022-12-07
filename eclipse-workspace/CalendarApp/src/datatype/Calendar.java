@@ -13,6 +13,7 @@ public class Calendar {
 	private ArrayList<Set> sets;
 	private ArrayList<Event> events;
 	private ArrayList<Category> categories;
+	ArrayList<Node> nodes2 = new ArrayList<Node>();
 	
 	/* This is a Calendar class used to hold User's sets, categories, and events. It populates with values from the database
 	 * upon construction, and is used to display the calendar to the User. Any time a set, category, or event is added or removed
@@ -27,7 +28,14 @@ public class Calendar {
 
 	// Method used to populate the calendar with values from the database
 	public void update(int ID, DB db) {
-		this.load(ID, db);
+		this.clear();
+        this.load(ID, db);
+        for(Set s : sets) {
+            this.load(s.getID(), db);
+        }
+        for(Category c : categories) {
+            this.load(c.getID(), db);
+        }
 	}
 	
 	// Helper method for the update method. This takes in an ID and database as parameters, and
@@ -35,9 +43,10 @@ public class Calendar {
 	public void load(int ID, DB db) {
 		int currentID = 0;
 		String tablename;
-		this.clear();
+		this.nodes.clear();
 		for(ArrayList<ArrayList<Object>> table : db.loadAllSubsets(ID)) {
 			if(!table.isEmpty()) {
+				//System.out.println(table);
 				tablename = Edit.getTableName((int) table.get(0).get(1));
 				for(ArrayList<Object> row : table) {
 					if(!row.isEmpty()) {
@@ -60,6 +69,7 @@ public class Calendar {
 			}
 		}
 		this.parseNodes();
+
 	}
 	
 	// Method to print all Sets, Categories, and Events in the User's calendar

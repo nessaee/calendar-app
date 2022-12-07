@@ -3,6 +3,8 @@ package menu.main;
 import java.util.ArrayList;
 
 import datatype.Calendar;
+import datatype.Category;
+import datatype.Set;
 import db.setup.DB;
 import menu.calendar.CalendarController;
 
@@ -23,6 +25,12 @@ public class User {
 	}
 	
 	// Constructor that takes in a user ID, and database. It uses the given user ID to populate the calendar field with the database
+	public User(int id, DB db) {
+		this.userID = id;
+		this.calendar = new Calendar();
+	}
+		
+	// Constructor that takes in a user ID, and database. It uses the given user ID to populate the calendar field with the database
 	public User(int id, String username, DB db) {
 		this.username = username;
 		this.userID = id;
@@ -31,7 +39,7 @@ public class User {
 	
 	// Method to update the calendar from the database
 	public void updateCalendar(DB db) {
-		this.calendar.load(this.userID, db);
+		this.calendar.update(this.userID, db);
 	}
 
 	// Getters and Setters
