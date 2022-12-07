@@ -178,12 +178,33 @@ public class Calendar {
 	public void removeSet(Set s) {
 		this.sets.remove(s);
 	}
+	public void removeSet(int ID) {
+		for(Set s : sets) {
+			if(s.getID() == ID){
+				this.sets.remove(s);
+			}
+		}
+	}
 	// Method used to remove a Category object from the categories field of the calendar
 	public void removeCategory(Category c) {
 		this.categories.remove(c);
 	}
+	public void removeCategory(int ID) {
+		for(Category c : categories) {
+			if(c.getID() == ID){
+				this.categories.remove(c);
+			}
+		}
+	}
 	// Method used to remove an Event object from the events field of the calendar
 	public void removeEvent(Event e) {
 		this.events.remove(e);
+	}
+	public void removeEvent(int ID) {
+		for(Event e : events) {
+			if(e.getID() == ID){
+				this.events.remove(e);
+			}
+		}
 	}
 }
