@@ -20,24 +20,28 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilCalendarModel;
 import org.jdatepicker.impl.UtilDateModel;
-
-public class CalendarGUI extends JFrame{
+import menu.*
+;
+import menu.main.User;public class CalendarGUI extends JFrame{
 	
 	private int DateSelected;
 	private UtilDateModel model = new UtilDateModel();
 	JFrame frame;
-	public CalendarGUI() {
+	User user;
+	public CalendarGUI(User user) {
 		this.frame = new JFrame("Calendar");
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.setSize(400,300);
 		this.frame.setLayout(new BorderLayout());
 		this.frame.setLocationRelativeTo(null);
+		this.user = user;
 	}
 	/**
 	 * 
@@ -90,15 +94,28 @@ public class CalendarGUI extends JFrame{
 		
 		frame.setVisible(true);
 	}
-	
-	public void VeiwDay(datatype.Date D) {
-		//JTable here
-		System.out.println(D);
-		
-		JTable table = new JTable();
-		
-		frame.add(table);
+	public class DateLabelFormatter extends AbstractFormatter {
+
+	    private String datePattern = "MM/dd/yyyy";
+	    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+
+	    @Override
+	    public Object stringToValue(String text) throws ParseException {
+	        return dateFormatter.parseObject(text);
+	    }
+
+	    @Override
+	    public String valueToString(Object value) throws ParseException {
+	        if (value != null) {
+	            Calendar cal = (Calendar) value;
+	            return dateFormatter.format(cal.getTime());
+	        }
+
+	        return "";
+	    }
 	}
+	
+	
 	
 	private class ViewEventsListener implements MouseListener {
 
@@ -111,7 +128,7 @@ public class CalendarGUI extends JFrame{
 			frame.revalidate();
 			frame.repaint();
 			//open next page (Month starts at 0 for some reason)
-			VeiwDay(new datatype.Date(model.getMonth() + 1 ,model.getDay(),model.getYear()));
+			ViewDay(new datatype.Date(model.getMonth() + 1 ,model.getDay(),model.getYear()));
 		}
 
 		@Override
@@ -139,25 +156,47 @@ public class CalendarGUI extends JFrame{
 		}
 		
 	}
-	public class DateLabelFormatter extends AbstractFormatter {
-
-	    private String datePattern = "MM/dd/yyyy";
-	    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
-
-	    @Override
-	    public Object stringToValue(String text) throws ParseException {
-	        return dateFormatter.parseObject(text);
-	    }
-
-	    @Override
-	    public String valueToString(Object value) throws ParseException {
-	        if (value != null) {
-	            Calendar cal = (Calendar) value;
-	            return dateFormatter.format(cal.getTime());
-	        }
-
-	        return "";
-	    }
+	
+	public void ViewDay(datatype.Date D) {
+		//JTable here
+		System.out.println(D);
+		JTable table = new JTable();
+		Object[] Columns = {"Name", "Description","Categories","Sets",};
+		DefaultTableModel model = new DefaultTableModel();
+		
+		model.setColumnIdentifiers(Columns);
+		
+		for(Event e : user.getCalendar().getEventList()) {
+//			System.out.println(e.getLabel() + " " + e.getDate().toInt());
+//			System.out.println("Chosen date(as int): " + D.toInt());
+//			System.out.println();
+			
+			if (e.getDate().toInt().equals(D.toInt())) {
+				//Display event title
+				System.out.println(e.getLabel());
+			
+				//Display event description
+				
+				
+				//Display categories event is a part of
+				
+				
+				//Display sets event is a part of 
+				
+				
+				//Display some kind of divider before next event is displayed
+			}
+		}
+		
+		table.setModel(model);
+		table.setRowHeight(30);
+		table.setAutoCreateColumnsFromModel(true);
+		table.setAutoCreateRowSorter(true);
+		frame.add(table);
+		frame.setVisible(true);
 	}
+	
+	
+	
 	
 }
