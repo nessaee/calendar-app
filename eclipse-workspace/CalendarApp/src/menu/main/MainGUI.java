@@ -119,8 +119,18 @@ public class MainGUI extends JFrame {
 		}
 		
 		private void handleInfo() {
-			String infoMessage = "Information";
-			JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: ", JOptionPane.INFORMATION_MESSAGE);
+			String infoMessage = "How to use the project: \r\n"
+					+ "\r\n"
+					+ "Once an account has been made, you are now ready to start adding elements to your calendar!\nTo add elements to your calendar, first click on the edit button. Now you can choose to view, add, or remove elements from your calendar.\r\n"
+					+ "\r\n"
+					+ "Here are the ranges for the ID’s:\r\n"
+					+ "Set: 0-100\r\n"
+					+ "Category: 101-500\r\n"
+					+ "Event: 501-1000\r\n"
+					+ "User: > 1000\r\n"
+					+ "\r\n"
+					+ "Set the parent ID to 0 if you do not want the user to be the parent";
+			JOptionPane.showMessageDialog(null, infoMessage, "InfoBox ", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }
