@@ -321,6 +321,7 @@ public class Edit {
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
+			return "";
 		}
 		return name;
     }

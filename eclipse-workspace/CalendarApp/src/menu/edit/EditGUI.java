@@ -549,12 +549,15 @@ public class EditGUI extends JFrame{
 	        frame.setVisible(true);
 		}
 		public Object[][] getEventTableData() {
+			controller.getUser().updateCalendar(controller.getDB());
 			ArrayList<Event> events = controller.getUser().getCalendar().getEventList();
 		    Object[][] eventData = new Object[events.size()][7];
 		    int rowCount = 0; 
-		    
+		    String location = "";
 		    for(Event e : events) {
-		    	eventData[rowCount][0] = controller.getDB().getName(e.getParentID());
+		    	location = controller.getDB().getName(e.getParentID());
+		    	if(location.equals("")) continue;
+		    	eventData[rowCount][0] = location;
 		    	eventData[rowCount][1] = e.getParentID();
 		    	eventData[rowCount][2] = e.getID();
 		    	eventData[rowCount][3] = e.getLabel();
@@ -567,11 +570,15 @@ public class EditGUI extends JFrame{
 		}
 		
 		public Object[][] getCategoryTableData() {
+			controller.getUser().updateCalendar(controller.getDB());
 			ArrayList<Category> categories = controller.getUser().getCalendar().getCategoryList();
 		    Object[][] categoryData = new Object[categories.size()][4];
 		    int rowCount = 0;
+		    String location = "";
 		    for(datatype.Category c : categories) {
-		    	categoryData[rowCount][0] = controller.getDB().getName(c.getParentID());
+		    	location = controller.getDB().getName(c.getParentID());
+		    	if(location.equals("")) continue;
+		    	categoryData[rowCount][0] = location;
 		    	categoryData[rowCount][1] = c.getParentID();
 		    	categoryData[rowCount][2] = c.getID();
 		    	categoryData[rowCount][3] = c.getLabel();
@@ -581,11 +588,13 @@ public class EditGUI extends JFrame{
 		}
 		
 		public Object[][] getSetTableData() {
+			controller.getUser().updateCalendar(controller.getDB());
 			ArrayList<datatype.Set> sets = controller.getUser().getCalendar().getSetList();
 		    Object[][] setData = new Object[sets.size()][3];
 		    int rowCount = 0;
 		    
 		    for(datatype.Set s : sets) {
+		    	
 		    	setData[rowCount][0] = controller.getUser().getUsername() + "/";
 		    	setData[rowCount][1] = s.getID();
 		    	setData[rowCount][2] = s.getLabel();

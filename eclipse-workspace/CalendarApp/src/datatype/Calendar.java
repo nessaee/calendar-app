@@ -192,6 +192,7 @@ public class Calendar {
 		for(Set s : sets) {
 			if(s.getID() == ID){
 				this.sets.remove(s);
+				break;
 			}
 		}
 	}
@@ -203,6 +204,7 @@ public class Calendar {
 		for(Category c : categories) {
 			if(c.getID() == ID){
 				this.categories.remove(c);
+				break;
 			}
 		}
 	}
@@ -214,6 +216,7 @@ public class Calendar {
 		for(Event e : events) {
 			if(e.getID() == ID){
 				this.events.remove(e);
+				break;
 			}
 		}
 	}
