@@ -84,7 +84,7 @@ public class MainGUI extends JFrame {
 			else if(source.equals(displayButton)) {	// Calls handleLogin if Login is pressed
 				handleDisplay();
 			}
-			else if(source.equals(exitButton)) {
+			else if(source.equals(exitButton)) { 
 				handleExit();
 			}
 		}

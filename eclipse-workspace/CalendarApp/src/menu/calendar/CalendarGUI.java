@@ -38,12 +38,12 @@ import menu.main.User;
 
 public class CalendarGUI extends JFrame{
 	
-	private int DateSelected;
 	private UtilDateModel model = new UtilDateModel();
 	JFrame frame;
 	User user;
 	DB db;
-	public CalendarGUI(User user,DB db) {
+	
+	public CalendarGUI(User user,DB db) { //constructor takes in user (for event information) and Db
 		this.frame = new JFrame("Calendar");
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.setSize(400,300);
@@ -52,10 +52,9 @@ public class CalendarGUI extends JFrame{
 		this.user = user;
 		this.db = db;
 	}
-	/**
-	 * 
-	 */
-	public void CalendarPage() {
+	
+	
+	public void CalendarPage() { //the main page for calendar gui, caling this method begins the calendar
 		
 		//----------------------------------------
        
@@ -103,7 +102,7 @@ public class CalendarGUI extends JFrame{
 		
 		frame.setVisible(true);
 	}
-	public class DateLabelFormatter extends AbstractFormatter {
+	public class DateLabelFormatter extends AbstractFormatter { //date formatter for calendar textbox
 
 	    private String datePattern = "MM/dd/yyyy";
 	    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
@@ -126,7 +125,7 @@ public class CalendarGUI extends JFrame{
 	
 	
 	
-	private class ViewEventsListener implements MouseListener {
+	private class ViewEventsListener implements MouseListener { //event listener for veiw day button
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -139,34 +138,24 @@ public class CalendarGUI extends JFrame{
 			//open next page (Month starts at 0 for some reason)
 			ViewDay(new datatype.Date(model.getMonth() + 1 ,model.getDay(),model.getYear()));
 		}
+	//-----------------unused abstract methods---------------
+	@Override
+	public void mousePressed(MouseEvent e) {}
 
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+	@Override
+	public void mouseReleased(MouseEvent e) {}
 
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+	@Override
+	public void mouseEntered(MouseEvent e) {}
 
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+	@Override
+	public void mouseExited(MouseEvent e) {}
 
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
+	
+	//-------------------------------------------------------
 	}
 	
-	public void ViewDay(datatype.Date D) {
+	public void ViewDay(datatype.Date D) { //the individual day menu
 		
 		
 		System.out.println(D);
