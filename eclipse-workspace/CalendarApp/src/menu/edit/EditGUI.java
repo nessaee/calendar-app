@@ -55,7 +55,7 @@ public class EditGUI extends JFrame{
 	}
 	
 	
-	public void buildGUI() {
+	public void buildGUI() { //this method builds the GUI 
 		menuBar = new JMenuBar();
 		
 		/* View Menu */ 
@@ -125,7 +125,7 @@ public class EditGUI extends JFrame{
 		return frame;
 	}
 	
-	class ButtonListener implements ActionListener{
+	class ButtonListener implements ActionListener{ // ButtonListener for frame
 		JFrame frame;
 		public ButtonListener(JFrame frame) {
 			this.frame = frame;
@@ -142,7 +142,7 @@ public class EditGUI extends JFrame{
 			frame.dispose();
 		}
 	}
-	class ExitListener implements ActionListener{
+	class ExitListener implements ActionListener{ //listener for edit button
     	ArrayList<JTextField> textFieldList;
     	ArrayList<String> data = new ArrayList<String>();
     	JFrame frame;
@@ -155,7 +155,7 @@ public class EditGUI extends JFrame{
 			this.frame.dispose();
 		}
 	}
-	class OKListener implements ActionListener{
+	class OKListener implements ActionListener{ //listener for ok button
     	ArrayList<JTextField> textFieldList;
     	ArrayList<String> data = new ArrayList<String>();
     	int option;
@@ -349,7 +349,7 @@ public class EditGUI extends JFrame{
     	}
 	}
 	
-	public class MenuListener implements ActionListener{
+	public class MenuListener implements ActionListener{ 
 		//this is the method MenuListener must implement, as it comes from the ActionListener interface.
 		public void actionPerformed(ActionEvent e) {
 			JMenuItem source = (JMenuItem)(e.getSource());
@@ -403,7 +403,7 @@ public class EditGUI extends JFrame{
 			createInputWindow("Remove Category", labels, 4, 300, 150);	
 		}
 		
-		public void handleViewSets() {
+		public void handleViewSets() { //creates new frame for viewing all sets
 			JFrame frame = buildJFrame("View Sets", 500, 300);
 			String[] columnNames = {"Location", "sID", "Set Name"};
 			int[] columnWidths = {20, 10, 70};
@@ -413,7 +413,7 @@ public class EditGUI extends JFrame{
 	        frame.pack();
 	        frame.setVisible(true);
 		}
-		public void handleViewCategories() {
+		public void handleViewCategories() { //creates new frame for viewing all categories
 			JFrame frame = buildJFrame("View Categories", 500, 300);
 			String[] columnNames = {"Location", "pID", "cID", "Category Name"};
 			int[] columnWidths = {10,5,5,70};
@@ -423,7 +423,7 @@ public class EditGUI extends JFrame{
 	        frame.pack();
 	        frame.setVisible(true);
 		}
-		public void handleViewEvents() {
+		public void handleViewEvents() { //creates new frame for viewing all events
 			JFrame frame = buildJFrame("View Events", 500, 300);
 			String[] columnNames = {"Location", "pID", "eID", "Event Name", "Description", "Date", "Urgency"};
 			int[] columnWidths = {10,3,3,30,30, 10, 5};
@@ -434,7 +434,7 @@ public class EditGUI extends JFrame{
 	        frame.setVisible(true);
 		}
 		
-		public void handleViewAll() {
+		public void handleViewAll() { //creates new frame for viewing all of the nodes
 			JFrame frame = buildJFrame("View All", 1050, 300);
 			frame.setLocationRelativeTo(null);
 			String[] eventColumnNames = {"Loc", "pID", "eID", "Event Name", "Description", "Date", "Urgency"};
