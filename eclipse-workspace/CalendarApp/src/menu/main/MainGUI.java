@@ -9,6 +9,7 @@ import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import datatype.User;
@@ -23,6 +24,7 @@ public class MainGUI extends JFrame {
 	private JButton editButton;
 	private JButton displayButton;
 	private JButton exitButton;
+	private JButton infoButton;
 	private DB db;
 	private User user;
 	private String username;
@@ -67,9 +69,15 @@ public class MainGUI extends JFrame {
 		exitButton.setBackground(Color.red);
 		exitButton.addActionListener(new ActionPerformed());
 		
+		infoButton = new JButton("Logout");
+		infoButton.setBounds(1500, 1000, 80, 30);
+		infoButton.setBackground(Color.gray);
+		infoButton.addActionListener(new ActionPerformed());
+		
 		panel.add(editButton);
 		panel.add(displayButton);
 		panel.add(exitButton);
+		panel.add(infoButton);
 		
 		add(panel);
 	}
@@ -89,6 +97,9 @@ public class MainGUI extends JFrame {
 			else if(source.equals(exitButton)) {
 				handleExit();
 			}
+			else if(source.equals(infoButton)) {
+				handleInfo();
+			}
 		}
 		
 		private void handleEdit() {
@@ -104,6 +115,12 @@ public class MainGUI extends JFrame {
 		
 		private void handleExit() {
 			dispose();
+			LoginGUI login = new LoginGUI(db);
+		}
+		
+		private void handleInfo() {
+			String infoMessage = 
+			JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: ", JOptionPane.INFORMATION_MESSAGE);
 			LoginGUI login = new LoginGUI(db);
 		}
 	}

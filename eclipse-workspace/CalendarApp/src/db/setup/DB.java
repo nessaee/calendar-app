@@ -90,6 +90,11 @@ public class DB {
 	public int checkUser(String username, String password) {
 		return Edit.checkUser(this.conn, username, password);
 	}
+	// Method to check if a ID exists in the DB
+    public int checkID(int ID) {
+    	return Edit.checkID(this.conn, ID);
+    }
+    
 	// Method to establish a connection to the database
 	public void setConnection(Connection conn) {
 		this.conn = conn;

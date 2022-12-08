@@ -165,7 +165,7 @@ public class LoginGUI extends JFrame {
 			panelL.add(new JLabel("Enter Password: "));
 			panelL.add(password);
 			panelL.add(Box.createHorizontalStrut(20));
-			JOptionPane.showMessageDialog(null,  panelL);
+			JOptionPane.showMessageDialog(null, panelL, "title");
 			// Getting Panel Inputs as Strings
 			String u = username.getText();
 			String p = new String(password.getPassword());

@@ -15,9 +15,7 @@ public class Set extends Node{
 	private ArrayList<Event> events = new ArrayList<Event>();
 	
 	// Default Constructor
-	public Set() {
-		
-	}
+	public Set() {}
 	
 	// Constructor that takes in a parentID, personal ID, and name as parameters.
 	public Set(Integer parentID, Integer ID, String name) {

@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.Set;
 import java.awt.event.*;
 import java.io.PrintStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
@@ -179,19 +182,45 @@ public class EditGUI extends JFrame{
 			String successMessage = "";
 			switch(this.option) {
 			case 0: // Add Event 
+				if (!data.get(0).matches("[0-9]+") || !data.get(3).matches("[0-9]+") || !data.get(4).matches("[0-9]+")) {
+					popupError(windowTitle, "Please enter valid integers for the for the Parent ID, Date, and Urgency fields");
+					return;
+				}
 				int eventParentID = Integer.parseInt(data.get(0));
-				eventParentID = (eventParentID == 0) ? controller.getUser().getUserID() : eventParentID;
+				if (eventParentID == 0) eventParentID = controller.getUser().getUserID();
+				else if (controller.getDB().checkID(eventParentID) == -1) {
+					popupError(windowTitle, "Invalid Parent ID, please try again.");
+					return;
+				}
+									
 				String eventName = data.get(1);
 				String eventDescription = data.get(2);
 				int eventDate = Integer.parseInt(data.get(3));
 				int eventUrgency = Integer.parseInt(data.get(4));
+				try {
+				    new SimpleDateFormat("yyyyDDmm").parse(data.get(3));
+				    System.out.println("0");
+				} catch (ParseException e1) {
+					popupError(windowTitle, "Invalid Date, please try again");
+					return;
+				}
 				controller.addEvent(controller.createEvent(eventParentID, eventName, eventDescription, eventUrgency, eventDate));
 				successMessage = "Event " + eventName + " has been added to your calendar";
 				popupSuccess(windowTitle, successMessage);
 				break;
 			case 1: // Add Category 
+
+				if (!data.get(0).matches("[0-9]+")) {
+					popupError(windowTitle, "Please enter a valid integer for the Parent ID field");
+					return;
+				}
 				int categoryParentID = Integer.parseInt(data.get(0));
-				categoryParentID = (categoryParentID == 0) ? controller.getUser().getUserID() : categoryParentID;
+				if (categoryParentID == 0) categoryParentID = controller.getUser().getUserID();
+				else if (controller.getDB().checkID(categoryParentID) == -1) {
+					popupError(windowTitle, "Invalid Parent ID, please try again");
+					return;
+				}
+				
 				String categoryName = data.get(1);
 				controller.addCategory(controller.createCategory(categoryName, categoryParentID));
 				successMessage = "Category " + categoryName + " has been added to your calendar";
@@ -207,22 +236,49 @@ public class EditGUI extends JFrame{
 				break;
 				
 			case 3: // Remove Set
+				if (!data.get(0).matches("[0-9]+")) {
+					popupError(windowTitle, "Please enter a valid integer");
+					return;
+				}
 				int setID = Integer.parseInt(data.get(0));
+				if (controller.getDB().checkID(setID) == -1) {
+					popupError(windowTitle, "Invalid Set ID, please try again");
+					return;
+				}
 				controller.getDB().removeRow(setID);
 				controller.getUser().getCalendar().removeSet(setID);
 				successMessage = "Set #" + String.valueOf(setID) + " has been removed from your calendar";
 				popupSuccess(windowTitle, successMessage);
+				
 				break;
 				 
 			case 4: // Remove Category
 				int categoryID = Integer.parseInt(data.get(0));
+				
+				if (!data.get(0).matches("[0-9]+")) {
+					popupError(windowTitle, "Please enter a valid integer");
+					return;
+				}
+				if (controller.getDB().checkID(categoryID) == -1) {
+					popupError(windowTitle, "Invalid Category ID, please try again");
+					return;
+				}
 				controller.getDB().removeRow(categoryID);
 				controller.getUser().getCalendar().removeCategory(categoryID);
 				successMessage = "Category #" + String.valueOf(categoryID) + " has been removed from your calendar";
 				popupSuccess(windowTitle, successMessage);
+
 				break;
 			case 5: // Remove Event
 				int eventID = Integer.parseInt(data.get(0));
+				if (!data.get(0).matches("[0-9]+")) {
+					popupError(windowTitle, "Please enter a valid integer");
+					return;
+				}
+				if (controller.getDB().checkID(eventID) == -1) {
+					popupError(windowTitle, "Invalid Event ID, please try again");
+					return;
+				}
 				controller.getDB().removeRow(eventID);
 				controller.getUser().getCalendar().removeEvent(eventID);
 				successMessage = "Event #" + String.valueOf(eventID) + " has been removed from your calendar";
@@ -336,15 +392,15 @@ public class EditGUI extends JFrame{
 			String[] labels = {"Set ID: "};
 			createInputWindow("Remove Set", labels, 3, 300, 150);		
 		}	
-		// option 4: remove event
+		// option 5: remove event
 		private void handleRemoveEvent(){ 
 			String[] labels = {"Event ID: "};
-			createInputWindow("Remove Event", labels, 4, 300, 150);
+			createInputWindow("Remove Event", labels, 5, 300, 150);
 		}
-		// option 5: remove category
+		// option 4: remove category
 		private void handleRemoveCategory(){ 
 			String[] labels = {"Category ID: "};
-			createInputWindow("Remove Category", labels, 5, 300, 150);	
+			createInputWindow("Remove Category", labels, 4, 300, 150);	
 		}
 		
 		public void handleViewSets() {

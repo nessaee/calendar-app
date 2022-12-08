@@ -99,7 +99,20 @@ public class Edit {
 			return -1;
 		}
 	}
-
+	public static int checkID(Connection conn, int ID) {
+		String table = getTableName(ID);
+    	String sql = "SELECT * FROM " + table +"\n WHERE ID = " + String.valueOf(ID);
+		ResultSet rs = executeQuery(conn, sql);
+		try {
+			if(rs == null) return -1;
+			else return rs.getInt("ID");
+		} 
+		catch (SQLException e) {
+			//e.printStackTrace();
+			return -1;
+		}
+    }
+    
 	// Method to load a table from the database
 	public static ArrayList<ArrayList<Object>> loadTable(Connection conn, String tablename) {
 		 ArrayList<ArrayList<Object>> tableData = new ArrayList<>();
