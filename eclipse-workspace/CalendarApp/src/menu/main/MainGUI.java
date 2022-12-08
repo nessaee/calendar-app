@@ -38,7 +38,7 @@ public class MainGUI extends JFrame {
 		this.user.updateCalendar(db);
 		this.user.getCalendar().printCalendar();
 		this.username = un;
-		setSize(300, 150);
+		setSize(350, 150);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		this.setLocationRelativeTo(null);
 		setBackground(Color.white);
@@ -69,7 +69,7 @@ public class MainGUI extends JFrame {
 		exitButton.setBackground(Color.red);
 		exitButton.addActionListener(new ActionPerformed());
 		
-		infoButton = new JButton("Logout");
+		infoButton = new JButton("Info");
 		infoButton.setBounds(1500, 1000, 80, 30);
 		infoButton.setBackground(Color.gray);
 		infoButton.addActionListener(new ActionPerformed());
@@ -119,9 +119,8 @@ public class MainGUI extends JFrame {
 		}
 		
 		private void handleInfo() {
-			String infoMessage = 
+			String infoMessage = "Information";
 			JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: ", JOptionPane.INFORMATION_MESSAGE);
-			LoginGUI login = new LoginGUI(db);
 		}
 	}
 }
