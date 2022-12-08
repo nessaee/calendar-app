@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import datatype.*;
 import db.setup.DB;
-import menu.main.User;
 
 /*
  * Class that controls editing of the User's calendar. It adds and removes Sets, Categories, and Events from both the

@@ -2,7 +2,6 @@ package menu.calendar;
 import java.util.Scanner;
 import datatype.*;
 import db.setup.DB;
-import menu.main.User;
 
 /*
  * This class controls the display of the calendar. It ensures the calendar is updated, and displays it.

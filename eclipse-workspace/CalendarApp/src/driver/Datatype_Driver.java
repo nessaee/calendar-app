@@ -1,7 +1,7 @@
 package driver;
 
+import datatype.User;
 import db.setup.DB;
-import menu.main.User;
 
 public class Datatype_Driver {
 

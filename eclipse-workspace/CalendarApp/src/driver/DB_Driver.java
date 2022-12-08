@@ -98,7 +98,7 @@ public class DB_Driver {
 		startID = 101;
 		loadData(db, startID, numObjects, "Categories");
 		System.out.println("\n\n\n");
-		startID = 101;
+		startID = 501;
 		loadData(db, startID, numObjects, "Events");
 	
 		

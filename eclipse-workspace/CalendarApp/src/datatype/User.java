@@ -1,10 +1,7 @@
-package menu.main;
+package datatype;
 
 import java.util.ArrayList;
 
-import datatype.Calendar;
-import datatype.Category;
-import datatype.Set;
 import db.setup.DB;
 import menu.calendar.CalendarController;
 

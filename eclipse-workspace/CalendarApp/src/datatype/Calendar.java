@@ -125,7 +125,7 @@ public class Calendar {
 	}
 	// Method used to create an Event object from a given parent id, personal id, label, description, urgency, and date
 	private Event loadEvent(Object pID, Object ID, Object label, Object description, Object urgency, Object date) {
-		return new Event((int) pID, (int) ID, (String) label, (String) label, (int) urgency, (int) date);
+		return new Event((int) pID, (int) ID, (String) label, (String) description, (int) urgency, (int) date);
 	}
 	// Method used to add a Set object to the sets field of the calendar
 	public void addSet(Set s) {
@@ -192,6 +192,7 @@ public class Calendar {
 		for(Set s : sets) {
 			if(s.getID() == ID){
 				this.sets.remove(s);
+				break;
 			}
 		}
 	}
@@ -203,6 +204,7 @@ public class Calendar {
 		for(Category c : categories) {
 			if(c.getID() == ID){
 				this.categories.remove(c);
+				break;
 			}
 		}
 	}
@@ -214,6 +216,7 @@ public class Calendar {
 		for(Event e : events) {
 			if(e.getID() == ID){
 				this.events.remove(e);
+				break;
 			}
 		}
 	}

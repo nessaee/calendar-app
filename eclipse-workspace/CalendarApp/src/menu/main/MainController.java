@@ -4,6 +4,7 @@ import menu.calendar.CalendarController;
 
 import java.util.Scanner;
 
+import datatype.User;
 import db.setup.DB;
 
 /*

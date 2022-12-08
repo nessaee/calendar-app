@@ -22,12 +22,13 @@ public class LoginGUI extends JFrame {
 		super("Login Menu");
 		this.db = db;
 		
-		setSize(400, 200);
+		setSize(400, 150);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
 		setBackground(Color.white);
 		add(new JLabel("<HTML><center><b>Welcome to the ECE373 Calendar Project</b>"
 						+ "<BR>Select Register if you would like to create a new account<BR>Select Login if you would"
 						+ " like to login to an existing account<BR>Select Exit to exit the program</center><HTML>"));
+		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		buildGUI();
 		setVisible(true);
@@ -164,7 +165,7 @@ public class LoginGUI extends JFrame {
 			panelL.add(new JLabel("Enter Password: "));
 			panelL.add(password);
 			panelL.add(Box.createHorizontalStrut(20));
-			JOptionPane.showMessageDialog(null,  panelL);
+			JOptionPane.showMessageDialog(null, panelL);
 			// Getting Panel Inputs as Strings
 			String u = username.getText();
 			String p = new String(password.getPassword());

@@ -9,8 +9,10 @@ import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import datatype.User;
 import db.setup.DB;
 import menu.calendar.CalendarGUI;
 import menu.edit.EditController;
@@ -22,6 +24,7 @@ public class MainGUI extends JFrame {
 	private JButton editButton;
 	private JButton displayButton;
 	private JButton exitButton;
+	private JButton infoButton;
 	private DB db;
 	private User user;
 	private String username;
@@ -35,8 +38,9 @@ public class MainGUI extends JFrame {
 		this.user.updateCalendar(db);
 		this.user.getCalendar().printCalendar();
 		this.username = un;
-		setSize(400, 200);
+		setSize(350, 150);
 		setLayout(new FlowLayout(FlowLayout.CENTER));
+		this.setLocationRelativeTo(null);
 		setBackground(Color.white);
 		add(new JLabel("<HTML><center><b>Welcome to the Main Menu " + un + "</b><BR>Select Edit to edit your calendar"
 						+ "<BR>Select Display to display your calendar<BR>Select Logout to exit the Login Menu</center><HTML>"));
@@ -65,9 +69,15 @@ public class MainGUI extends JFrame {
 		exitButton.setBackground(Color.red);
 		exitButton.addActionListener(new ActionPerformed());
 		
+		infoButton = new JButton("Info");
+		infoButton.setBounds(1500, 1000, 80, 30);
+		infoButton.setBackground(Color.gray);
+		infoButton.addActionListener(new ActionPerformed());
+		
 		panel.add(editButton);
 		panel.add(displayButton);
 		panel.add(exitButton);
+		panel.add(infoButton);
 		
 		add(panel);
 	}
@@ -87,6 +97,9 @@ public class MainGUI extends JFrame {
 			else if(source.equals(exitButton)) { 
 				handleExit();
 			}
+			else if(source.equals(infoButton)) {
+				handleInfo();
+			}
 		}
 		
 		private void handleEdit() {
@@ -103,6 +116,11 @@ public class MainGUI extends JFrame {
 		private void handleExit() {
 			dispose();
 			LoginGUI login = new LoginGUI(db);
+		}
+		
+		private void handleInfo() {
+			String infoMessage = "Information";
+			JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: ", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }
